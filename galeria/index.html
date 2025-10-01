@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Galería de Proyectos - Profe Vale</title>
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <img src="../LogoProfeVale.png" alt="Profe Vale Logo" style="width: 80px; height: 80px;">
+        <div>
+          <h1 class="header-glow" style="margin: 0;">Profe Vale</h1>
+          <p style="margin: 0; color: #e6f3ff;">Galería de Proyectos</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+        <a href="../index.html" class="btn-neon" style="font-size: 0.7rem;">🏠 Inicio</a>
+        <a href="../tutoriales/index.html" class="btn-neon" style="font-size: 0.7rem;">📚 Tutoriales</a>
+        <a href="../recursos/index.html" class="btn-neon" style="font-size: 0.7rem;">📖 Recursos</a>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card" style="max-width: 800px; margin: 0 auto 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1rem;">🔍 Filtrar Proyectos</h3>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+        <button onclick="filterProjects('all')" class="btn-neon filter-btn active" data-filter="all">Todos</button>
+        <button onclick="filterProjects('robot')" class="btn-neon filter-btn" data-filter="robot">Robots</button>
+        <button onclick="filterProjects('sensor')" class="btn-neon filter-btn" data-filter="sensor">Sensores</button>
+        <button onclick="filterProjects('ia')" class="btn-neon filter-btn" data-filter="ia">IA</button>
+        <button onclick="filterProjects('juego')" class="btn-neon filter-btn" data-filter="juego">Juegos</button>
+      </div>
+    </div>
+
+    <!-- Videos de Proyectos -->
+    <div class="card" style="max-width: 1000px; margin: 0 auto 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1.5rem; text-align: center;">🎥 Videos de Proyectos</h3>
+      
+      <div id="video-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+        <!-- Video 1 -->
+        <div class="project-item" data-category="robot sensor">
+          <video controls style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+            <source src="../Robotica vale00001.mp4" type="video/mp4">
+            Tu navegador no soporta video HTML5.
+          </video>
+          <div style="padding: 1rem 0;">
+            <h4 style="color: #fff; margin-bottom: 0.5rem;">🤖 Robot Detector de Obstáculos</h4>
+            <p style="color: #e6f3ff; font-size: 0.9rem; margin-bottom: 1rem;">
+              Robot autónomo que evita obstáculos usando sensor ultrasónico y servos. 
+              Programado con MakeCode y conectado via Bluetooth.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="tag">micro:bit</span>
+              <span class="tag">Sensor HC-SR04</span>
+              <span class="tag">Servos</span>
+              <span class="tag">Bluetooth</span>
+            </div>
+            <button onclick="addToFavorites('Robot Detector')" class="btn-neon" style="margin-top: 1rem; font-size: 0.8rem;">
+              ⭐ Agregar a Favoritos
+            </button>
+          </div>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="project-item" data-category="ia sensor">
+          <video controls style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+            <source src="../Robotica vale00002.mp4" type="video/mp4">
+            Tu navegador no soporta video HTML5.
+          </video>
+          <div style="padding: 1rem 0;">
+            <h4 style="color: #fff; margin-bottom: 0.5rem;">🧠 Sistema de Reconocimiento Facial</h4>
+            <p style="color: #e6f3ff; font-size: 0.9rem; margin-bottom: 1rem;">
+              Proyecto que combina IA con micro:bit. Detecta rostros y controla LEDs 
+              según las emociones detectadas usando nuestra app web.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="tag">IA</span>
+              <span class="tag">Cámara Web</span>
+              <span class="tag">TensorFlow.js</span>
+              <span class="tag">Emociones</span>
+            </div>
+            <button onclick="addToFavorites('Sistema Reconocimiento')" class="btn-neon" style="margin-top: 1rem; font-size: 0.8rem;">
+              ⭐ Agregar a Favoritos
+            </button>
+          </div>
+        </div>
+
+        <!-- Video 3 -->
+        <div class="project-item" data-category="juego sensor">
+          <video controls style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+            <source src="../Robotica vale00003.mp4" type="video/mp4">
+            Tu navegador no soporta video HTML5.
+          </video>
+          <div style="padding: 1rem 0;">
+            <h4 style="color: #fff; margin-bottom: 0.5rem;">🎮 Controlador de Juegos Gestual</h4>
+            <p style="color: #e6f3ff; font-size: 0.9rem; margin-bottom: 1rem;">
+              Juego interactivo controlado por gestos y movimientos del micro:bit. 
+              Incluye acelerómetro y conexión inalámbrica para múltiples jugadores.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="tag">Acelerómetro</span>
+              <span class="tag">Radio</span>
+              <span class="tag">Juegos</span>
+              <span class="tag">Multijugador</span>
+            </div>
+            <button onclick="addToFavorites('Controlador Gestual')" class="btn-neon" style="margin-top: 1rem; font-size: 0.8rem;">
+              ⭐ Agregar a Favoritos
+            </button>
+          </div>
+        </div>
+
+        <!-- Proyecto Instagram -->
+        <div class="project-item" data-category="robot ia">
+          <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 12px; min-height: 400px; display: flex; flex-direction: column; justify-content: center;">
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DK0OxfPRkSU/?utm_source=ig_web_copy_link&igsh=MTYwbGIxNDExZ2NjNQ==" 
+                        data-instgrm-version="14" 
+                        style="background:#FFF; border:0; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.15); margin:0; max-width:100%; min-width:280px; padding:0;">
+              <div style="padding:16px;">
+                <a href="https://www.instagram.com/reel/DK0OxfPRkSU/" target="_blank" 
+                   style="color: #1C69A8; text-decoration: none; text-align: center; display: block;">
+                  <strong>🎮 Proyecto con Servos</strong><br>
+                  <span style="font-size: 0.9rem;">Ver en Instagram →</span>
+                </a>
+              </div>
+            </blockquote>
+          </div>
+          <div style="padding: 1rem 0;">
+            <h4 style="color: #fff; margin-bottom: 0.5rem;">⚙️ Brazo Robótico Controlado</h4>
+            <p style="color: #e6f3ff; font-size: 0.9rem; margin-bottom: 1rem;">
+              Brazo robótico de 3 grados de libertad controlado remotamente 
+              mediante la app de control de flechas y micro:bit.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="tag">Servomotores</span>
+              <span class="tag">Control Remoto</span>
+              <span class="tag">Mecánica</span>
+            </div>
+            <button onclick="addToFavorites('Brazo Robótico')" class="btn-neon" style="margin-top: 1rem; font-size: 0.8rem;">
+              ⭐ Agregar a Favoritos
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Proyectos Destacados -->
+    <div class="card" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1.5rem;">⭐ Proyectos Destacados del Mes</h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Estación Meteorológica IoT</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem; margin-bottom: 1rem;">
+            Por Martín, 5to año. Combina sensores de temperatura, humedad y presión 
+            con envío de datos a la nube via WiFi.
+          </p>
+          <div style="color: #fff; font-size: 0.8rem;">🥇 1er Lugar - Feria de Ciencias</div>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🎨</div>
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Piano de Colores</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem; margin-bottom: 1rem;">
+            Por Sofía, 3er año. Cada color detectado por la cámara reproduce 
+            una nota musical diferente en el micro:bit.
+          </p>
+          <div style="color: #fff; font-size: 0.8rem;">⭐ Proyecto Más Creativo</div>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🤝</div>
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Asistente para Personas Ciegas</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem; margin-bottom: 1rem;">
+            Por el equipo de 4to año. Detecta obstáculos y da indicaciones 
+            por audio usando IA y sensores ultrasónicos.
+          </p>
+          <div style="color: #fff; font-size: 0.8rem;">💡 Mejor Impacto Social</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="card" style="max-width: 600px; margin: 0 auto 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1rem; text-align: center;">📊 Estadísticas de la Galería</h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
+        <div>
+          <div style="font-size: 2rem; color: #fff; font-weight: bold;">47</div>
+          <div style="color: #e6f3ff;">Proyectos Subidos</div>
+        </div>
+        <div>
+          <div style="font-size: 2rem; color: #fff; font-weight: bold;">156</div>
+          <div style="color: #e6f3ff;">Me Gusta Total</div>
+        </div>
+        <div>
+          <div style="font-size: 2rem; color: #fff; font-weight: bold;">23</div>
+          <div style="color: #e6f3ff;">Estudiantes Participantes</div>
+        </div>
+        <div>
+          <div style="font-size: 2rem; color: #fff; font-weight: bold;">8</div>
+          <div style="color: #e6f3ff;">Categorías</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 2rem 0; border-top: 1px solid #1C69A8; margin-top: 3rem;">
+      <p style="color: #666; font-size: 0.9rem;">© 2024 Profe Vale - Galería de Proyectos Estudiantiles</p>
+    </div>
+  </div>
+
+  <!-- CSS para tags y filtros -->
+  <style>
+    .tag {
+      background: rgba(28, 105, 168, 0.3);
+      color: #fff;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      border: 1px solid rgba(28, 105, 168, 0.5);
+    }
+    
+    .filter-btn {
+      background: rgba(255,255,255,0.1) !important;
+      color: #fff !important;
+      border: 2px solid transparent !important;
+    }
+    
+    .filter-btn.active {
+      background: #1C69A8 !important;
+      border-color: #fff !important;
+    }
+    
+    .project-item {
+      transition: all 0.3s ease;
+    }
+    
+    .project-item.hidden {
+      display: none;
+    }
+  </style>
+
+  <script async src="//www.instagram.com/embed.js"></script>
+  <script>
+    function filterProjects(category) {
+      const items = document.querySelectorAll('.project-item');
+      const buttons = document.querySelectorAll('.filter-btn');
+      
+      // Actualizar botones activos
+      buttons.forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`[data-filter="${category}"]`).classList.add('active');
+      
+      // Filtrar items
+      items.forEach(item => {
+        if (category === 'all' || item.dataset.category.includes(category)) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    }
+    
+    function addToFavorites(projectName) {
+      let favorites = JSON.parse(localStorage.getItem('profeVale_favorites') || '[]');
+      
+      if (!favorites.includes(projectName)) {
+        favorites.push(projectName);
+        localStorage.setItem('profeVale_favorites', JSON.stringify(favorites));
+        
+        // Mostrar notificación
+        const notification = document.createElement('div');
+        notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #1C69A8; color: white; padding: 1rem; border-radius: 8px; z-index: 1000;';
+        notification.textContent = `⭐ "${projectName}" agregado a favoritos`;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => notification.remove(), 3000);
+      } else {
+        alert('Este proyecto ya está en tus favoritos 😊');
+      }
+    }
+  </script>
+</body>
+</html>

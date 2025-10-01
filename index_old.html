@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Profe Vale - Robótica Educativa</title>
+  <link re    <!-- Asistente IA -->
+    <div class="card-glass" style="max-width: 1000px; margin: 0 auto 3rem;">
+      <h2 style="text-align: center; margin-bottom: 2rem;">🤖 Asistente IA de Robótica</h2>
+      <p style="text-align: center; color: #e2e8f0; margin-bottom: 2rem;">
+        ¡Haceme cualquier pregunta sobre micro:bit, robótica educativa o estas aplicaciones!
+      </p>
+      
+      <div style="max-width: 800px; margin: 0 auto;">
+        <!-- Chat container -->
+        <div id="chatContainer" style="background: rgba(26, 32, 44, 0.8); border-radius: 12px; border: 1px solid rgba(66, 153, 225, 0.2); height: 400px; overflow-y: auto; padding: 1rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+          <div class="bot-message" style="align-self: flex-start; background: rgba(66, 153, 225, 0.15); padding: 0.75rem 1rem; border-radius: 12px 12px 12px 4px; max-width: 80%; border-left: 3px solid #4299e1;">
+            <strong style="color: #4299e1;">🤖 Vale Bot:</strong><br>
+            ¡Hola! Soy tu asistente para robótica educativa. Puedo ayudarte con preguntas sobre micro:bit, programación en bloques, sensores, actuadores, y cómo usar las aplicaciones de este sitio. ¿En qué puedo ayudarte?
+          </div>
+        </div>
+        
+        <!-- Input area -->
+        <div style="display: flex; gap: 0.75rem;">
+          <input type="text" id="chatInput" placeholder="Preguntame sobre micro:bit, robótica, sensores..." 
+                 style="flex: 1; padding: 0.875rem; border-radius: 8px; border: 1px solid rgba(66, 153, 225, 0.3); background: rgba(45, 55, 72, 0.8); color: #f7fafc; font-size: 1rem;"
+                 maxlength="200">
+          <button id="sendBtn" class="btn-neon" style="padding: 0.875rem 1.5rem; min-width: auto;">
+            📤 Enviar
+          </button>
+        </div>
+        
+        <!-- Sugerencias -->
+        <div style="margin-top: 1rem;">
+          <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 0.5rem;">💡 Preguntas sugeridas:</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            <button class="suggestion-btn" onclick="askSuggestion('¿Cómo conecto mi micro:bit por Bluetooth?')" 
+                    style="background: rgba(74, 85, 104, 0.6); color: #e2e8f0; border: 1px solid rgba(226, 232, 240, 0.2); border-radius: 20px; padding: 0.5rem 1rem; font-size: 0.85rem; cursor: pointer;">
+              🔗 Conexión Bluetooth
+            </button>
+            <button class="suggestion-btn" onclick="askSuggestion('¿Qué sensores tiene la micro:bit?')"
+                    style="background: rgba(74, 85, 104, 0.6); color: #e2e8f0; border: 1px solid rgba(226, 232, 240, 0.2); border-radius: 20px; padding: 0.5rem 1rem; font-size: 0.85rem; cursor: pointer;">
+              📱 Sensores micro:bit
+            </button>
+            <button class="suggestion-btn" onclick="askSuggestion('¿Cómo hago un robot que siga una línea?')"
+                    style="background: rgba(74, 85, 104, 0.6); color: #e2e8f0; border: 1px solid rgba(226, 232, 240, 0.2); border-radius: 20px; padding: 0.5rem 1rem; font-size: 0.85rem; cursor: pointer;">
+              🤖 Robot seguidor
+            </button>
+            <button class="suggestion-btn" onclick="askSuggestion('¿Cómo funciona el reconocimiento facial?')"
+                    style="background: rgba(74, 85, 104, 0.6); color: #e2e8f0; border: 1px solid rgba(226, 232, 240, 0.2); border-radius: 20px; padding: 0.5rem 1rem; font-size: 0.85rem; cursor: pointer;">
+              👁️ IA y cámara
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instrucciones de uso -->
+    <div class="card-glass" style="max-width: 1000px; margin: 0 auto 3rem;">
+      <h2 style="text-align: center; margin-bottom: 3rem;">🛠️ Cómo Empezar</h2>stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <!-- Header principal -->
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <h1 class="header-glow">🤖 Profe Vale - Robótica Educativa</h1>
+      <p style="font-size: 1.3rem; color: #00d2ff; text-shadow: 0 0 8px #00d2ff; margin-top: 1rem;">
+        Aprendé robótica e IA con micro:bit de forma divertida
+      </p>
+    </div>
+
+    <!-- Sección de presentación -->
+    <div class="card-glass" style="max-width: 900px; margin: 0 auto 2rem;">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="color: #39ff14; text-shadow: 0 0 12px #39ff14;">¿Qué es este proyecto?</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+        <div>
+          <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1rem;">
+            Bienvenidos al mundo de la <strong style="color: #39ff14;">robótica educativa</strong> con 
+            <strong style="color: #00d2ff;">Profe Vale</strong>. Acá vas a encontrar herramientas digitales que conectan la 
+            <strong style="color: #39ff14;">inteligencia artificial</strong> con la <strong style="color: #ff2e63;">micro:bit</strong> de manera simple y divertida.
+          </p>
+          <p style="line-height: 1.6;">
+            Perfectas para <strong>estudiantes, docentes y makers</strong> que quieren experimentar con 
+            <strong>reconocimiento facial</strong>, <strong>machine learning</strong> y <strong>control remoto</strong> usando solo el navegador.
+          </p>
+        </div>
+        <div style="text-align: center;">
+          <div class="panel-neon" style="padding: 1.5rem;">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🤖</div>
+            <div style="color: #39ff14; font-weight: bold;">IA + Robótica</div>
+            <div style="color: #00d2ff;">en tu navegador</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apps disponibles -->
+    <div class="card-glass" style="max-width: 1000px; margin: 0 auto 3rem;">
+      <h2 style="text-align: center; margin-bottom: 3rem;">🚀 Aplicaciones Disponibles</h2>
+      
+      <div class="grid-3">
+        <!-- Teachable Machine App -->
+        <div class="app-card">
+          <div class="app-icon">🧠</div>
+          <h3>Teachable Machine</h3>
+          <p style="flex-grow: 1; margin-bottom: 1.5rem;">
+            Entrená tu propio modelo de IA y que la micro:bit reaccione automáticamente a objetos, gestos o poses que detecte la cámara.
+          </p>
+          <div style="margin-top: auto; padding: 0 0.25rem;">
+            <a class="btn-neon" href="AppMicrobitTeachable/index.html" style="width: calc(100% - 0.5rem); margin-bottom: 0.75rem; box-sizing: border-box;">🔥 Usar App</a>
+            <a class="btn-secondary" href="https://makecode.microbit.org/#pub:S82633-17924-93280-31710" target="_blank" style="width: calc(100% - 0.5rem); box-sizing: border-box;">📝 Ver código micro:bit</a>
+          </div>
+        </div>
+
+        <!-- Face Recognition App -->
+        <div class="app-card">
+          <div class="app-icon">🤖</div>
+          <h3>Reconocimiento Facial</h3>
+          <p style="flex-grow: 1; margin-bottom: 1.5rem;">
+            Detectá caras en tiempo real y enviá 12 parámetros faciales detallados (posición, rotación, expresiones) a tu micro:bit.
+          </p>
+          <div style="margin-top: auto; padding: 0 0.25rem;">
+            <a class="btn-neon" href="AppMicrobitRF/index.html" style="width: calc(100% - 0.5rem); margin-bottom: 0.75rem; box-sizing: border-box;">🔥 Usar App</a>
+            <a class="btn-secondary" href="https://makecode.microbit.org/#pub:S30471-65892-47813-52940" target="_blank" style="width: calc(100% - 0.5rem); box-sizing: border-box;">📝 Ver código micro:bit</a>
+          </div>
+        </div>
+
+        <!-- Control Arrows App -->
+        <div class="app-card">
+          <div class="app-icon">🎮</div>
+          <h3>Control de Flechas</h3>
+          <p style="flex-grow: 1; margin-bottom: 1.5rem;">
+            Controlá tu micro:bit con flechas direccionales personalizables. Ideal para robots, juegos y proyectos interactivos.
+          </p>
+          <div style="margin-top: auto; padding: 0 0.25rem;">
+            <a class="btn-neon" href="AppMicrobitFlechas/index.html" style="width: calc(100% - 0.5rem); margin-bottom: 0.75rem; box-sizing: border-box;">🔥 Usar App</a>
+            <a class="btn-secondary" href="https://makecode.microbit.org/#pub:S12345-67890-12345-67890" target="_blank" style="width: calc(100% - 0.5rem); box-sizing: border-box;">📝 Ver código micro:bit</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Características técnicas -->
+    <div class="card-glass" style="max-width: 1000px; margin: 0 auto 3rem;">
+      <h2 style="text-align: center; margin-bottom: 3rem;">⚡ Características Técnicas</h2>
+      
+      <div class="feature-grid">
+        <div style="text-align: center;">
+          <div style="color: #06b6d4; font-size: 2rem; margin-bottom: 1rem;">📡</div>
+          <h3>Bluetooth Web API</h3>
+          <p>Conexión directa desde el navegador sin aplicaciones adicionales</p>
+        </div>
+        
+        <div style="text-align: center;">
+          <div style="color: #06b6d4; font-size: 2rem; margin-bottom: 1rem;">🎯</div>
+          <h3>TensorFlow.js</h3>
+          <p>Inteligencia artificial ejecutándose localmente en tu dispositivo</p>
+        </div>
+        
+        <div style="text-align: center;">
+          <div style="color: #06b6d4; font-size: 2rem; margin-bottom: 1rem;">📱</div>
+          <h3>Multiplataforma</h3>
+          <p>Compatible con smartphones, tablets y computadoras</p>
+        </div>
+        
+        <div style="text-align: center;">
+          <div style="color: #06b6d4; font-size: 2rem; margin-bottom: 1rem;">🚀</div>
+          <h3>Tiempo Real</h3>
+          <p>Procesamiento optimizado a 60fps para máxima fluidez</p>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Instrucciones de uso -->
+    <div class="card-glass" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h2 style="text-align: center; margin-bottom: 2rem;">🛠️ Cómo Empezar</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+        <div style="text-align: center; padding: 1rem;">
+          <div class="feedback-pulse" style="background: rgba(57,255,20,0.1); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">1️⃣</div>
+          <h3 style="color: #39ff14; margin-bottom: 0.5rem;">Preparar micro:bit</h3>
+          <p style="font-size: 0.9rem;">Cargá el código Bluetooth en tu micro:bit usando MakeCode</p>
+        </div>
+        
+        <div style="text-align: center; padding: 1rem;">
+          <div class="feedback-pulse" style="background: rgba(0,210,255,0.1); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">2️⃣</div>
+          <h3 style="color: #00d2ff; margin-bottom: 0.5rem;">Abrir App Web</h3>
+          <p style="font-size: 0.9rem;">Usá Chrome o Edge para mejor compatibilidad con Bluetooth</p>
+        </div>
+        
+        <div style="text-align: center; padding: 1rem;">
+          <div class="feedback-pulse" style="background: rgba(255,46,99,0.1); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">3️⃣</div>
+          <h3 style="color: #ff2e63; margin-bottom: 0.5rem;">Conectar y Experimentar</h3>
+          <p style="font-size: 0.9rem;">Conectá por Bluetooth y empezá a crear proyectos increíbles</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de contacto -->
+    <div class="card-glass" style="max-width: 800px; margin: 0 auto 3rem;">
+      <h2 style="text-align: center; margin-bottom: 2rem;">📬 ¿Tenés alguna consulta?</h2>
+      <p style="text-align: center; color: #cbd5e1; margin-bottom: 2rem;">
+        Enviame tus preguntas, sugerencias o compartí cómo usás estas herramientas en tus proyectos
+      </p>
+      
+      <form id="contactForm" action="https://formspree.io/f/xyznwavn" method="POST" style="max-width: 600px; margin: 0 auto;">
+        <div class="grid-2" style="margin-bottom: 1.5rem;">
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; color: #4299e1; font-weight: 500;">Nombre *</label>
+            <input type="text" name="nombre" required 
+                   style="width: 100%; padding: 0.875rem; border-radius: 8px; border: 1px solid rgba(66, 153, 225, 0.3); background: rgba(45, 55, 72, 0.8); color: #f7fafc; font-size: 1rem;"
+                   placeholder="Tu nombre">
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; color: #4299e1; font-weight: 500;">Email *</label>
+            <input type="email" name="email" required 
+                   style="width: 100%; padding: 0.875rem; border-radius: 8px; border: 1px solid rgba(66, 153, 225, 0.3); background: rgba(45, 55, 72, 0.8); color: #f7fafc; font-size: 1rem;"
+                   placeholder="tu@email.com">
+          </div>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display: block; margin-bottom: 0.5rem; color: #4299e1; font-weight: 500;">Asunto</label>
+          <select name="asunto" 
+                  style="width: 100%; padding: 0.875rem; border-radius: 8px; border: 1px solid rgba(66, 153, 225, 0.3); background: rgba(45, 55, 72, 0.8); color: #f7fafc; font-size: 1rem;">
+            <option value="consulta">Consulta general</option>
+            <option value="bug">Reportar problema</option>
+            <option value="sugerencia">Sugerencia de mejora</option>
+            <option value="colaboracion">Propuesta de colaboración</option>
+            <option value="educativo">Uso educativo</option>
+          </select>
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+          <label style="display: block; margin-bottom: 0.5rem; color: #4299e1; font-weight: 500;">Mensaje *</label>
+          <textarea name="mensaje" required rows="5"
+                    style="width: 100%; padding: 0.875rem; border-radius: 8px; border: 1px solid rgba(66, 153, 225, 0.3); background: rgba(45, 55, 72, 0.8); color: #f7fafc; font-size: 1rem; resize: vertical;"
+                    placeholder="Contame tu consulta, experiencia o sugerencia..."></textarea>
+        </div>
+        
+        <div style="text-align: center;">
+          <button type="submit" class="btn-neon" style="min-width: 200px;">
+            📤 Enviar Mensaje
+          </button>
+        </div>
+        
+        <div id="formStatus" style="margin-top: 1rem; text-align: center; font-weight: 500;"></div>
+      </form>
+    </div>
+
+    <!-- Footer con info adicional -->
+    <div class="card-glass" style="max-width: 1000px; margin: 0 auto; text-align: center;">
+      <h2 style="margin-bottom: 2rem;">💡 Ideal Para</h2>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 3rem; margin-bottom: 2rem;">
+        <div style="color: #22c55e; display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.5rem;">📚</span>
+          <strong>Educación</strong>
+        </div>
+        <div style="color: #06b6d4; display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.5rem;">🔬</span>
+          <strong>Experimentos</strong>
+        </div>
+        <div style="color: #f59e0b; display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.5rem;">🤖</span>
+          <strong>Robótica</strong>
+        </div>
+        <div style="color: #ec4899; display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.5rem;">🎨</span>
+          <strong>Proyectos Creativivos</strong>
+        </div>
+      </div>
+      <div style="height: 1px; background: linear-gradient(to right, transparent, rgba(6, 182, 212, 0.3), transparent); margin: 2rem 0;"></div>
+      <p style="color: #94a3b8; font-size: 1rem;">
+        Desarrollado con ❤️ por <strong class="text-gradient">Profe Vale</strong> para la comunidad educativa y maker
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Formulario de contacto con Formspree
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const formStatus = document.getElementById('formStatus');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      
+      // Mostrar estado de envío
+      formStatus.style.color = '#4299e1';
+      formStatus.textContent = 'Enviando mensaje...';
+      submitBtn.disabled = true;
+      submitBtn.textContent = '📤 Enviando...';
+      
+      try {
+        // Enviar a Formspree
+        const formData = new FormData(e.target);
+        const response = await fetch(e.target.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          // Éxito
+          formStatus.style.color = '#68d391';
+          formStatus.innerHTML = '✅ ¡Mensaje enviado con éxito! Te responderé pronto.';
+          e.target.reset();
+        } else {
+          // Error del servidor
+          formStatus.style.color = '#fc8181';
+          formStatus.textContent = '❌ Error del servidor. Intentá de nuevo más tarde.';
+        }
+        
+      } catch (error) {
+        // Error de red
+        formStatus.style.color = '#fc8181';
+        formStatus.textContent = '❌ Error de conexión. Verificá tu internet e intentá de nuevo.';
+        console.error('Error enviando formulario:', error);
+      } finally {
+        // Restaurar botón
+        submitBtn.disabled = false;
+        submitBtn.textContent = '📤 Enviar Mensaje';
+        
+        // Limpiar estado después de 5 segundos
+        setTimeout(() => {
+          formStatus.textContent = '';
+        }, 5000);
+      }
+    });
+
+    // Mejorar UX del formulario
+    const inputs = document.querySelectorAll('input, textarea, select');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        this.style.borderColor = 'rgba(66, 153, 225, 0.6)';
+        this.style.boxShadow = '0 0 0 3px rgba(66, 153, 225, 0.15)';
+      });
+      
+      input.addEventListener('blur', function() {
+        this.style.borderColor = 'rgba(66, 153, 225, 0.3)';
+        this.style.boxShadow = 'none';
+      });
+    });
+
+    // Animaciones suaves al scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Aplicar animaciones a las cards
+    document.querySelectorAll('.card-glass, .app-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(card);
+    });
+
+    // Chatbot IA
+    const chatContainer = document.getElementById('chatContainer');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    
+    // Base de conocimiento sobre robótica educativa y micro:bit
+    const knowledge = {
+      "micro:bit": {
+        "sensores": "La micro:bit v2 tiene: acelerómetro, brújula, sensor de temperatura, micrófono, sensor de luz, 2 botones, 25 LEDs, y conexión por radio y Bluetooth.",
+        "bluetooth": "Para conectar por Bluetooth: 1) Cargá código con 'bluetooth.startUartService()' 2) Desde Chrome, usá Web Bluetooth API 3) Emparejá con 'BBC micro:bit'",
+        "programacion": "Podés programar la micro:bit con MakeCode (bloques o JavaScript), Python, o C++. MakeCode es ideal para comenzar.",
+        "pines": "La micro:bit tiene 25 pines: 0,1,2 son analógicos/digitales, el resto son digitales. Podés conectar LEDs, servos, sensores, etc."
+      },
+      "robotica": {
+        "seguidor_linea": "Robot seguidor: Usá 2 sensores de luz a los costados, si uno detecta la línea negra, girá hacia ese lado para mantenerse centrado.",
+        "servo": "Los servos se controlan con PWM. En MakeCode: pins.servoWritePin(). Conectá: rojo=3V, negro=GND, amarillo=pin digital.",
+        "motor": "Para motores DC usá un driver como L298N. La micro:bit no puede manejar motores grandes directamente por la corriente.",
+        "sensores": "Sensores comunes: ultrasónico (distancia), LDR (luz), PIR (movimiento), DHT22 (temperatura/humedad), potenciómetro (rotación)."
+      },
+      "apps": {
+        "teachable": "Teachable Machine: 1) Entrenás un modelo en teachablemachine.withgoogle.com 2) Copiás el link 3) La app detecta y envía la clase a micro:bit",
+        "facial": "Reconocimiento facial: Detecta cara y calcula 12 parámetros (posición, rotación, expresiones). Ideal para robots que reaccionen a emociones.",
+        "flechas": "Control de flechas: Envía comandos U/D/L/R personalizables. Perfecto para robots móviles o juegos direccionales.",
+        "bluetooth_web": "Las apps usan Web Bluetooth API, solo funcionan en Chrome/Edge. No necesitás instalar nada, se conecta directo desde el navegador."
+      },
+      "proyectos": {
+        "mascota": "Mascota virtual: Usá los botones para 'alimentar', el acelerómetro para detectar movimiento, y la matriz de LEDs para mostrar emociones.",
+        "alarma": "Sistema de alarma: Sensor PIR detecta movimiento, buzzer suena, LED parpadea, y enviás notificación por Bluetooth.",
+        "weather": "Estación meteorológica: Sensor temperatura/humedad + micro:bit para mostrar datos y enviar a app web por Bluetooth.",
+        "juegos": "Juegos: Snake (con acelerómetro), Piedra/Papel/Tijera (con botones), Dado digital (con agitar), Simon Says (LEDs y botones)."
+      }
+    };
+
+    function addMessage(text, isUser = false) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = isUser ? 'user-message' : 'bot-message';
+      
+      if (isUser) {
+        messageDiv.style.cssText = 'align-self: flex-end; background: rgba(104, 211, 145, 0.15); padding: 0.75rem 1rem; border-radius: 12px 12px 4px 12px; max-width: 80%; border-right: 3px solid #68d391;';
+        messageDiv.innerHTML = `<strong style="color: #68d391;">👤 Tú:</strong><br>${text}`;
+      } else {
+        messageDiv.style.cssText = 'align-self: flex-start; background: rgba(66, 153, 225, 0.15); padding: 0.75rem 1rem; border-radius: 12px 12px 12px 4px; max-width: 80%; border-left: 3px solid #4299e1;';
+        messageDiv.innerHTML = `<strong style="color: #4299e1;">🤖 Vale Bot:</strong><br>${text}`;
+      }
+      
+      chatContainer.appendChild(messageDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function getBotResponse(question) {
+      const q = question.toLowerCase();
+      
+      // Respuestas específicas según palabras clave
+      if (q.includes('bluetooth') || q.includes('conectar')) {
+        return knowledge["micro:bit"]["bluetooth"] + "<br><br>💡 <strong>Tip:</strong> En las apps de este sitio, solo hacé click en 'Conectar micro:bit' y seleccioná tu dispositivo.";
+      }
+      
+      if (q.includes('sensor') && q.includes('micro:bit')) {
+        return knowledge["micro:bit"]["sensores"] + "<br><br>🔧 <strong>Uso:</strong> En MakeCode encontrás todos estos sensores en la categoría 'Entrada'.";
+      }
+      
+      if (q.includes('seguidor') && q.includes('linea')) {
+        return knowledge.robotica["seguidor_linea"] + "<br><br>📝 <strong>Código:</strong> Usá 'pins.analogReadPin()' para leer los sensores y 'pins.servoWritePin()' para los motores.";
+      }
+      
+      if (q.includes('servo')) {
+        return knowledge.robotica["servo"] + "<br><br>⚡ <strong>Atención:</strong> Los servos consumen más corriente, considerá una fuente externa para múltiples servos.";
+      }
+      
+      if (q.includes('teachable') || q.includes('ia') || q.includes('inteligencia')) {
+        return knowledge.apps["teachable"] + "<br><br>🎯 <strong>Ideas:</strong> Clasificá objetos, gestos, poses, o cualquier cosa que puedas mostrar a la cámara.";
+      }
+      
+      if (q.includes('facial') || q.includes('cara')) {
+        return knowledge.apps["facial"] + "<br><br>😊 <strong>Parámetros:</strong> X, Y (posición), Z (distancia), rotación, apertura de ojos, sonrisa, etc.";
+      }
+      
+      if (q.includes('flecha') || q.includes('control') || q.includes('direccion')) {
+        return knowledge.apps["flechas"] + "<br><br>🎮 <strong>Personalizable:</strong> Podés cambiar U/D/L/R por palabras completas o números.";
+      }
+      
+      if (q.includes('motor')) {
+        return knowledge.robotica["motor"] + "<br><br>🔌 <strong>Importante:</strong> Siempre conectá la tierra (GND) común entre micro:bit y driver de motor.";
+      }
+      
+      if (q.includes('pin') || q.includes('conexion')) {
+        return knowledge["micro:bit"]["pines"] + "<br><br>📊 <strong>Voltajes:</strong> Pines digitales: 0V (LOW) o 3.3V (HIGH). Analógicos: 0-1023 (0V-3.3V).";
+      }
+      
+      if (q.includes('mascota') || q.includes('virtual')) {
+        return knowledge.proyectos["mascota"] + "<br><br>😺 <strong>Expansión:</strong> Agregá sonidos con un buzzer y conectividad con la app de reconocimiento facial.";
+      }
+      
+      if (q.includes('alarma')) {
+        return knowledge.proyectos["alarma"] + "<br><br>🚨 <strong>Mejora:</strong> Combinalo con la app de flechas para desactivar remotamente.";
+      }
+      
+      if (q.includes('juego') || q.includes('snake') || q.includes('simon')) {
+        return knowledge.proyectos["juegos"] + "<br><br>🕹️ <strong>Tip:</strong> Combiná con las apps web para controles más avanzados.";
+      }
+      
+      if (q.includes('web') || q.includes('navegador')) {
+        return knowledge.apps["bluetooth_web"] + "<br><br>🌐 <strong>Ventaja:</strong> No necesitás instalar apps, funciona directo desde cualquier dispositivo con Chrome.";
+      }
+      
+      if (q.includes('programa') || q.includes('codigo') || q.includes('makecode')) {
+        return knowledge["micro:bit"]["programacion"] + "<br><br>🎓 <strong>Recurso:</strong> microbit.org tiene tutoriales excelentes para empezar.";
+      }
+      
+      if (q.includes('clima') || q.includes('weather') || q.includes('temperatura')) {
+        return knowledge.proyectos["weather"] + "<br><br>📱 <strong>App:</strong> Usá la app de reconocimiento facial para mostrar datos cuando detecte una cara.";
+      }
+      
+      // Respuestas generales
+      if (q.includes('hola') || q.includes('help') || q.includes('ayuda')) {
+        return "¡Hola! Estoy acá para ayudarte con micro:bit y robótica educativa. Puedo explicarte sobre sensores, programación, proyectos, y cómo usar las apps de este sitio. ¿Qué te interesa aprender? 🤖";
+      }
+      
+      if (q.includes('gracias') || q.includes('thanks')) {
+        return "¡De nada! Me encanta ayudar con proyectos de robótica. Si tenés más preguntas sobre micro:bit, sensores, o cualquier proyecto, preguntame sin dudas. ¡A seguir creando! 🚀";
+      }
+      
+      // Respuesta por defecto
+      return "Interesante pregunta 🤔 Mi especialidad es micro:bit, robótica educativa, sensores, programación en bloques, y las aplicaciones de este sitio.<br><br>Podés preguntarme sobre:<br>• Conexión Bluetooth y sensores de micro:bit<br>• Proyectos con servos y motores<br>• Cómo usar las apps de Teachable Machine, reconocimiento facial y control de flechas<br>• Ideas de proyectos educativos<br><br>¡Reformulá tu pregunta y te ayudo! 😊";
+    }
+
+    function sendMessage() {
+      const message = chatInput.value.trim();
+      if (!message) return;
+      
+      addMessage(message, true);
+      chatInput.value = '';
+      sendBtn.disabled = true;
+      sendBtn.textContent = '⏳';
+      
+      // Simular tiempo de procesamiento
+      setTimeout(() => {
+        const response = getBotResponse(message);
+        addMessage(response);
+        sendBtn.disabled = false;
+        sendBtn.textContent = '📤 Enviar';
+        chatInput.focus();
+      }, Math.random() * 1000 + 500); // 0.5-1.5 segundos
+    }
+
+    function askSuggestion(question) {
+      chatInput.value = question;
+      sendMessage();
+    }
+
+    // Event listeners para el chat
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    // Estilo hover para sugerencias
+    document.querySelectorAll('.suggestion-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', function() {
+        this.style.background = 'rgba(113, 128, 150, 0.8)';
+        this.style.borderColor = 'rgba(226, 232, 240, 0.4)';
+      });
+      btn.addEventListener('mouseleave', function() {
+        this.style.background = 'rgba(74, 85, 104, 0.6)';
+        this.style.borderColor = 'rgba(226, 232, 240, 0.2)';
+      });
+    });
+  </script>
+</body>
+</html>

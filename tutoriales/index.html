@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tutoriales - Profe Vale</title>
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <img src="../LogoProfeVale.png" alt="Profe Vale Logo" style="width: 80px; height: 80px;">
+        <div>
+          <h1 class="header-glow" style="margin: 0;">Profe Vale</h1>
+          <p style="margin: 0; color: #e6f3ff;">Tutoriales Paso a Paso</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+        <a href="../index.html" class="btn-neon" style="font-size: 0.7rem;">🏠 Inicio</a>
+        <a href="../recursos/index.html" class="btn-neon" style="font-size: 0.7rem;">📚 Recursos</a>
+        <a href="../galeria/index.html" class="btn-neon" style="font-size: 0.7rem;">🎨 Galería</a>
+      </div>
+    </div>
+
+    <!-- Tutorial de Apps -->
+    <div class="card" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1rem;">🤖 Cómo Usar Nuestras Apps</h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        <!-- Teachable Machine -->
+        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px;">
+          <h4 style="color: #fff; margin-bottom: 1rem;">🧠 Teachable Machine</h4>
+          <ol style="color: #e6f3ff; font-size: 0.9rem; line-height: 1.6;">
+            <li>Ve a <a href="https://teachablemachine.withgoogle.com/" target="_blank" style="color: #fff;">teachablemachine.withgoogle.com</a></li>
+            <li>Elige "Proyecto de Imagen"</li>
+            <li>Crea 2 clases: "Objeto 1" y "Objeto 2"</li>
+            <li>Saca 10-15 fotos de cada objeto</li>
+            <li>Haz clic en "Entrenar modelo"</li>
+            <li>Exporta como "TensorFlow.js"</li>
+            <li>Copia la URL del modelo</li>
+            <li>Úsala en nuestra <a href="../AppMicrobitTeachable/index.html" style="color: #fff;">App Teachable</a></li>
+          </ol>
+          
+          <div style="margin-top: 1rem;">
+            <a href="https://teachablemachine.withgoogle.com/" target="_blank" class="btn-neon" style="font-size: 0.8rem;">🚀 Empezar Entrenamiento</a>
+          </div>
+        </div>
+
+        <!-- Reconocimiento Facial -->
+        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px;">
+          <h4 style="color: #fff; margin-bottom: 1rem;">👤 Reconocimiento Facial</h4>
+          <ol style="color: #e6f3ff; font-size: 0.9rem; line-height: 1.6;">
+            <li>Abre la <a href="../AppMicrobitRF/index.html" style="color: #fff;">App de Reconocimiento Facial</a></li>
+            <li>Permite acceso a la cámara</li>
+            <li>Posiciona tu cara en el cuadro</li>
+            <li>Conecta tu micro:bit por Bluetooth</li>
+            <li>Los 12 parámetros se envían automáticamente</li>
+            <li>En MakeCode, usa "al recibir cadena"</li>
+            <li>Procesa los valores separados por comas</li>
+          </ol>
+          
+          <div style="margin-top: 1rem;">
+            <a href="../AppMicrobitRF/index.html" class="btn-neon" style="font-size: 0.8rem;">📸 Probar App</a>
+          </div>
+        </div>
+
+        <!-- Control Flechas -->
+        <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 12px;">
+          <h4 style="color: #fff; margin-bottom: 1rem;">🎮 Control de Flechas</h4>
+          <ol style="color: #e6f3ff; font-size: 0.9rem; line-height: 1.6;">
+            <li>Abre la <a href="../AppMicrobitFlechas/index.html" style="color: #fff;">App de Control</a></li>
+            <li>Conecta tu micro:bit</li>
+            <li>Personaliza los comandos (U/D/L/R)</li>
+            <li>Usa las flechas o botones en pantalla</li>
+            <li>En MakeCode: "al recibir cadena"</li>
+            <li>Programa acciones para cada comando</li>
+          </ol>
+          
+          <div style="margin-top: 1rem;">
+            <a href="../AppMicrobitFlechas/index.html" class="btn-neon" style="font-size: 0.8rem;">🎯 Abrir Control</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tutoriales de micro:bit -->
+    <div class="card" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1rem;">🔧 Tutoriales de micro:bit</h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+          <h4 style="color: #fff; font-size: 1rem; margin-bottom: 0.5rem;">🚀 Primer Proyecto</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem;">LED parpadeante y botones</p>
+          <button onclick="toggleTutorial('tutorial1')" class="btn-neon" style="margin-top: 0.5rem; font-size: 0.8rem;">Ver Tutorial</button>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+          <h4 style="color: #fff; font-size: 1rem; margin-bottom: 0.5rem;">🌡️ Termómetro Digital</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem;">Sensor de temperatura</p>
+          <button onclick="toggleTutorial('tutorial2')" class="btn-neon" style="margin-top: 0.5rem; font-size: 0.8rem;">Ver Tutorial</button>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+          <h4 style="color: #fff; font-size: 1rem; margin-bottom: 0.5rem;">🎵 Piano Digital</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem;">Sonidos y melodías</p>
+          <button onclick="toggleTutorial('tutorial3')" class="btn-neon" style="margin-top: 0.5rem; font-size: 0.8rem;">Ver Tutorial</button>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+          <h4 style="color: #fff; font-size: 1rem; margin-bottom: 0.5rem;">🚨 Sistema Alarma</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem;">Sensores y actuadores</p>
+          <button onclick="toggleTutorial('tutorial4')" class="btn-neon" style="margin-top: 0.5rem; font-size: 0.8rem;">Ver Tutorial</button>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+          <h4 style="color: #fff; font-size: 1rem; margin-bottom: 0.5rem;">🤖 Robot Móvil</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem;">Motores y sensores</p>
+          <button onclick="toggleTutorial('tutorial5')" class="btn-neon" style="margin-top: 0.5rem; font-size: 0.8rem;">Ver Tutorial</button>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+          <h4 style="color: #fff; font-size: 1rem; margin-bottom: 0.5rem;">🎯 Integración con IA</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem;">Apps + micro:bit</p>
+          <button onclick="toggleTutorial('tutorial6')" class="btn-neon" style="margin-top: 0.5rem; font-size: 0.8rem;">Ver Tutorial</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido expandible de tutoriales -->
+    <div id="tutorial1" class="card tutorial-content" style="max-width: 800px; margin: 0 auto 2rem; display: none;">
+      <h4 style="color: #fff;">🚀 Primer Proyecto: LEDs y Botones</h4>
+      <div style="color: #e6f3ff; line-height: 1.6;">
+        <p><strong>Objetivo:</strong> Crear un programa que haga parpadear LEDs y responda a los botones.</p>
+        
+        <h5 style="color: #fff; margin-top: 1rem;">Paso a paso:</h5>
+        <ol>
+          <li>Abre <a href="https://makecode.microbit.org" target="_blank" style="color: #fff;">MakeCode</a></li>
+          <li>Arrastra "mostrar LEDs" al bloque "al iniciar"</li>
+          <li>Diseña una carita sonriente</li>
+          <li>Agrega "al presionar botón A"</li>
+          <li>Dentro, pon "mostrar cadena de texto" con tu nombre</li>
+          <li>Descarga el programa al micro:bit</li>
+        </ol>
+        
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+          <strong style="color: #fff;">💡 Tip:</strong> Experimenta cambiando los patrones de LEDs y agrega el botón B para más interacciones.
+        </div>
+      </div>
+    </div>
+
+    <!-- Tutorial App 4: Entrenador de Imágenes IA -->
+    <div class="card tutorial-header" onclick="toggleTutorial('tutorial-image-trainer')">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <div style="font-size: 2rem;">🧠</div>
+        <div>
+          <h3 style="color: #fff; margin: 0;">Entrenador de Imágenes IA</h3>
+          <p style="margin: 0; color: #e6f3ff; font-size: 0.9rem;">Crea tu propio clasificador de imágenes personalizado</p>
+        </div>
+        <div style="margin-left: auto; color: #fff; font-size: 1.5rem;">▼</div>
+      </div>
+    </div>
+
+    <div id="tutorial-image-trainer" class="tutorial-content" style="display: none;">
+      <div class="card">
+        <h4 style="color: #fff; margin-bottom: 1rem;">🎯 ¿Qué hace esta app?</h4>
+        <p style="color: #e6f3ff; line-height: 1.6; margin-bottom: 1.5rem;">
+          Esta app te permite crear tu propio modelo de inteligencia artificial para reconocer imágenes. 
+          A diferencia de Teachable Machine, aquí entrenas el modelo localmente en tu dispositivo y 
+          tienes control total sobre el proceso.
+        </p>
+
+        <h4 style="color: #fff; margin-bottom: 1rem;">📚 Paso a paso:</h4>
+        <div class="step-grid">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h5>Crear Clases</h5>
+            <p>Agrega las categorías que quieres que reconozca tu IA. Por ejemplo: "Gato", "Perro", "Pájaro".</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h5>Capturar Imágenes</h5>
+            <p>Toma al menos 10 fotos de cada clase usando la cámara o sube imágenes desde tu galería.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h5>Entrenar Modelo</h5>
+            <p>El algoritmo aprende a distinguir entre las diferentes clases usando TensorFlow.js.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <h5>Probar y Enviar</h5>
+            <p>Haz predicciones en tiempo real y envía los resultados a tu micro:bit por Bluetooth.</p>
+          </div>
+        </div>
+
+        <h4 style="color: #fff; margin: 1.5rem 0 1rem;">🔧 Funcionalidades Avanzadas:</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+          <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+            <h5 style="color: #fff; margin-bottom: 0.5rem;">💾 Gestión de Modelos</h5>
+            <ul style="color: #e6f3ff; font-size: 0.9rem;">
+              <li>Guardar modelos localmente</li>
+              <li>Exportar/Importar modelos</li>
+              <li>Cargar modelos previos</li>
+            </ul>
+          </div>
+          <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+            <h5 style="color: #fff; margin-bottom: 0.5rem;">📸 Captura Flexible</h5>
+            <ul style="color: #e6f3ff; font-size: 0.9rem;">
+              <li>Cámara frontal/trasera</li>
+              <li>Subir múltiples imágenes</li>
+              <li>Vista previa en tiempo real</li>
+            </ul>
+          </div>
+          <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+            <h5 style="color: #fff; margin-bottom: 0.5rem;">🤖 IA Personalizada</h5>
+            <ul style="color: #e6f3ff; font-size: 0.9rem;">
+              <li>Entrenamiento local</li>
+              <li>Control de parámetros</li>
+              <li>Visualización de confianza</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4 style="color: #fff; margin: 1.5rem 0 1rem;">🔗 Conexión con micro:bit:</h4>
+        <p style="color: #e6f3ff; line-height: 1.6; margin-bottom: 1rem;">
+          Cuando el modelo detecta una imagen, envía el índice de la clase (0, 1, 2...) por Bluetooth a tu micro:bit. 
+          Puedes programar diferentes acciones para cada clase detectada.
+        </p>
+
+        <div style="background: rgba(28, 105, 168, 0.2); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+          <h5 style="color: #1C69A8; margin-bottom: 0.5rem;">💡 Ideas de Proyectos:</h5>
+          <ul style="color: #fff; font-size: 0.9rem;">
+            <li><strong>Robot Clasificador:</strong> Que se mueva según el objeto detectado</li>
+            <li><strong>Semáforo IA:</strong> Diferentes LEDs según el gesto reconocido</li>
+            <li><strong>Alarma Inteligente:</strong> Que reaccione a personas vs objetos</li>
+            <li><strong>Juego Interactivo:</strong> Controla un juego mostrando objetos</li>
+          </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+          <a href="../AppMicrobitImageTrainer/" class="btn-neon" style="margin-right: 1rem;">🚀 Probar App</a>
+          <a href="https://makecode.microbit.org/_7qjF5wbsEKUf" target="_blank" class="btn-neon">📱 Código MakeCode</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Integración MakeCode -->
+    <div class="card" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1rem;">🔗 Integración Directa con MakeCode</h3>
+      <p style="color: #e6f3ff; margin-bottom: 1.5rem;">
+        Conecta directamente con el editor de MakeCode para empezar a programar al instante.
+      </p>
+      
+      <div style="text-align: center;">
+        <iframe src="https://makecode.microbit.org/---embed" 
+                width="100%" height="400" 
+                style="border: none; border-radius: 8px;"
+                allowfullscreen="allowfullscreen" 
+                sandbox="allow-popups allow-forms allow-scripts allow-same-origin">
+        </iframe>
+      </div>
+      
+      <div style="margin-top: 1rem; text-align: center;">
+        <a href="https://makecode.microbit.org" target="_blank" class="btn-neon">🚀 Abrir MakeCode Completo</a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 2rem 0; border-top: 1px solid #1C69A8; margin-top: 3rem;">
+      <p style="color: #666; font-size: 0.9rem;">© 2024 Profe Vale - Tutoriales de Robótica e IA</p>
+    </div>
+  </div>
+
+  <script>
+    function toggleTutorial(tutorialId) {
+      const tutorial = document.getElementById(tutorialId);
+      const allTutorials = document.querySelectorAll('.tutorial-content');
+      
+      // Ocultar todos los otros tutoriales
+      allTutorials.forEach(t => {
+        if (t.id !== tutorialId) {
+          t.style.display = 'none';
+        }
+      });
+      
+      // Toggle del tutorial seleccionado
+      tutorial.style.display = tutorial.style.display === 'none' ? 'block' : 'none';
+      
+      // Scroll hacia el tutorial
+      if (tutorial.style.display === 'block') {
+        tutorial.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  </script>
+</body>
+</html>

@@ -2,7 +2,40 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=        <!-- Sección de Contacto -->
+        <div class="card" style="text-align: center; max-width: 700px; margin: 3rem auto;">
+          <h3 style="margin-bottom: 1.5rem;">📌 Conectemos</h3>
+          
+          <!-- Enlaces Rápidos -->
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+            <a href="https://www.instagram.com/profevale/" target="_blank" class="btn-neon">📷 Instagram</a>
+            <a href="https://cafecito.app/profevale" target="_blank" class="btn-neon" 
+               style="background: linear-gradient(45deg, #ff6b00, #ff8500); color: white; border-color: #ff6b00;">
+              ☕ Invitame un cafecito
+            </a>
+          </div>
+          
+          <!-- Formulario de Contacto -->
+          <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 1.5rem; margin-top: 1.5rem;">
+            <h4 style="margin-bottom: 1rem; color: #fff;">📬 Envíame un mensaje</h4>
+            <form id="contactForm" style="display: flex; flex-direction: column; gap: 1rem;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <input type="text" id="contactName" placeholder="Tu nombre" required 
+                       style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
+                <input type="email" id="contactEmail" placeholder="Tu email" required
+                       style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
+              </div>
+              <input type="text" id="contactSubject" placeholder="Asunto" required
+                     style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
+              <textarea id="contactMessage" placeholder="Tu mensaje..." rows="4" required
+                        style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
+              <button type="submit" class="btn-neon" style="align-self: center; margin-top: 0.5rem;">
+                🚀 Enviar Mensaje
+              </button>
+            </form>
+            <div id="contactStatus" style="margin-top: 1rem; display: none; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem;"></div>
+          </div>
+        </div>h, initial-scale=1.0">
   <title>Profe Vale - IA y Robótica Educativa</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
@@ -20,7 +53,7 @@
           <img src="LogoProfeVale.png" alt="Profe Vale Logo" style="width: 100px; height: 100px;">
           <div>
             <h1 class="header-glow" style="margin: 0; font-size: 5rem; text-shadow: 0 0 10px rgba(28, 105, 168, 0.8), 0 0 20px rgba(28, 105, 168, 0.4), 0 0 30px rgba(28, 105, 168, 0.2);">Profe Vale</h1>
-            <p style="margin: 0; font-size: 1.2rem; color: #e6f3ff;">IA y robotica con Micro:bit</p>
+            <p style="margin: 0; font-size: 1.2rem; color: #e6f3ff;">Implementar la IA en la robótica con micro:bit</p>
           </div>
         </div>
         <!-- Sección de presentación -->
@@ -102,38 +135,15 @@
           </div>
         </div>
 
-        <!-- Sección de Contacto -->
-        <div class="card" style="text-align: center; max-width: 700px; margin: 3rem auto;">
-          <h3 style="margin-bottom: 1.5rem;">📌 Conectemos</h3>
-          
-          <!-- Enlaces Rápidos -->
-          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+        <!-- Sección de Contacto y Enlaces -->
+        <div class="card" style="text-align: center; max-width: 600px; margin: 3rem auto;">
+          <h3 style="margin-bottom: 1.5rem;">💌 Conectemos</h3>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
             <a href="https://www.instagram.com/profevale/" target="_blank" class="btn-neon">📷 Instagram</a>
             <a href="https://cafecito.app/profevale" target="_blank" class="btn-neon" 
                style="background: linear-gradient(45deg, #ff6b00, #ff8500); color: white; border-color: #ff6b00;">
               ☕ Invitame un cafecito
             </a>
-          </div>
-          
-          <!-- Formulario de Contacto -->
-          <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 1.5rem; margin-top: 1.5rem;">
-            <h4 style="margin-bottom: 1rem; color: #fff;">📧 Envíame un mensaje</h4>
-            <form id="contactForm" style="display: flex; flex-direction: column; gap: 1rem;">
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <input type="text" id="contactName" placeholder="Tu nombre" required 
-                       style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
-                <input type="email" id="contactEmail" placeholder="Tu email" required
-                       style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
-              </div>
-              <input type="text" id="contactSubject" placeholder="Asunto" required
-                     style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
-              <textarea id="contactMessage" placeholder="Tu mensaje..." rows="4" required
-                        style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
-              <button type="submit" class="btn-neon" style="align-self: center; margin-top: 0.5rem;">
-                🚀 Enviar Mensaje
-              </button>
-            </form>
-            <div id="contactStatus" style="margin-top: 1rem; display: none; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem;"></div>
           </div>
         </div>
       </div>
@@ -286,34 +296,15 @@
         </div>
       </div>
 
-      <!-- Sección de Contacto (Móvil) -->
+      <!-- Sección de Contacto y Enlaces (Móvil) -->
       <div class="card" style="text-align: center; max-width: 600px; margin: 3rem auto;">
-        <h3 style="margin-bottom: 1.5rem;">📌 Conectemos</h3>
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
+        <h3 style="margin-bottom: 1.5rem;">💌 Conectemos</h3>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
           <a href="https://www.instagram.com/profevale/" target="_blank" class="btn-neon">📷 Instagram</a>
           <a href="https://cafecito.app/profevale" target="_blank" class="btn-neon" 
              style="background: linear-gradient(45deg, #ff6b00, #ff8500); color: white; border-color: #ff6b00;">
             ☕ Invitame un cafecito
           </a>
-        </div>
-        
-        <!-- Formulario compacto móvil -->
-        <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 1rem;">
-          <h4 style="margin-bottom: 1rem; color: #fff;">📧 Contacto</h4>
-          <form id="contactFormMobile" style="display: flex; flex-direction: column; gap: 0.75rem;">
-            <input type="text" id="contactNameMobile" placeholder="Tu nombre" required 
-                   style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
-            <input type="email" id="contactEmailMobile" placeholder="Tu email" required
-                   style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
-            <input type="text" id="contactSubjectMobile" placeholder="Asunto" required
-                   style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
-            <textarea id="contactMessageMobile" placeholder="Tu mensaje..." rows="3" required
-                      style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
-            <button type="submit" class="btn-neon" style="margin-top: 0.5rem;">
-              🚀 Enviar
-            </button>
-          </form>
-          <div id="contactStatusMobile" style="margin-top: 1rem; display: none; padding: 0.5rem; border-radius: 8px; font-size: 0.8rem;"></div>
         </div>
       </div>
     </div>
@@ -358,70 +349,6 @@
       } else {
         resultsDiv.innerHTML = '<p style="color: #e6f3ff; font-size: 0.9rem;">No se encontraron resultados.</p>';
         resultsDiv.style.display = 'block';
-      }
-    }
-
-    // Manejar formulario de contacto desktop
-    function handleContactForm() {
-      const form = document.getElementById('contactForm');
-      const status = document.getElementById('contactStatus');
-      
-      if (form) {
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          
-          const name = document.getElementById('contactName').value;
-          const email = document.getElementById('contactEmail').value;
-          const subject = document.getElementById('contactSubject').value;
-          const message = document.getElementById('contactMessage').value;
-          
-          // Crear link de mailto
-          const mailtoLink = `mailto:profevalebod@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`)}`;
-          
-          // Abrir cliente de correo
-          window.location.href = mailtoLink;
-          
-          // Mostrar mensaje de confirmación
-          status.style.display = 'block';
-          status.style.background = 'rgba(57, 255, 20, 0.2)';
-          status.style.color = '#39ff14';
-          status.textContent = '✓ Se abrió tu cliente de correo. Envía el mensaje desde allí.';
-          
-          // Limpiar formulario
-          form.reset();
-        });
-      }
-    }
-
-    // Manejar formulario de contacto móvil
-    function handleContactFormMobile() {
-      const form = document.getElementById('contactFormMobile');
-      const status = document.getElementById('contactStatusMobile');
-      
-      if (form) {
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          
-          const name = document.getElementById('contactNameMobile').value;
-          const email = document.getElementById('contactEmailMobile').value;
-          const subject = document.getElementById('contactSubjectMobile').value;
-          const message = document.getElementById('contactMessageMobile').value;
-          
-          // Crear link de mailto
-          const mailtoLink = `mailto:profevalebod@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`)}`;
-          
-          // Abrir cliente de correo
-          window.location.href = mailtoLink;
-          
-          // Mostrar mensaje de confirmación
-          status.style.display = 'block';
-          status.style.background = 'rgba(57, 255, 20, 0.2)';
-          status.style.color = '#39ff14';
-          status.textContent = '✓ Cliente de correo abierto';
-          
-          // Limpiar formulario
-          form.reset();
-        });
       }
     }
 
@@ -484,11 +411,42 @@
       });
     }
 
+    // Manejar formulario de contacto
+    function handleContactForm() {
+      const form = document.getElementById('contactForm');
+      const status = document.getElementById('contactStatus');
+      
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const name = document.getElementById('contactName').value;
+          const email = document.getElementById('contactEmail').value;
+          const subject = document.getElementById('contactSubject').value;
+          const message = document.getElementById('contactMessage').value;
+          
+          // Crear link de mailto
+          const mailtoLink = `mailto:profevalebod@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`)}`;
+          
+          // Abrir cliente de correo
+          window.location.href = mailtoLink;
+          
+          // Mostrar mensaje de confirmación
+          status.style.display = 'block';
+          status.style.background = 'rgba(57, 255, 20, 0.2)';
+          status.style.color = '#39ff14';
+          status.textContent = '✓ Se abrió tu cliente de correo. Envía el mensaje desde allí.';
+          
+          // Limpiar formulario
+          form.reset();
+        });
+      }
+    }
+
     // Inicializar funcionalidades al cargar
     window.addEventListener('load', () => {
       loadUserProgress();
       handleContactForm();
-      handleContactFormMobile();
     });
 
     // Búsqueda en tiempo real

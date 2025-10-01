@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formación Online - Profe Vale</title>
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <img src="../LogoProfeVale.png" alt="Profe Vale Logo" style="width: 80px; height: 80px;">
+        <div>
+          <h1 class="header-glow" style="margin: 0; font-size: 2rem;">Profe Vale</h1>
+          <p style="margin: 0; font-size: 1rem; color: #e6f3ff;">Formación Online</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+        <a href="../index.html" class="btn-neon" style="font-size: 0.7rem;">🏠 Inicio</a>
+        <a href="../recursos/index.html" class="btn-neon" style="font-size: 0.7rem;">📚 Recursos</a>
+        <a href="../chat/index.html" class="btn-neon" style="font-size: 0.7rem;">💬 Chat IA</a>
+      </div>
+    </div>
+
+    <!-- Introducción -->
+    <div class="card" style="max-width: 900px; margin: 0 auto 2rem;">
+      <div style="text-align: center;">
+        <h3 style="color: #0077ff; margin-bottom: 1rem;">🎓 Formación en IA y Robótica</h3>
+        <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 1rem;">
+          Estoy considerando ofrecer <strong>clases sincrónicas online</strong> de Inteligencia Artificial y Robótica Educativa. 
+          Si te interesa participar en futuros talleres, contáctame para conocer más detalles.
+        </p>
+        <p style="font-size: 0.9rem; line-height: 1.6; color: #666; margin-bottom: 1.5rem;">
+          <strong>Idiomas disponibles:</strong> Español, Italiano, Francés
+        </p>
+      </div>
+    </div>
+
+    <!-- Posibles Formatos -->
+    <div class="card" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h3 style="color: #0077ff; margin-bottom: 1.5rem; text-align: center;">📚 Formatos que estoy considerando</h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        <!-- Talleres Grupales -->
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 1px solid #e0e0e0;">
+          <h4 style="color: #0077ff; font-size: 1.1rem; margin-bottom: 1rem;">👥 Talleres Grupales</h4>
+          <ul style="font-size: 0.95rem; list-style: none; padding: 0; color: #666;">
+            <li style="margin-bottom: 0.5rem;">• Sesiones en vivo por Zoom</li>
+            <li style="margin-bottom: 0.5rem;">• Grupos pequeños (máx. 8 personas)</li>
+            <li style="margin-bottom: 0.5rem;">• Proyectos colaborativos</li>
+            <li style="margin-bottom: 0.5rem;">• Enfoque práctico con micro:bit</li>
+          </ul>
+        </div>
+
+        <!-- Cursos Estructurados -->
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 1px solid #e0e0e0;">
+          <h4 style="color: #0077ff; font-size: 1.1rem; margin-bottom: 1rem;">🤖 Cursos de IA</h4>
+          <ul style="font-size: 0.95rem; list-style: none; padding: 0; color: #666;">
+            <li style="margin-bottom: 0.5rem;">• Introducción a IA para docentes</li>
+            <li style="margin-bottom: 0.5rem;">• Herramientas IA en educación</li>
+            <li style="margin-bottom: 0.5rem;">• Teachable Machine y proyectos</li>
+            <li style="margin-bottom: 0.5rem;">• Ética en IA educativa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de Interés -->
+    <div class="card" style="max-width: 700px; margin: 0 auto 2rem;">
+      <h3 style="text-align: center; margin-bottom: 1.5rem; color: #0077ff;">📝 Manifestá tu Interés</h3>
+      
+      <p style="text-align: center; font-size: 1rem; margin-bottom: 2rem; color: #666;">
+        Si te interesa algún tipo de formación en estos temas, dejá tus datos. 
+        Te contactaré si organizo algo que pueda interesarte.
+      </p>
+
+      <form action="https://formspree.io/f/xyznwavn" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="hidden" name="_subject" value="Interés en Formación Online - Profe Vale">
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <input type="text" name="nombre" placeholder="Tu nombre" required>
+          <input type="email" name="email" placeholder="Tu email" required>
+        </div>
+
+        <select name="interes" required>
+          <option value="">¿Qué te interesa?</option>
+          <option value="talleres-grupales">Talleres grupales online</option>
+          <option value="formacion-ia">Formación en IA para educadores</option>
+          <option value="ambos">Ambos tipos de formación</option>
+          <option value="info-general">Solo recibir información</option>
+        </select>
+
+        <select name="nivel" required>
+          <option value="">¿Cuál es tu nivel?</option>
+          <option value="principiante">Principiante (Nuevo en el tema)</option>
+          <option value="basico">Básico (Algo de experiencia)</option>
+          <option value="intermedio">Intermedio (Uso herramientas regularmente)</option>
+          <option value="avanzado">Avanzado (Experiencia técnica)</option>
+          <option value="docente">Soy docente (Busco aplicación educativa)</option>
+        </select>
+
+        <textarea name="comentario" placeholder="Comentarios adicionales (opcional) - ¿Qué aspectos te interesan más? ¿Tienes experiencia previa?" rows="4"></textarea>
+
+        <button type="submit" class="btn-neon" style="align-self: center; font-size: 0.8rem;">
+          📩 Enviar Solicitud
+        </button>
+      </form>
+    </div>
+
+    <!-- Información Adicional -->
+    <div class="card-glass" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h3 style="color: #0f0; margin-bottom: 1rem; text-align: center;">ℹ️ Información Adicional</h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; font-size: 0.7rem;">
+        <div style="text-align: center;">
+          <h4 style="color: #0f0; font-size: 0.8rem;">⏰ Modalidad</h4>
+          <p>Clases online sincrónicas via Zoom/Meet. Grabaciones disponibles para repaso.</p>
+        </div>
+        
+        <div style="text-align: center;">
+          <h4 style="color: #0f0; font-size: 0.8rem;">🌍 Idioma</h4>
+          <p>Todas las clases son en español, con materiales y recursos en nuestro idioma.</p>
+        </div>
+        
+        <div style="text-align: center;">
+          <h4 style="color: #0f0; font-size: 0.8rem;">🛠️ Material</h4>
+          <p>Te ayudo a conseguir micro:bit y componentes. También trabajamos con simuladores.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 2rem 0; border-top: 1px solid #0f0; margin-top: 3rem;">
+      <p style="color: #ccc; font-size: 0.7rem;">© 2024 Profe Vale - Formación en Robótica e IA | Educación de calidad en español</p>
+    </div>
+  </div>
+</body>
+</html>

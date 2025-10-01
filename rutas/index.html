@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Rutas de Aprendizaje - Profe Vale</title>
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <img src="../LogoProfeVale.png" alt="Profe Vale Logo" style="width: 80px; height: 80px;">
+        <div>
+          <h1 class="header-glow" style="margin: 0;">Profe Vale</h1>
+          <p style="margin: 0; color: #e6f3ff;">Rutas de Aprendizaje</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+        <a href="../index.html" class="btn-neon" style="font-size: 0.7rem;">🏠 Inicio</a>
+        <a href="../evaluaciones/index.html" class="btn-neon" style="font-size: 0.7rem;">🎯 Evaluaciones</a>
+        <a href="../tutoriales/index.html" class="btn-neon" style="font-size: 0.7rem;">📚 Tutoriales</a>
+      </div>
+    </div>
+
+    <!-- Selector de Perfil -->
+    <div class="card" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1.5rem; text-align: center;">👤 Selecciona tu Perfil de Aprendizaje</h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        <div class="profile-card" onclick="selectProfile('estudiante')" data-profile="estudiante">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🎓</div>
+          <h4>Estudiante Explorador</h4>
+          <p>Quiero aprender desde cero con proyectos divertidos y desafiantes.</p>
+          <div class="profile-features">
+            <span>⏱️ 2-3 horas/semana</span>
+            <span>📱 Proyectos prácticos</span>
+            <span>🎮 Gamificación</span>
+          </div>
+        </div>
+        
+        <div class="profile-card" onclick="selectProfile('docente')" data-profile="docente">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">👩‍🏫</div>
+          <h4>Docente Innovador</h4>
+          <p>Busco recursos y metodologías para enseñar robótica en el aula.</p>
+          <div class="profile-features">
+            <span>📋 Planes de clase</span>
+            <span>🎯 Evaluaciones</span>
+            <span>👥 Recursos grupales</span>
+          </div>
+        </div>
+        
+        <div class="profile-card" onclick="selectProfile('maker')" data-profile="maker">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🛠️</div>
+          <h4>Maker Avanzado</h4>
+          <p>Quiero crear proyectos complejos e integrar múltiples tecnologías.</p>
+          <div class="profile-features">
+            <span>🚀 IoT & IA</span>
+            <span>🔧 Hardware custom</span>
+            <span>💻 Desarrollo web</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rutas Personalizadas -->
+    <div id="learning-paths" style="display: none;">
+      
+      <!-- Ruta Estudiante -->
+      <div id="path-estudiante" class="learning-path" style="display: none;">
+        <h3 style="color: #fff; margin-bottom: 2rem; text-align: center;">🎓 Tu Ruta de Aprendizaje - Estudiante Explorador</h3>
+        
+        <div class="timeline">
+          <!-- Nivel 1: Fundamentos -->
+          <div class="timeline-item" data-level="1">
+            <div class="timeline-marker">1</div>
+            <div class="timeline-content">
+              <h4>🌱 Fundamentos de micro:bit</h4>
+              <p>Aprende los conceptos básicos y realiza tus primeros proyectos.</p>
+              <div class="timeline-tasks">
+                <div class="task" data-task="intro-microbit">
+                  <input type="checkbox" id="task-intro">
+                  <label for="task-intro">📱 Conoce tu micro:bit</label>
+                </div>
+                <div class="task" data-task="first-led">
+                  <input type="checkbox" id="task-led">
+                  <label for="task-led">💡 Tu primer LED parpadeante</label>
+                </div>
+                <div class="task" data-task="buttons">
+                  <input type="checkbox" id="task-buttons">
+                  <label for="task-buttons">🔘 Programando botones</label>
+                </div>
+                <div class="task" data-task="quiz-basic">
+                  <input type="checkbox" id="task-quiz1">
+                  <label for="task-quiz1">🎯 Quiz Nivel Principiante</label>
+                </div>
+              </div>
+              <div class="timeline-resources">
+                <a href="../tutoriales/index.html" class="resource-btn">📚 Tutorial micro:bit</a>
+                <a href="https://makecode.microbit.org" class="resource-btn" target="_blank">💻 MakeCode</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nivel 2: Sensores -->
+          <div class="timeline-item" data-level="2">
+            <div class="timeline-marker">2</div>
+            <div class="timeline-content">
+              <h4>🌡️ Explorando Sensores</h4>
+              <p>Descubre cómo tu micro:bit puede "sentir" el mundo.</p>
+              <div class="timeline-tasks">
+                <div class="task" data-task="temperature">
+                  <input type="checkbox" id="task-temp">
+                  <label for="task-temp">🌡️ Termómetro digital</label>
+                </div>
+                <div class="task" data-task="compass">
+                  <input type="checkbox" id="task-compass">
+                  <label for="task-compass">🧭 Brújula electrónica</label>
+                </div>
+                <div class="task" data-task="accelerometer">
+                  <input type="checkbox" id="task-accel">
+                  <label for="task-accel">📱 Detector de movimiento</label>
+                </div>
+                <div class="task" data-task="project-alarm">
+                  <input type="checkbox" id="task-alarm">
+                  <label for="task-alarm">🚨 Proyecto: Alarma inteligente</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nivel 3: Comunicación -->
+          <div class="timeline-item" data-level="3">
+            <div class="timeline-marker">3</div>
+            <div class="timeline-content">
+              <h4>📡 Comunicación y Conectividad</h4>
+              <p>Conecta tu micro:bit con el mundo digital.</p>
+              <div class="timeline-tasks">
+                <div class="task" data-task="radio">
+                  <input type="checkbox" id="task-radio">
+                  <label for="task-radio">📻 Comunicación por radio</label>
+                </div>
+                <div class="task" data-task="bluetooth-intro">
+                  <input type="checkbox" id="task-bt">
+                  <label for="task-bt">📱 Primeros pasos con Bluetooth</label>
+                </div>
+                <div class="task" data-task="app-flechas">
+                  <input type="checkbox" id="task-arrows">
+                  <label for="task-arrows">🎮 Usa la App de Flechas</label>
+                </div>
+                <div class="task" data-task="quiz-intermediate">
+                  <input type="checkbox" id="task-quiz2">
+                  <label for="task-quiz2">🎯 Quiz Nivel Intermedio</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nivel 4: IA y Reconocimiento -->
+          <div class="timeline-item" data-level="4">
+            <div class="timeline-marker">4</div>
+            <div class="timeline-content">
+              <h4>🤖 Inteligencia Artificial</h4>
+              <p>Integra IA en tus proyectos con nuestras apps web.</p>
+              <div class="timeline-tasks">
+                <div class="task" data-task="face-detection">
+                  <input type="checkbox" id="task-face">
+                  <label for="task-face">👤 App de Reconocimiento Facial</label>
+                </div>
+                <div class="task" data-task="teachable-machine">
+                  <input type="checkbox" id="task-tm">
+                  <label for="task-tm">🧠 Teachable Machine</label>
+                </div>
+                <div class="task" data-task="ai-project">
+                  <input type="checkbox" id="task-ai">
+                  <label for="task-ai">🚀 Proyecto: Robot controlado por IA</label>
+                </div>
+                <div class="task" data-task="gallery-share">
+                  <input type="checkbox" id="task-share">
+                  <label for="task-share">📸 Comparte en la Galería</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nivel 5: Proyectos Avanzados -->
+          <div class="timeline-item" data-level="5">
+            <div class="timeline-marker">5</div>
+            <div class="timeline-content">
+              <h4>🚀 Proyectos Maestros</h4>
+              <p>Crea proyectos complejos que combinen todo lo aprendido.</p>
+              <div class="timeline-tasks">
+                <div class="task" data-task="iot-project">
+                  <input type="checkbox" id="task-iot">
+                  <label for="task-iot">🌐 Proyecto IoT completo</label>
+                </div>
+                <div class="task" data-task="competition">
+                  <input type="checkbox" id="task-comp">
+                  <label for="task-comp">🏆 Participa en competencia</label>
+                </div>
+                <div class="task" data-task="mentor">
+                  <input type="checkbox" id="task-mentor">
+                  <label for="task-mentor">👥 Become un mentor</label>
+                </div>
+                <div class="task" data-task="quiz-advanced">
+                  <input type="checkbox" id="task-quiz3">
+                  <label for="task-quiz3">🎯 Quiz Nivel Avanzado</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ruta Docente -->
+      <div id="path-docente" class="learning-path" style="display: none;">
+        <h3 style="color: #fff; margin-bottom: 2rem; text-align: center;">👩‍🏫 Tu Ruta de Aprendizaje - Docente Innovador</h3>
+        
+        <div class="teacher-modules">
+          <div class="module-card">
+            <h4>📋 Módulo 1: Planificación Curricular</h4>
+            <ul>
+              <li>✅ Integración de robótica en el currículo</li>
+              <li>📊 Objetivos de aprendizaje STEAM</li>
+              <li>📝 Desarrollo de planes de clase</li>
+              <li>🎯 Evaluación por competencias</li>
+            </ul>
+            <div class="module-resources">
+              <button onclick="downloadResource('plan-curricular')" class="btn-neon">📄 Descargar Plantillas</button>
+              <button onclick="openWebinar('curriculum')" class="btn-neon">🎥 Ver Webinar</button>
+            </div>
+          </div>
+          
+          <div class="module-card">
+            <h4>🛠️ Módulo 2: Herramientas y Recursos</h4>
+            <ul>
+              <li>💻 MakeCode para educadores</li>
+              <li>📱 Apps web interactivas</li>
+              <li>🎮 Gamificación en robótica</li>
+              <li>🔧 Kit básico de herramientas</li>
+            </ul>
+            <div class="module-resources">
+              <button onclick="openTutorial('tools')" class="btn-neon">📚 Tutorial Completo</button>
+              <button onclick="requestKit()" class="btn-neon">📦 Solicitar Kit</button>
+            </div>
+          </div>
+          
+          <div class="module-card">
+            <h4>👥 Módulo 3: Metodología Colaborativa</h4>
+            <ul>
+              <li>🤝 Trabajo en equipos</li>
+              <li>🎨 Proyectos interdisciplinarios</li>
+              <li>🗣️ Presentación de proyectos</li>
+              <li>📈 Seguimiento del progreso</li>
+            </ul>
+            <div class="module-resources">
+              <button onclick="joinCommunity()" class="btn-neon">👥 Comunidad Docentes</button>
+              <button onclick="scheduleCall()" class="btn-neon">📞 Asesoría 1:1</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ruta Maker -->
+      <div id="path-maker" class="learning-path" style="display: none;">
+        <h3 style="color: #fff; margin-bottom: 2rem; text-align: center;">🛠️ Tu Ruta de Aprendizaje - Maker Avanzado</h3>
+        
+        <div class="maker-tracks">
+          <div class="track-card" onclick="selectTrack('iot')">
+            <h4>🌐 Track IoT & Cloud</h4>
+            <p>Conecta tus dispositivos a la nube y crea ecosistemas IoT.</p>
+            <div class="track-tech">
+              <span>ESP32</span>
+              <span>Firebase</span>
+              <span>MQTT</span>
+              <span>Node-RED</span>
+            </div>
+          </div>
+          
+          <div class="track-card" onclick="selectTrack('ai')">
+            <h4>🧠 Track IA & Machine Learning</h4>
+            <p>Desarrolla sistemas inteligentes con TensorFlow y Edge AI.</p>
+            <div class="track-tech">
+              <span>TensorFlow.js</span>
+              <span>OpenCV</span>
+              <span>Coral AI</span>
+              <span>Python</span>
+            </div>
+          </div>
+          
+          <div class="track-card" onclick="selectTrack('web')">
+            <h4>💻 Track Desarrollo Web</h4>
+            <p>Crea interfaces web avanzadas para tus proyectos robóticos.</p>
+            <div class="track-tech">
+              <span>Web Bluetooth</span>
+              <span>WebGL</span>
+              <span>PWA</span>
+              <span>WebAssembly</span>
+            </div>
+          </div>
+        </div>
+        
+        <div id="selected-track" style="display: none; margin-top: 2rem;">
+          <!-- Contenido del track seleccionado -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Dashboard -->
+    <div id="progress-dashboard" class="card" style="max-width: 900px; margin: 2rem auto; display: none;">
+      <h3 style="color: #fff; margin-bottom: 1.5rem;">📊 Tu Progreso</h3>
+      
+      <div class="progress-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="overall-progress">0%</div>
+          <div class="stat-label">Progreso General</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="completed-tasks">0</div>
+          <div class="stat-label">Tareas Completadas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="current-level">1</div>
+          <div class="stat-label">Nivel Actual</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="streak-days">0</div>
+          <div class="stat-label">Días Seguidos</div>
+        </div>
+      </div>
+      
+      <div class="progress-bar-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="main-progress"></div>
+        </div>
+        <div class="progress-labels">
+          <span>Principiante</span>
+          <span>Intermedio</span>
+          <span>Avanzado</span>
+          <span>Experto</span>
+        </div>
+      </div>
+      
+      <div class="achievements">
+        <h4 style="color: #fff; margin-bottom: 1rem;">🏆 Logros Desbloqueados</h4>
+        <div id="achievements-grid"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 2rem 0; border-top: 1px solid #1C69A8; margin-top: 3rem;">
+      <p style="color: #666; font-size: 0.9rem;">© 2024 Profe Vale - Sistema de Rutas Personalizadas</p>
+    </div>
+  </div>
+
+  <style>
+    .profile-card {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.3);
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .profile-card:hover {
+      transform: translateY(-5px);
+      border-color: #1C69A8;
+      box-shadow: 0 8px 25px rgba(28, 105, 168, 0.3);
+    }
+    
+    .profile-card.selected {
+      border-color: #1C69A8;
+      background: rgba(28, 105, 168, 0.2);
+    }
+    
+    .profile-card h4 {
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    
+    .profile-card p {
+      color: #e6f3ff;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+    
+    .profile-features {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .profile-features span {
+      background: rgba(255,255,255,0.1);
+      padding: 0.3rem 0.8rem;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      color: #fff;
+    }
+    
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 30px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #1C69A8;
+    }
+    
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+      padding-left: 80px;
+    }
+    
+    .timeline-marker {
+      position: absolute;
+      left: 15px;
+      top: 10px;
+      width: 30px;
+      height: 30px;
+      background: #1C69A8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+    }
+    
+    .timeline-content {
+      background: rgba(255,255,255,0.1);
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+    
+    .timeline-content h4 {
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    
+    .timeline-content p {
+      color: #e6f3ff;
+      margin-bottom: 1rem;
+    }
+    
+    .timeline-tasks {
+      margin-bottom: 1rem;
+    }
+    
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .task input[type="checkbox"] {
+      transform: scale(1.2);
+    }
+    
+    .task label {
+      color: #e6f3ff;
+      cursor: pointer;
+    }
+    
+    .task input:checked + label {
+      color: #4CAF50;
+      text-decoration: line-through;
+    }
+    
+    .timeline-resources {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .resource-btn {
+      background: rgba(28, 105, 168, 0.3);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: all 0.3s;
+    }
+    
+    .resource-btn:hover {
+      background: #1C69A8;
+    }
+    
+    .module-card, .track-card {
+      background: rgba(255,255,255,0.1);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    
+    .module-card h4, .track-card h4 {
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    
+    .module-card ul {
+      color: #e6f3ff;
+      margin-bottom: 1rem;
+    }
+    
+    .module-resources {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .track-card {
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .track-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .track-tech {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .track-tech span {
+      background: #1C69A8;
+      color: #fff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 10px;
+      font-size: 0.7rem;
+    }
+    
+    .progress-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #1C69A8;
+    }
+    
+    .stat-label {
+      color: #e6f3ff;
+      font-size: 0.8rem;
+    }
+    
+    .progress-bar-container {
+      margin-bottom: 2rem;
+    }
+    
+    .progress-bar {
+      background: rgba(255,255,255,0.2);
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, #4CAF50, #1C69A8, #9C27B0, #FF9800);
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.5s ease;
+    }
+    
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      color: #e6f3ff;
+      font-size: 0.8rem;
+    }
+    
+    #achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+    }
+    
+    .achievement {
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      opacity: 0.5;
+    }
+    
+    .achievement.unlocked {
+      opacity: 1;
+      border: 2px solid #FFD700;
+    }
+    
+    .achievement-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .achievement-name {
+      color: #fff;
+      font-size: 0.8rem;
+    }
+  </style>
+
+  <script>
+    let currentProfile = null;
+    let userProgress = JSON.parse(localStorage.getItem('learningProgress') || '{}');
+
+    function selectProfile(profile) {
+      currentProfile = profile;
+      
+      // Update visual selection
+      document.querySelectorAll('.profile-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      document.querySelector(`[data-profile="${profile}"]`).classList.add('selected');
+      
+      // Show learning paths
+      setTimeout(() => {
+        document.getElementById('learning-paths').style.display = 'block';
+        document.querySelectorAll('.learning-path').forEach(path => {
+          path.style.display = 'none';
+        });
+        document.getElementById(`path-${profile}`).style.display = 'block';
+        document.getElementById('progress-dashboard').style.display = 'block';
+        
+        loadUserProgress();
+        updateProgressDashboard();
+      }, 300);
+    }
+
+    function loadUserProgress() {
+      if (!userProgress[currentProfile]) {
+        userProgress[currentProfile] = {
+          completedTasks: [],
+          currentLevel: 1,
+          startDate: new Date().toISOString(),
+          lastActivity: new Date().toISOString()
+        };
+        saveProgress();
+      }
+      
+      // Mark completed tasks
+      userProgress[currentProfile].completedTasks.forEach(taskId => {
+        const checkbox = document.querySelector(`input[id="${taskId}"]`);
+        if (checkbox) {
+          checkbox.checked = true;
+        }
+      });
+    }
+
+    function saveProgress() {
+      localStorage.setItem('learningProgress', JSON.stringify(userProgress));
+    }
+
+    function updateProgressDashboard() {
+      const profile = userProgress[currentProfile];
+      if (!profile) return;
+      
+      const totalTasks = document.querySelectorAll('.task input[type="checkbox"]').length;
+      const completedTasks = profile.completedTasks.length;
+      const progressPercentage = Math.round((completedTasks / totalTasks) * 100);
+      
+      document.getElementById('overall-progress').textContent = progressPercentage + '%';
+      document.getElementById('completed-tasks').textContent = completedTasks;
+      document.getElementById('current-level').textContent = profile.currentLevel;
+      document.getElementById('main-progress').style.width = progressPercentage + '%';
+      
+      // Calculate streak
+      const streak = calculateStreak(profile.lastActivity);
+      document.getElementById('streak-days').textContent = streak;
+      
+      // Update achievements
+      updateAchievements(progressPercentage, completedTasks, streak);
+    }
+
+    function calculateStreak(lastActivity) {
+      const today = new Date();
+      const lastDate = new Date(lastActivity);
+      const diffTime = Math.abs(today - lastDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      // Simple streak calculation - in real app, this would be more sophisticated
+      return diffDays <= 1 ? Math.floor(Math.random() * 10) + 1 : 0;
+    }
+
+    function updateAchievements(progress, tasks, streak) {
+      const achievements = [
+        { id: 'first-step', icon: '🚀', name: 'Primer Paso', condition: tasks >= 1 },
+        { id: 'dedicated', icon: '🎯', name: 'Dedicado', condition: streak >= 3 },
+        { id: 'half-way', icon: '⭐', name: 'A Medio Camino', condition: progress >= 50 },
+        { id: 'expert', icon: '🏆', name: 'Experto', condition: progress >= 90 },
+        { id: 'mentor', icon: '👨‍🏫', name: 'Mentor', condition: tasks >= 20 },
+        { id: 'innovator', icon: '💡', name: 'Innovador', condition: progress >= 100 }
+      ];
+      
+      const grid = document.getElementById('achievements-grid');
+      grid.innerHTML = achievements.map(achievement => `
+        <div class="achievement ${achievement.condition ? 'unlocked' : ''}">
+          <div class="achievement-icon">${achievement.icon}</div>
+          <div class="achievement-name">${achievement.name}</div>
+        </div>
+      `).join('');
+    }
+
+    // Task completion handler
+    document.addEventListener('change', (e) => {
+      if (e.target.type === 'checkbox' && e.target.closest('.task')) {
+        const taskId = e.target.id;
+        const profile = userProgress[currentProfile];
+        
+        if (e.target.checked) {
+          if (!profile.completedTasks.includes(taskId)) {
+            profile.completedTasks.push(taskId);
+          }
+        } else {
+          const index = profile.completedTasks.indexOf(taskId);
+          if (index > -1) {
+            profile.completedTasks.splice(index, 1);
+          }
+        }
+        
+        profile.lastActivity = new Date().toISOString();
+        saveProgress();
+        updateProgressDashboard();
+      }
+    });
+
+    // Docente functions
+    function downloadResource(type) {
+      alert(`Descargando recursos para: ${type}. Esta funcionalidad se implementará próximamente.`);
+    }
+
+    function openWebinar(topic) {
+      alert(`Abriendo webinar sobre: ${topic}. Próximamente disponible.`);
+    }
+
+    function openTutorial(section) {
+      window.open('../tutoriales/index.html', '_blank');
+    }
+
+    function requestKit() {
+      alert('Solicitud de kit enviada. Te contactaremos pronto.');
+    }
+
+    function joinCommunity() {
+      alert('Redirigiendo a la comunidad de docentes...');
+    }
+
+    function scheduleCall() {
+      alert('Programando asesoría 1:1. Te enviaremos un enlace de calendario.');
+    }
+
+    // Maker functions
+    function selectTrack(track) {
+      const trackContent = {
+        iot: `
+          <h4>🌐 Track IoT & Cloud - Roadmap Avanzado</h4>
+          <div class="timeline-item">
+            <h5>Nivel 1: Conectividad Básica</h5>
+            <ul>
+              <li>ESP32 + micro:bit communication</li>
+              <li>Wi-Fi setup y configuración</li>
+              <li>Primeros datos a Firebase</li>
+              <li>Dashboard web básico</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <h5>Nivel 2: Protocolos IoT</h5>
+            <ul>
+              <li>MQTT messaging</li>
+              <li>Node-RED para automatización</li>
+              <li>APIs REST y webhooks</li>
+              <li>Almacenamiento en la nube</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <h5>Nivel 3: Ecosistema Completo</h5>
+            <ul>
+              <li>Device management</li>
+              <li>OTA updates</li>
+              <li>Edge computing</li>
+              <li>Production deployment</li>
+            </ul>
+          </div>
+        `,
+        ai: `
+          <h4>🧠 Track IA & Machine Learning - Roadmap Avanzado</h4>
+          <div class="timeline-item">
+            <h5>Nivel 1: TensorFlow.js Basics</h5>
+            <ul>
+              <li>Modelos pre-entrenados</li>
+              <li>Teachable Machine integration</li>
+              <li>Image classification</li>
+              <li>Real-time prediction</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <h5>Nivel 2: Custom Models</h5>
+            <ul>
+              <li>Transfer learning</li>
+              <li>Model training pipeline</li>
+              <li>Edge AI optimization</li>
+              <li>Coral AI deployment</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <h5>Nivel 3: Production AI</h5>
+            <ul>
+              <li>MLOps workflow</li>
+              <li>A/B testing models</li>
+              <li>Continuous learning</li>
+              <li>Distributed inference</li>
+            </ul>
+          </div>
+        `,
+        web: `
+          <h4>💻 Track Desarrollo Web - Roadmap Avanzado</h4>
+          <div class="timeline-item">
+            <h5>Nivel 1: Web APIs Modernas</h5>
+            <ul>
+              <li>Web Bluetooth mastery</li>
+              <li>WebGL para visualización</li>
+              <li>PWA development</li>
+              <li>Service Workers</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <h5>Nivel 2: Performance & Optimization</h5>
+            <ul>
+              <li>WebAssembly integration</li>
+              <li>Web Workers</li>
+              <li>IndexedDB para storage</li>
+              <li>Offline-first apps</li>
+            </ul>
+          </div>
+          <div class="timeline-item">
+            <h5>Nivel 3: Advanced Frameworks</h5>
+            <ul>
+              <li>React/Vue para interfaces</li>
+              <li>Three.js para 3D</li>
+              <li>WebRTC para comunicación</li>
+              <li>Deployment & DevOps</li>
+            </ul>
+          </div>
+        `
+      };
+      
+      document.getElementById('selected-track').innerHTML = trackContent[track];
+      document.getElementById('selected-track').style.display = 'block';
+    }
+
+    // Initialize on page load
+    window.addEventListener('load', () => {
+      // Pre-select student profile for demo
+      if (!currentProfile) {
+        selectProfile('estudiante');
+      }
+    });
+  </script>
+</body>
+</html>

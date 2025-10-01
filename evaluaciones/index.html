@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+    <title>Profe Vale - Evaluaciones</title>
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <img src="../LogoProfeVale.png" alt="Profe Vale Logo" style="width: 80px; height: 80px;">
+        <div>
+          <h1 class="header-glow" style="margin: 0;">Profe Vale</h1>
+          <p style="margin: 0; color: #e6f3ff;">Evaluaciones Interactivas</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+        <a href="../index.html" class="btn-neon" style="font-size: 0.7rem;">🏠 Inicio</a>
+        <a href="../tutoriales/index.html" class="btn-neon" style="font-size: 0.7rem;">📚 Tutoriales</a>
+        <a href="../rutas/index.html" class="btn-neon" style="font-size: 0.7rem;">🗺️ Rutas</a>
+      </div>
+    </div>
+
+    <!-- Información para Docentes -->
+    <div class="card" style="max-width: 900px; margin: 0 auto 2rem; background: rgba(255, 235, 59, 0.1); border: 2px solid #FFC107;">
+      <h3 style="color: #FFC107; margin-bottom: 1rem; text-align: center;">👩‍🏫 ¿Eres docente?</h3>
+      <p style="color: #fff; text-align: center; line-height: 1.6;">
+        Los resultados de las evaluaciones se guardan localmente en el dispositivo del estudiante. 
+        Para usar estas evaluaciones con tus estudiantes y recibir los resultados de forma centralizada, 
+        <strong style="color: #FFC107;">contáctame para explorar opciones personalizadas</strong>.
+      </p>
+      <div style="text-align: center; margin-top: 1rem;">
+        <a href="../formacion/index.html" class="btn-neon" style="background: #FFC107; color: #333;">📧 Contactar para Uso Educativo</a>
+      </div>
+    </div>
+
+    <!-- Formulario de Identificación -->
+    <div class="card" style="max-width: 600px; margin: 0 auto 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1rem; text-align: center;">📝 Antes de comenzar</h3>
+      <p style="color: #e6f3ff; text-align: center; margin-bottom: 1.5rem;">
+        Por favor, ingresa tu nombre para personalizar la evaluación
+      </p>
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <input type="text" id="studentName" placeholder="Tu nombre completo" 
+               style="flex: 1; padding: 0.75rem; border: 2px solid #fff; border-radius: 8px; font-size: 0.9rem; background: #fff; color: #1C69A8;">
+        <button onclick="setStudentName()" class="btn-neon">✅ Confirmar</button>
+      </div>
+      <div id="name-status" style="margin-top: 1rem; text-align: center; display: none;">
+        <span style="color: #4CAF50;">✅ Hola <span id="confirmed-name"></span>! Ahora puedes elegir tu evaluación.</span>
+      </div>
+    </div>
+
+    <!-- Selección de Quiz -->
+    <div class="card" id="quiz-selection" style="max-width: 900px; margin: 0 auto 2rem; display: none;">
+      <h3 style="color: #fff; margin-bottom: 1.5rem; text-align: center;">🎯 Elige tu Nivel de Evaluación</h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        <div class="quiz-card" onclick="startQuiz('principiante')" style="background: rgba(76, 175, 80, 0.1); border: 2px solid #4CAF50; padding: 1.5rem; border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.3s;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🌱</div>
+          <h4 style="color: #4CAF50; margin-bottom: 0.5rem;">Principiante</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem; margin-bottom: 1rem;">
+            Conceptos básicos de micro:bit, LEDs, botones y sensores simples.
+          </p>
+          <div style="color: #4CAF50; font-size: 0.8rem;">⏱️ 10 preguntas - 15 minutos</div>
+        </div>
+        
+        <div class="quiz-card" onclick="startQuiz('intermedio')" style="background: rgba(255, 152, 0, 0.1); border: 2px solid #FF9800; padding: 1.5rem; border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.3s;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+          <h4 style="color: #FF9800; margin-bottom: 0.5rem;">Intermedio</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem; margin-bottom: 1rem;">
+            Programación avanzada, sensores, actuadores y comunicación Bluetooth.
+          </p>
+          <div style="color: #FF9800; font-size: 0.8rem;">⏱️ 15 preguntas - 20 minutos</div>
+        </div>
+        
+        <div class="quiz-card" onclick="startQuiz('avanzado')" style="background: rgba(244, 67, 54, 0.1); border: 2px solid #F44336; padding: 1.5rem; border-radius: 12px; cursor: pointer; text-align: center; transition: all 0.3s;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+          <h4 style="color: #F44336; margin-bottom: 0.5rem;">Avanzado</h4>
+          <p style="color: #e6f3ff; font-size: 0.9rem; margin-bottom: 1rem;">
+            IA, Machine Learning, IoT y proyectos complejos con múltiples tecnologías.
+          </p>
+          <div style="color: #F44336; font-size: 0.8rem;">⏱️ 20 preguntas - 30 minutos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Área del Quiz -->
+    <div id="quiz-container" class="card" style="max-width: 800px; margin: 0 auto 2rem; display: none;">
+      <div id="quiz-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h3 id="quiz-title" style="color: #fff; margin: 0;"></h3>
+        <div style="text-align: right;">
+          <div id="question-counter" style="color: #e6f3ff; font-size: 0.9rem;"></div>
+          <div id="timer" style="color: #fff; font-weight: bold; font-size: 1.1rem;"></div>
+        </div>
+      </div>
+      
+      <div id="progress-bar" style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin-bottom: 2rem;">
+        <div id="progress-fill" style="background: #4CAF50; height: 100%; border-radius: 4px; width: 0%; transition: width 0.3s;"></div>
+      </div>
+      
+      <div id="question-content">
+        <h4 id="question-text" style="color: #fff; margin-bottom: 1.5rem; line-height: 1.4;"></h4>
+        <div id="options-container"></div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 2rem;">
+        <button id="next-btn" onclick="nextQuestion()" class="btn-neon" style="display: none;">Siguiente Pregunta</button>
+        <button id="finish-btn" onclick="finishQuiz()" class="btn-neon" style="display: none;">Finalizar Quiz</button>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div id="results-container" class="card" style="max-width: 800px; margin: 0 auto 2rem; display: none;">
+      <div style="text-align: center;">
+        <div id="result-icon" style="font-size: 4rem; margin-bottom: 1rem;"></div>
+        <h3 id="result-title" style="color: #fff; margin-bottom: 1rem;"></h3>
+        <div id="score-display" style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem;"></div>
+        <div id="result-message" style="color: #e6f3ff; margin-bottom: 2rem; line-height: 1.6;"></div>
+        
+        <div id="recommendations" style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; text-align: left;">
+          <h4 style="color: #fff; margin-bottom: 1rem;">📚 Recomendaciones para mejorar:</h4>
+          <ul id="recommendation-list" style="color: #e6f3ff; line-height: 1.6;"></ul>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <button onclick="restartQuiz()" class="btn-neon">🔄 Intentar de Nuevo</button>
+          <button onclick="backToStart()" class="btn-neon">🏠 Nueva Evaluación</button>
+          <button onclick="goToTutorials()" class="btn-neon">📖 Ver Tutoriales</button>
+          <button onclick="shareResult()" class="btn-neon">📤 Compartir Resultado</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel de Resultados para la Profesora -->
+    <div class="card" style="max-width: 1200px; margin: 0 auto 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="color: #fff; margin: 0;">👩‍🏫 Panel de Resultados - Profe Vale</h3>
+        <button onclick="toggleTeacherPanel()" class="btn-neon" id="teacher-toggle">👁️ Ver Resultados</button>
+      </div>
+      
+      <div id="teacher-panel" style="display: none;">
+        <div style="margin-bottom: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+          <button onclick="exportResults()" class="btn-neon">📊 Exportar CSV</button>
+          <button onclick="clearAllResults()" class="btn-neon" style="background: #f44336;">🗑️ Limpiar Datos</button>
+        </div>
+        
+        <div id="results-summary" style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">📈 Resumen General</h4>
+          <div id="summary-stats" style="color: #e6f3ff;"></div>
+        </div>
+        
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+          <h4 style="color: #fff; margin-bottom: 1rem;">📋 Resultados Detallados</h4>
+          <div id="detailed-results" style="max-height: 400px; overflow-y: auto;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ranking y Estadísticas -->
+    <div class="card" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1.5rem;">🏆 Ranking y Estadísticas</h3>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+        <div>
+          <h4 style="color: #fff; margin-bottom: 1rem;">📊 Tus Estadísticas</h4>
+          <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="color: #e6f3ff;">Quizzes Completados:</span>
+              <span id="completed-count" style="color: #fff; font-weight: bold;">0</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="color: #e6f3ff;">Promedio General:</span>
+              <span id="average-score" style="color: #fff; font-weight: bold;">0%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #e6f3ff;">Mejor Puntuación:</span>
+              <span id="best-score" style="color: #fff; font-weight: bold;">0%</span>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h4 style="color: #fff; margin-bottom: 1rem;">🥇 Top 5 Global</h4>
+          <div id="leaderboard" style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+            <!-- Se llena dinámicamente -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 2rem 0; border-top: 1px solid #1C69A8; margin-top: 3rem;">
+      <p style="color: #666; font-size: 0.9rem;">© 2024 Profe Vale - Sistema de Evaluación Interactivo</p>
+    </div>
+  </div>
+
+  <style>
+    .quiz-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    
+    .option-btn {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.3);
+      color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Roboto', sans-serif;
+    }
+    
+    .option-btn:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: #fff;
+    }
+    
+    .option-btn.selected {
+      background: #1C69A8;
+      border-color: #fff;
+    }
+    
+    .option-btn.correct {
+      background: #4CAF50;
+      border-color: #4CAF50;
+    }
+    
+    .option-btn.incorrect {
+      background: #F44336;
+      border-color: #F44336;
+    }
+  </style>
+
+  <script>
+    let currentQuiz = null;
+    let currentQuestion = 0;
+    let score = 0;
+    let selectedAnswer = null;
+    let studentName = '';
+
+    // Función para confirmar el nombre del estudiante
+    function setStudentName() {
+      const nameInput = document.getElementById('studentName');
+      const name = nameInput.value.trim();
+      
+      if (name.length < 2) {
+        alert('Por favor, ingresa tu nombre completo');
+        return;
+      }
+      
+      studentName = name;
+      document.getElementById('confirmed-name').textContent = name;
+      document.getElementById('name-status').style.display = 'block';
+      document.getElementById('quiz-selection').style.display = 'block';
+      
+      // Scroll suave hacia la selección de quiz
+      document.getElementById('quiz-selection').scrollIntoView({ behavior: 'smooth' });
+    }
+    let timer = null;
+    let timeLeft = 0;
+
+    const quizzes = {
+      principiante: {
+        title: "🌱 Evaluación Principiante",
+        timeLimit: 900, // 15 minutos
+        questions: [
+          {
+            question: "¿Cuál es la función principal del micro:bit?",
+            options: [
+              "Solo reproducir música",
+              "Programar y controlar dispositivos electrónicos",
+              "Navegar por internet",
+              "Editar documentos de texto"
+            ],
+            correct: 1,
+            explanation: "El micro:bit es una computadora pequeña diseñada para aprender programación y controlar dispositivos."
+          },
+          {
+            question: "¿Cómo se enciende un LED en el micro:bit?",
+            options: [
+              "Con el bloque 'mostrar LEDs'",
+              "Conectando un cable USB",
+              "Presionando el botón reset",
+              "Con comandos de voz"
+            ],
+            correct: 0,
+            explanation: "El bloque 'mostrar LEDs' permite crear patrones de luz en la matriz LED del micro:bit."
+          },
+          {
+            question: "¿Cuántos botones programables tiene el micro:bit?",
+            options: ["1", "2", "3", "4"],
+            correct: 1,
+            explanation: "El micro:bit tiene 2 botones programables: A y B, más el botón de reset."
+          }
+          // Más preguntas...
+        ]
+      },
+      intermedio: {
+        title: "⚡ Evaluación Intermedio", 
+        timeLimit: 1200,
+        questions: [
+          {
+            question: "¿Qué protocolo usa el micro:bit para comunicación inalámbrica?",
+            options: ["WiFi", "Bluetooth", "NFC", "Infrarrojo"],
+            correct: 1,
+            explanation: "El micro:bit usa Bluetooth Low Energy para comunicación inalámbrica."
+          }
+          // Más preguntas...
+        ]
+      },
+      avanzado: {
+        title: "🚀 Evaluación Avanzado",
+        timeLimit: 1800,
+        questions: [
+          {
+            question: "¿Qué es TensorFlow.js en el contexto de nuestras apps?",
+            options: [
+              "Una base de datos",
+              "Una librería de Machine Learning para navegadores", 
+              "Un editor de código",
+              "Un simulador de micro:bit"
+            ],
+            correct: 1,
+            explanation: "TensorFlow.js permite ejecutar modelos de IA directamente en el navegador."
+          }
+          // Más preguntas...
+        ]
+      }
+    };
+
+    function startQuiz(level) {
+      currentQuiz = quizzes[level];
+      currentQuestion = 0;
+      score = 0;
+      timeLeft = currentQuiz.timeLimit;
+      
+      document.querySelector('.container > *:not(#quiz-container):not(#results-container)').style.display = 'none';
+      document.getElementById('quiz-container').style.display = 'block';
+      document.getElementById('quiz-title').textContent = currentQuiz.title;
+      
+      startTimer();
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const question = currentQuiz.questions[currentQuestion];
+      const progress = ((currentQuestion + 1) / currentQuiz.questions.length) * 100;
+      
+      document.getElementById('question-counter').textContent = `Pregunta ${currentQuestion + 1} de ${currentQuiz.questions.length}`;
+      document.getElementById('progress-fill').style.width = progress + '%';
+      document.getElementById('question-text').textContent = question.question;
+      
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+      
+      question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'option-btn';
+        button.textContent = option;
+        button.onclick = () => selectOption(index);
+        optionsContainer.appendChild(button);
+      });
+      
+      selectedAnswer = null;
+      document.getElementById('next-btn').style.display = 'none';
+      document.getElementById('finish-btn').style.display = 'none';
+    }
+
+    function selectOption(index) {
+      selectedAnswer = index;
+      const buttons = document.querySelectorAll('.option-btn');
+      const question = currentQuiz.questions[currentQuestion];
+      
+      buttons.forEach((btn, i) => {
+        btn.classList.remove('selected', 'correct', 'incorrect');
+        if (i === question.correct) {
+          btn.classList.add('correct');
+        } else if (i === selectedAnswer && i !== question.correct) {
+          btn.classList.add('incorrect');
+        }
+        btn.disabled = true;
+      });
+      
+      if (selectedAnswer === question.correct) {
+        score++;
+      }
+      
+      setTimeout(() => {
+        if (currentQuestion < currentQuiz.questions.length - 1) {
+          document.getElementById('next-btn').style.display = 'inline-block';
+        } else {
+          document.getElementById('finish-btn').style.display = 'inline-block';
+        }
+      }, 1500);
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      showQuestion();
+    }
+
+    function finishQuiz() {
+      clearInterval(timer);
+      
+      // Guardar resultado con nombre del estudiante
+      const percentage = Math.round((score / currentQuiz.questions.length) * 100);
+      const result = {
+        student: studentName,
+        quiz: currentQuiz.title,
+        score: score,
+        total: currentQuiz.questions.length,
+        percentage: percentage,
+        date: new Date().toLocaleDateString('es-ES'),
+        time: new Date().toLocaleTimeString('es-ES')
+      };
+      
+      // Guardar en localStorage para que la profe pueda ver los resultados
+      let results = JSON.parse(localStorage.getItem('evaluationResults') || '[]');
+      results.push(result);
+      localStorage.setItem('evaluationResults', JSON.stringify(results));
+      
+      showResults();
+      updateStats();
+    }
+
+    function showResults() {
+      document.getElementById('quiz-container').style.display = 'none';
+      document.getElementById('results-container').style.display = 'block';
+      
+      const percentage = Math.round((score / currentQuiz.questions.length) * 100);
+      
+      // Determinar mensaje y emoji según puntuación
+      let icon, title, message, color;
+      if (percentage >= 90) {
+        icon = "🏆"; title = "¡Excelente!"; color = "#4CAF50";
+        message = "Dominas completamente el tema. ¡Felicitaciones!";
+      } else if (percentage >= 70) {
+        icon = "⭐"; title = "¡Muy bien!"; color = "#FF9800"; 
+        message = "Tienes un buen conocimiento. Sigue practicando.";
+      } else if (percentage >= 50) {
+        icon = "📚"; title = "Bien"; color = "#2196F3";
+        message = "Conocimiento básico adquirido. Revisa algunos conceptos.";
+      } else {
+        icon = "💪"; title = "Sigue practicando"; color = "#F44336";
+        message = "Necesitas repasar más. ¡No te desanimes!";
+      }
+      
+      document.getElementById('result-icon').textContent = icon;
+      document.getElementById('result-title').textContent = title;
+      document.getElementById('result-title').style.color = color;
+      document.getElementById('score-display').textContent = `${score}/${currentQuiz.questions.length} (${percentage}%)`;
+      document.getElementById('score-display').style.color = color;
+      document.getElementById('result-message').textContent = message;
+      
+      // Mostrar mensaje personalizado con el nombre
+      const personalMessage = document.createElement('div');
+      personalMessage.style.cssText = 'text-align: center; margin: 1rem 0; padding: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 8px; color: #fff;';
+      personalMessage.innerHTML = `✨ <strong>${studentName}</strong>, tu resultado se ha guardado para que la Profe Vale pueda verlo. ¡Buen trabajo! 📊`;
+      document.getElementById('result-message').parentNode.insertBefore(personalMessage, document.getElementById('result-message').nextSibling);
+      
+      // Generar recomendaciones
+      generateRecommendations(percentage);
+    }
+
+    function generateRecommendations(percentage) {
+      const recommendations = [];
+      
+      if (percentage < 50) {
+        recommendations.push("Revisa los tutoriales básicos de micro:bit");
+        recommendations.push("Practica con los proyectos de la galería");
+        recommendations.push("Consulta con Vale Bot tus dudas específicas");
+      } else if (percentage < 70) {
+        recommendations.push("Explora proyectos más avanzados en la galería");
+        recommendations.push("Prueba las apps de IA del sitio");
+        recommendations.push("Únete a los talleres online");
+      } else if (percentage < 90) {
+        recommendations.push("Experimenta con proyectos propios");
+        recommendations.push("Ayuda a otros estudiantes como mentor");
+        recommendations.push("Explora integración IoT avanzada");
+      } else {
+        recommendations.push("¡Comparte tus proyectos en la galería!");
+        recommendations.push("Considera participar en competencias");
+        recommendations.push("Explora el desarrollo de apps web");
+      }
+      
+      const list = document.getElementById('recommendation-list');
+      list.innerHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
+    }
+
+    function startTimer() {
+      timer = setInterval(() => {
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeLeft <= 0) {
+          finishQuiz();
+        }
+      }, 1000);
+    }
+
+    function updateStats() {
+      const stats = JSON.parse(localStorage.getItem('quizStats') || '{"completed": 0, "total": 0, "best": 0}');
+      const percentage = Math.round((score / currentQuiz.questions.length) * 100);
+      
+      stats.completed++;
+      stats.total += percentage;
+      stats.best = Math.max(stats.best, percentage);
+      
+      localStorage.setItem('quizStats', JSON.stringify(stats));
+      
+      document.getElementById('completed-count').textContent = stats.completed;
+      document.getElementById('average-score').textContent = Math.round(stats.total / stats.completed) + '%';
+      document.getElementById('best-score').textContent = stats.best + '%';
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById('results-container').style.display = 'none';
+      document.getElementById('quiz-container').style.display = 'block';
+      startTimer();
+      showQuestion();
+    }
+    
+    function backToStart() {
+      // Resetear todo el sistema
+      currentQuiz = null;
+      currentQuestion = 0;
+      score = 0;
+      studentName = '';
+      
+      // Ocultar secciones
+      document.getElementById('results-container').style.display = 'none';
+      document.getElementById('quiz-container').style.display = 'none';
+      document.getElementById('quiz-selection').style.display = 'none';
+      document.getElementById('name-status').style.display = 'none';
+      
+      // Limpiar formulario
+      document.getElementById('studentName').value = '';
+      
+      // Scroll al inicio
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function goToTutorials() {
+      window.location.href = '../tutoriales/index.html';
+    }
+
+    function shareResult() {
+      const percentage = Math.round((score / currentQuiz.questions.length) * 100);
+      const text = `¡Completé una evaluación en Profe Vale y obtuve ${percentage}%! 🎓 #RoboticaEducativa #ProfeVale`;
+      
+      if (navigator.share) {
+        navigator.share({title: 'Mi resultado en Profe Vale', text: text});
+      } else {
+        navigator.clipboard.writeText(text);
+        alert('Resultado copiado al portapapeles!');
+      }
+    }
+
+    // Funciones del panel de la profesora
+    function toggleTeacherPanel() {
+      const panel = document.getElementById('teacher-panel');
+      const button = document.getElementById('teacher-toggle');
+      
+      if (panel.style.display === 'none') {
+        panel.style.display = 'block';
+        button.textContent = '👁️ Ocultar Resultados';
+        loadTeacherResults();
+      } else {
+        panel.style.display = 'none';
+        button.textContent = '👁️ Ver Resultados';
+      }
+    }
+
+    function loadTeacherResults() {
+      const results = JSON.parse(localStorage.getItem('evaluationResults') || '[]');
+      
+      // Generar resumen estadístico
+      if (results.length > 0) {
+        const totalStudents = [...new Set(results.map(r => r.student))].length;
+        const totalEvaluations = results.length;
+        const averageScore = results.reduce((sum, r) => sum + r.percentage, 0) / results.length;
+        
+        document.getElementById('summary-stats').innerHTML = `
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+            <div style="text-align: center; background: rgba(28, 105, 168, 0.3); padding: 1rem; border-radius: 8px;">
+              <div style="font-size: 1.5rem; font-weight: bold;">${totalStudents}</div>
+              <div>Estudiantes</div>
+            </div>
+            <div style="text-align: center; background: rgba(28, 105, 168, 0.3); padding: 1rem; border-radius: 8px;">
+              <div style="font-size: 1.5rem; font-weight: bold;">${totalEvaluations}</div>
+              <div>Evaluaciones</div>
+            </div>
+            <div style="text-align: center; background: rgba(28, 105, 168, 0.3); padding: 1rem; border-radius: 8px;">
+              <div style="font-size: 1.5rem; font-weight: bold;">${averageScore.toFixed(1)}%</div>
+              <div>Promedio General</div>
+            </div>
+          </div>
+        `;
+      } else {
+        document.getElementById('summary-stats').innerHTML = '<p style="text-align: center; color: #fff;">No hay resultados registrados aún.</p>';
+      }
+      
+      // Mostrar resultados detallados
+      if (results.length > 0) {
+        const sortedResults = results.sort((a, b) => new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time));
+        
+        let html = '<div style="overflow-x: auto;"><table style="width: 100%; border-collapse: collapse; color: #fff;">';
+        html += '<thead><tr style="background: rgba(28, 105, 168, 0.5);"><th style="padding: 0.5rem; border: 1px solid #fff;">Estudiante</th><th style="padding: 0.5rem; border: 1px solid #fff;">Evaluación</th><th style="padding: 0.5rem; border: 1px solid #fff;">Puntaje</th><th style="padding: 0.5rem; border: 1px solid #fff;">Porcentaje</th><th style="padding: 0.5rem; border: 1px solid #fff;">Fecha</th><th style="padding: 0.5rem; border: 1px solid #fff;">Hora</th></tr></thead>';
+        html += '<tbody>';
+        
+        sortedResults.forEach(result => {
+          const rowColor = result.percentage >= 80 ? 'rgba(76, 175, 80, 0.2)' : 
+                          result.percentage >= 60 ? 'rgba(255, 152, 0, 0.2)' : 'rgba(244, 67, 54, 0.2)';
+          html += `<tr style="background: ${rowColor};">`;
+          html += `<td style="padding: 0.5rem; border: 1px solid rgba(255,255,255,0.3);">${result.student}</td>`;
+          html += `<td style="padding: 0.5rem; border: 1px solid rgba(255,255,255,0.3);">${result.quiz}</td>`;
+          html += `<td style="padding: 0.5rem; border: 1px solid rgba(255,255,255,0.3);">${result.score}/${result.total}</td>`;
+          html += `<td style="padding: 0.5rem; border: 1px solid rgba(255,255,255,0.3);"><strong>${result.percentage}%</strong></td>`;
+          html += `<td style="padding: 0.5rem; border: 1px solid rgba(255,255,255,0.3);">${result.date}</td>`;
+          html += `<td style="padding: 0.5rem; border: 1px solid rgba(255,255,255,0.3);">${result.time}</td>`;
+          html += '</tr>';
+        });
+        
+        html += '</tbody></table></div>';
+        document.getElementById('detailed-results').innerHTML = html;
+      } else {
+        document.getElementById('detailed-results').innerHTML = '<p style="text-align: center; color: #fff;">No hay resultados para mostrar.</p>';
+      }
+    }
+
+    function exportResults() {
+      const results = JSON.parse(localStorage.getItem('evaluationResults') || '[]');
+      
+      if (results.length === 0) {
+        alert('No hay resultados para exportar');
+        return;
+      }
+      
+      // Crear CSV
+      let csv = 'Estudiante,Evaluación,Puntaje,Total,Porcentaje,Fecha,Hora\n';
+      results.forEach(result => {
+        csv += `"${result.student}","${result.quiz}",${result.score},${result.total},${result.percentage}%,"${result.date}","${result.time}"\n`;
+      });
+      
+      // Descargar archivo
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `resultados_evaluaciones_${new Date().toISOString().slice(0,10)}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function clearAllResults() {
+      if (confirm('⚠️ ¿Estás segura de que quieres eliminar todos los resultados?\n\nEsta acción no se puede deshacer.')) {
+        localStorage.removeItem('evaluationResults');
+        loadTeacherResults();
+        alert('✅ Todos los resultados han sido eliminados');
+      }
+    }
+
+    // Cargar estadísticas al iniciar
+    window.addEventListener('load', () => {
+      const stats = JSON.parse(localStorage.getItem('quizStats') || '{"completed": 0, "total": 0, "best": 0}');
+      
+      if (stats.completed > 0) {
+        document.getElementById('completed-count').textContent = stats.completed;
+        document.getElementById('average-score').textContent = Math.round(stats.total / stats.completed) + '%';
+        document.getElementById('best-score').textContent = stats.best + '%';
+      }
+    });
+  </script>
+</body>
+</html>
