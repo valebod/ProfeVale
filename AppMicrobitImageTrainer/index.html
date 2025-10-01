@@ -292,5 +292,51 @@
     </style>
 
     <script src="app.js"></script>
+    
+    <!-- PWA Installation Script -->
+    <script>
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            const installSection = document.getElementById('installSection');
+            if (installSection) {
+                installSection.style.display = 'block';
+            }
+        });
+        
+        function handleInstallApp() {
+            const installBtn = document.getElementById('installBtn');
+            if (installBtn && deferredPrompt) {
+                installBtn.addEventListener('click', async () => {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    
+                    if (outcome === 'accepted') {
+                        console.log('App instalada');
+                        document.getElementById('installSection').style.display = 'none';
+                    }
+                    
+                    deferredPrompt = null;
+                });
+            }
+        }
+        
+        window.addEventListener('load', handleInstallApp);
+    </script>
+    
+    <!-- Sección de instalación PWA -->
+    <div id="installSection" style="display: none; text-align: center; margin: 2rem auto; max-width: 500px;">
+        <div class="card-glass" style="padding: 2rem; background: rgba(57, 255, 20, 0.1); border: 1px solid rgba(57, 255, 20, 0.3); box-shadow: 0 0 20px rgba(57, 255, 20, 0.1);">
+            <h4 style="margin-bottom: 1rem; color: #39ff14; font-size: 1.2rem;">📱 ¡Instala Image Trainer!</h4>
+            <p style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #e6f3ff; line-height: 1.5;">Agrega esta app a tu pantalla de inicio para entrenar IA sin navegador</p>
+            <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem; background: linear-gradient(45deg, #39ff14, #00d2ff); color: #000; font-weight: bold;">
+                📲 Instalar App
+            </button>
+        </div>
+    </div>
+    
 </body>
 </html>

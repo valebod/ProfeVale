@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profe Vale - IA y Robótica Educativa</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+  <link rel="mref="manifest.json">
   <link rel="icon" href="LogoProfeVale.png">
   <meta name="theme-color" content="#1C69A8">
   <meta name="description" content="Aprende inteligencia artificial y robótica educativa con micro:bit. Tutoriales, evaluaciones, recursos y más en español.">
@@ -495,43 +495,11 @@
       });
     }
 
-    // PWA Installation
-    let deferredPrompt;
-    
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      
-      // Mostrar botón de instalación
-      const installSection = document.getElementById('installSection');
-      if (installSection) {
-        installSection.style.display = 'block';
-      }
-    });
-    
-    function handleInstallApp() {
-      const installBtn = document.getElementById('installBtn');
-      if (installBtn && deferredPrompt) {
-        installBtn.addEventListener('click', async () => {
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          
-          if (outcome === 'accepted') {
-            console.log('App instalada');
-            document.getElementById('installSection').style.display = 'none';
-          }
-          
-          deferredPrompt = null;
-        });
-      }
-    }
-
     // Inicializar funcionalidades al cargar
     window.addEventListener('load', () => {
       loadUserProgress();
       handleContactForm();
       handleContactFormMobile();
-      handleInstallApp();
     });
 
     // Búsqueda en tiempo real

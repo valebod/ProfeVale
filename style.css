@@ -209,7 +209,29 @@ input:focus, select:focus, textarea:focus {
   
   .app-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.8rem;
+  }
+  
+  /* Optimizar tarjetas de apps en móvil */
+  .app-card {
+    padding: 1rem;
+    border-radius: 15px;
+  }
+  
+  .app-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .app-card p {
+    font-size: 0.8rem;
+    line-height: 1.3;
+    margin-bottom: 0.8rem;
+  }
+  
+  .app-card .btn-neon {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
   }
   
   .param-grid {
@@ -225,6 +247,33 @@ input:focus, select:focus, textarea:focus {
   .mobile-layout div[style*="display: flex; gap: 1rem"] {
     gap: 0.5rem !important;
     margin: 0.5rem 0 !important;
+  }
+  
+  /* Mejorar tarjetas de apps en móvil */
+  .mobile-layout .app-card {
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .mobile-layout .app-card h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .mobile-layout .app-card p {
+    font-size: 0.7rem;
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+  }
+  
+  .mobile-layout .app-card .btn-neon {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .mobile-layout .app-card > div[style*="font-size: 3rem"] {
+    font-size: 2rem !important;
+    margin-bottom: 0.5rem !important;
   }
 }
 
