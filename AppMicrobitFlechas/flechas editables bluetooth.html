@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.1">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="es"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Control Micro:bit&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let device, server, uartService, txCharacteristic;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let commands = { up: "U", down: "D", left: "L", right: "R" };</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>async function connect() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>device = await navigator.bluetooth.requestDevice({</p>
+<p class="p1"><span class="Apple-converted-space">          </span>filters: [{ namePrefix: "BBC micro:bit" }],</p>
+<p class="p1"><span class="Apple-converted-space">          </span>optionalServices: ["6e400001-b5a3-f393-e0a9-e50e24dcca9e"] // Nordic UART Service</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>server = await device.gatt.connect();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>uartService = await server.getPrimaryService("6e400001-b5a3-f393-e0a9-e50e24dcca9e");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>txCharacteristic = await uartService.getCharacteristic("6e400002-b5a3-f393-e0a9-e50e24dcca9e");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>alert("Conectado a la micro:bit");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>console.error(error);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>async function sendCommand(cmd) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!txCharacteristic) return alert("Primero conectate a la micro:bit");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let encoder = new TextEncoder();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>await txCharacteristic.writeValue(encoder.encode(cmd));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function updateCommand(dir) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const value = document.getElementById(dir+"Cmd").value;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>commands[dir] = value;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="flex flex-col items-center p-6 bg-gray-100 min-h-screen"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1 class="text-2xl font-bold mb-4"&gt;Control Bluetooth Micro:bit&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;button onclick="connect()" class="mb-6 px-4 py-2 bg-blue-500 text-white rounded"&gt;Conectar&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="grid grid-cols-3 gap-4 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="sendCommand(commands.up)" class="p-4 bg-green-400 rounded"&gt;⬆️&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="sendCommand(commands.left)" class="p-4 bg-green-400 rounded"&gt;⬅️&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="sendCommand(commands.right)" class="p-4 bg-green-400 rounded"&gt;➡️&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="sendCommand(commands.down)" class="p-4 bg-green-400 rounded"&gt;⬇️&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h2 class="text-xl font-semibold mb-2"&gt;Configuración&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="grid grid-cols-2 gap-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;label&gt;Arriba: &lt;input id="upCmd" value="U" onchange="updateCommand('up')" class="border p-1"&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;label&gt;Abajo: &lt;input id="downCmd" value="D" onchange="updateCommand('down')" class="border p-1"&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;label&gt;Izquierda: &lt;input id="leftCmd" value="L" onchange="updateCommand('left')" class="border p-1"&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;label&gt;Derecha: &lt;input id="rightCmd" value="R" onchange="updateCommand('right')" class="border p-1"&gt;&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>

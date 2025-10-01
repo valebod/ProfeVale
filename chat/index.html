@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Vale Bot - Asistente IA de Robótica</title>
+  <link rel="stylesheet" href="../style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <h1 class="header-glow">🤖 Vale Bot</h1>
+      <p style="font-size: 1.1rem; color: #06b6d4; margin-top: 1rem;">
+        Tu asistente personal para robótica educativa y micro:bit
+      </p>
+      <a href="../index.html" class="btn-neon" style="display: inline-block; margin-top: 1rem;">← Volver al inicio</a>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="ai-container" style="max-width: 900px; margin: 0 auto;">
+      <div style="max-width: 100%; margin: 0 auto;">
+        <!-- Chat container -->
+        <div id="chatContainer" class="chat-container">
+          <div class="bot-message">
+            <span class="message-label bot-label">Vale Bot</span>
+            ¡Hola! Soy tu asistente para robótica educativa. Puedo ayudarte con preguntas sobre micro:bit, programación en bloques, sensores, actuadores, y cómo usar las aplicaciones de este sitio. ¿En qué puedo ayudarte?
+          </div>
+        </div>
+        
+        <!-- Suggestions -->
+        <div class="suggestions-container">
+          <button onclick="askSuggestion('¿Cómo conecto la micro:bit por Bluetooth?')" class="suggestion-btn">Bluetooth</button>
+          <button onclick="askSuggestion('¿Qué sensores tiene la micro:bit?')" class="suggestion-btn">Sensores</button>
+          <button onclick="askSuggestion('¿Cómo funciona Teachable Machine?')" class="suggestion-btn">IA</button>
+          <button onclick="askSuggestion('Dame ideas de proyectos con micro:bit')" class="suggestion-btn">Proyectos</button>
+        </div>
+        
+        <!-- Input area -->
+        <div class="input-container">
+          <input type="text" id="chatInput" placeholder="Preguntame sobre micro:bit, robótica, sensores..." 
+                 class="chat-input" maxlength="200">
+          <button id="sendBtn" class="send-btn">
+            Enviar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips de uso -->
+    <div class="card-glass" style="max-width: 900px; margin: 2rem auto;">
+      <h3 style="color: #68d391; margin-bottom: 1rem;">💡 Tips para usar Vale Bot:</h3>
+      <ul style="list-style: none; padding: 0;">
+        <li style="margin-bottom: 0.5rem;">✅ Preguntá sobre sensores, programación, conexión Bluetooth</li>
+        <li style="margin-bottom: 0.5rem;">✅ Pedí ideas para proyectos educativos</li>
+        <li style="margin-bottom: 0.5rem;">✅ Consultá sobre el uso de las aplicaciones del sitio</li>
+        <li style="margin-bottom: 0.5rem;">✅ Solicitá ayuda con robótica y micro:bit</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Base de conocimiento sobre robótica educativa y micro:bit
+    const knowledge = {
+      "micro:bit": {
+        "sensores": "La micro:bit v2 tiene: acelerómetro, brújula, sensor de temperatura, micrófono, sensor de luz, 2 botones, 25 LEDs, y conexión por radio y Bluetooth.",
+        "bluetooth": "Para conectar por Bluetooth: 1) Cargá código con 'bluetooth.startUartService()' 2) Desde Chrome, usá Web Bluetooth API 3) Emparejá con 'BBC micro:bit'",
+        "programacion": "Podés programar la micro:bit con MakeCode (bloques o JavaScript), Python, o C++. MakeCode es ideal para comenzar.",
+        "pines": "La micro:bit tiene 25 pines: 0,1,2 son analógicos/digitales, el resto son digitales. Podés conectar LEDs, servos, sensores, etc."
+      },
+      "robotica": {
+        "seguidor_linea": "Robot seguidor: Usá 2 sensores de luz a los costados, si uno detecta la línea negra, girá hacia ese lado para mantenerse centrado.",
+        "servo": "Los servos se controlan con PWM. En MakeCode: pins.servoWritePin(). Conectá: rojo=3V, negro=GND, amarillo=pin digital.",
+        "motor": "Para motores DC usá un driver como L298N. La micro:bit no puede manejar motores grandes directamente por la corriente.",
+        "sensores": "Sensores comunes: ultrasónico (distancia), LDR (luz), PIR (movimiento), DHT22 (temperatura/humedad), potenciómetro (rotación)."
+      },
+      "apps": {
+        "teachable": "Teachable Machine: 1) Entrenás un modelo en teachablemachine.withgoogle.com 2) Copiás el link 3) La app detecta y envía la clase a micro:bit",
+        "facial": "Reconocimiento facial: Detecta cara y calcula 12 parámetros (posición, rotación, expresiones). Ideal para robots que reaccionen a emociones.",
+        "flechas": "Control de flechas: Envía comandos U/D/L/R personalizables. Perfecto para robots móviles o juegos direccionales.",
+        "bluetooth_web": "Las apps usan Web Bluetooth API, solo funcionan en Chrome/Edge. No necesitás instalar nada, se conecta directo desde el navegador."
+      },
+      "proyectos": {
+        "mascota": "Mascota virtual: Usá los botones para 'alimentar', el acelerómetro para detectar movimiento, y la matriz de LEDs para mostrar emociones.",
+        "alarma": "Sistema de alarma: Sensor PIR detecta movimiento, buzzer suena, LED parpadea, y enviás notificación por Bluetooth.",
+        "weather": "Estación meteorológica: Sensor temperatura/humedad + micro:bit para mostrar datos y enviar a app web por Bluetooth.",
+        "juegos": "Juegos: Snake (con acelerómetro), Piedra/Papel/Tijera (con botones), Dado digital (con agitar), Simon Says (LEDs y botones)."
+      }
+    };
+
+    function addMessage(text, isUser = false) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = isUser ? 'user-message' : 'bot-message';
+      
+      if (isUser) {
+        messageDiv.innerHTML = `<span class="message-label user-label">Tú</span>${text}`;
+      } else {
+        messageDiv.innerHTML = `<span class="message-label bot-label">Vale Bot</span>${text}`;
+      }
+      
+      const chatContainer = document.getElementById('chatContainer');
+      chatContainer.appendChild(messageDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function getBotResponse(question) {
+      const q = question.toLowerCase();
+      
+      // Respuestas específicas según palabras clave
+      if (q.includes('bluetooth') || q.includes('conectar')) {
+        return knowledge["micro:bit"]["bluetooth"] + "<br><br><strong>Tip:</strong> En las apps de este sitio, solo hacé click en 'Conectar micro:bit' y seleccioná tu dispositivo.";
+      }
+      
+      if (q.includes('sensor') && q.includes('micro:bit')) {
+        return knowledge["micro:bit"]["sensores"] + "<br><br><strong>Uso:</strong> En MakeCode encontrás todos estos sensores en la categoría 'Entrada'.";
+      }
+      
+      if (q.includes('seguidor') && q.includes('linea')) {
+        return knowledge.robotica["seguidor_linea"] + "<br><br><strong>Código:</strong> Usá 'pins.analogReadPin()' para leer los sensores y 'pins.servoWritePin()' para los motores.";
+      }
+      
+      if (q.includes('servo')) {
+        return knowledge.robotica["servo"] + "<br><br><strong>Atención:</strong> Los servos consumen más corriente, considerá una fuente externa para múltiples servos.";
+      }
+      
+      if (q.includes('teachable') || q.includes('ia') || q.includes('inteligencia')) {
+        return knowledge.apps["teachable"] + "<br><br><strong>Ideas:</strong> Clasificá objetos, gestos, poses, o cualquier cosa que puedas mostrar a la cámara.";
+      }
+      
+      if (q.includes('facial') || q.includes('cara')) {
+        return knowledge.apps["facial"] + "<br><br><strong>Parámetros:</strong> X, Y (posición), Z (distancia), rotación, apertura de ojos, sonrisa, etc.";
+      }
+      
+      if (q.includes('flecha') || q.includes('control') || q.includes('direccion')) {
+        return knowledge.apps["flechas"] + "<br><br><strong>Personalizable:</strong> Podés cambiar U/D/L/R por palabras completas o números.";
+      }
+      
+      if (q.includes('motor')) {
+        return knowledge.robotica["motor"] + "<br><br><strong>Importante:</strong> Siempre conectá la tierra (GND) común entre micro:bit y driver de motor.";
+      }
+      
+      if (q.includes('pin') || q.includes('conexion')) {
+        return knowledge["micro:bit"]["pines"] + "<br><br><strong>Voltajes:</strong> Pines digitales: 0V (LOW) o 3.3V (HIGH). Analógicos: 0-1023 (0V-3.3V).";
+      }
+      
+      if (q.includes('mascota') || q.includes('virtual')) {
+        return knowledge.proyectos["mascota"] + "<br><br><strong>Expansión:</strong> Agregá sonidos con un buzzer y conectividad con la app de reconocimiento facial.";
+      }
+      
+      if (q.includes('alarma')) {
+        return knowledge.proyectos["alarma"] + "<br><br><strong>Mejora:</strong> Combinalo con la app de flechas para desactivar remotamente.";
+      }
+      
+      if (q.includes('juego') || q.includes('snake') || q.includes('simon')) {
+        return knowledge.proyectos["juegos"] + "<br><br><strong>Tip:</strong> Combiná con las apps web para controles más avanzados.";
+      }
+      
+      if (q.includes('web') || q.includes('navegador')) {
+        return knowledge.apps["bluetooth_web"] + "<br><br><strong>Ventaja:</strong> No necesitás instalar apps, funciona directo desde cualquier dispositivo con Chrome.";
+      }
+      
+      if (q.includes('programa') || q.includes('codigo') || q.includes('makecode')) {
+        return knowledge["micro:bit"]["programacion"] + "<br><br><strong>Recurso:</strong> microbit.org tiene tutoriales excelentes para empezar.";
+      }
+      
+      if (q.includes('clima') || q.includes('weather') || q.includes('temperatura')) {
+        return knowledge.proyectos["weather"] + "<br><br><strong>App:</strong> Usá la app de reconocimiento facial para mostrar datos cuando detecte una cara.";
+      }
+      
+      // Respuestas generales
+      if (q.includes('hola') || q.includes('help') || q.includes('ayuda')) {
+        return "¡Hola! Estoy acá para ayudarte con micro:bit y robótica educativa. Puedo explicarte sobre sensores, programación, proyectos, y cómo usar las apps de este sitio. ¿Qué te interesa aprender?";
+      }
+      
+      if (q.includes('gracias') || q.includes('thanks')) {
+        return "¡De nada! Me encanta ayudar con proyectos de robótica. Si tenés más preguntas sobre micro:bit, sensores, o cualquier proyecto, preguntame sin dudas. ¡A seguir creando!";
+      }
+      
+      // Respuesta por defecto
+      return "Interesante pregunta. Mi especialidad es micro:bit, robótica educativa, sensores, programación en bloques, y las aplicaciones de este sitio.<br><br>Podés preguntarme sobre:<br>• Conexión Bluetooth y sensores de micro:bit<br>• Proyectos con servos y motores<br>• Cómo usar las apps de Teachable Machine, reconocimiento facial y control de flechas<br>• Ideas de proyectos educativos<br><br>¡Reformulá tu pregunta y te ayudo!";
+    }
+
+    function sendMessage() {
+      const chatInput = document.getElementById('chatInput');
+      const sendBtn = document.getElementById('sendBtn');
+      const message = chatInput.value.trim();
+      if (!message) return;
+      
+      addMessage(message, true);
+      chatInput.value = '';
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'Procesando...';
+      
+      // Simular tiempo de procesamiento
+      setTimeout(() => {
+        const response = getBotResponse(message);
+        addMessage(response);
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Enviar';
+        chatInput.focus();
+      }, Math.random() * 1000 + 500);
+    }
+
+    function askSuggestion(question) {
+      document.getElementById('chatInput').value = question;
+      sendMessage();
+    }
+
+    // Event listeners para el chat
+    document.getElementById('sendBtn').addEventListener('click', sendMessage);
+    document.getElementById('chatInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+</body>
+</html>

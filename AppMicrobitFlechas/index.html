@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de Flechas - Profe Vale</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .control-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 0.5rem;
+      max-width: 300px;
+      margin: 0 auto;
+      aspect-ratio: 1;
+    }
+    
+    .control-btn {
+      background: transparent;
+      color: #39ff14;
+      border: 3px solid #39ff14;
+      border-radius: 16px;
+      font-size: 2rem;
+      font-weight: bold;
+      padding: 1rem;
+      box-shadow: 0 0 12px #39ff14, 0 0 24px #00d2ff;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 80px;
+    }
+    
+    .control-btn:hover, .control-btn:active {
+      background: rgba(57,255,20,0.2);
+      box-shadow: 0 0 24px #39ff14, 0 0 48px #00d2ff;
+      transform: scale(1.05);
+    }
+    
+    .control-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 32px #39ff14, 0 0 64px #00d2ff;
+    }
+    
+    .control-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .config-input {
+      background: rgba(44,62,80,0.8);
+      border: 2px solid #00d2ff;
+      border-radius: 8px;
+      padding: 0.7rem;
+      color: #e0e0e0;
+      font-size: 1rem;
+      text-align: center;
+      font-weight: bold;
+      width: 100%;
+    }
+    
+    .config-input:focus {
+      outline: none;
+      border-color: #39ff14;
+      box-shadow: 0 0 12px #39ff14;
+    }
+    
+    .config-label {
+      color: #00d2ff;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      display: block;
+    }
+    
+    .status-indicator {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .status-disconnected {
+      background: rgba(255,46,99,0.2);
+      border: 2px solid #ff2e63;
+      color: #ff2e63;
+    }
+    
+    .status-connected {
+      background: rgba(57,255,20,0.2);
+      border: 2px solid #39ff14;
+      color: #39ff14;
+    }
+    
+    .feedback-display {
+      background: rgba(0,210,255,0.1);
+      border: 2px solid #00d2ff;
+      border-radius: 12px;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    
+    @media (max-width: 600px) {
+      .control-grid { max-width: 250px; }
+      .control-btn { font-size: 1.5rem; min-height: 60px; }
+      .container { padding: 1rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="header-glow">🎮 Control de Flechas Bluetooth</h1>
+    
+    <div style="max-width: 800px; margin: 0 auto;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+        
+        <!-- Panel de control -->
+        <div class="card-glass">
+          <h2 style="text-align: center; margin-bottom: 1.5rem;">🕹️ Controles</h2>
+          
+          <!-- Estado de conexión -->
+          <div id="connectionStatus" class="status-indicator status-disconnected">
+            Desconectado
+          </div>
+          
+          <!-- Botón de conexión -->
+          <button id="connectBtn" class="btn-neon" style="width: 100%; margin-bottom: 1.5rem;">
+            📡 Conectar micro:bit
+          </button>
+          
+          <!-- Grid de controles -->
+          <div class="control-grid">
+            <div></div>
+            <button id="upBtn" class="control-btn" disabled>⬆️</button>
+            <div></div>
+            <button id="leftBtn" class="control-btn" disabled>⬅️</button>
+            <div style="display: flex; align-items: center; justify-content: center; color: #39ff14; font-size: 1.5rem;">🎯</div>
+            <button id="rightBtn" class="control-btn" disabled>➡️</button>
+            <div></div>
+            <button id="downBtn" class="control-btn" disabled>⬇️</button>
+            <div></div>
+          </div>
+          
+          <!-- Feedback -->
+          <div style="margin-top: 1.5rem;">
+            <h3 style="color: #00d2ff; text-align: center; margin-bottom: 0.5rem;">Último comando enviado:</h3>
+            <div id="lastCommand" class="feedback-display">
+              Ninguno
+            </div>
+          </div>
+        </div>
+        
+        <!-- Panel de configuración -->
+        <div class="card-glass">
+          <h2 style="text-align: center; margin-bottom: 1.5rem;">⚙️ Configuración</h2>
+          
+          <p style="text-align: center; color: #b0b0b0; margin-bottom: 1.5rem; font-size: 0.9rem;">
+            Personalizá los comandos que se envían a la micro:bit
+          </p>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div>
+              <label class="config-label">⬆️ Arriba</label>
+              <input id="upCmd" class="config-input" value="U" maxlength="5">
+            </div>
+            <div>
+              <label class="config-label">⬇️ Abajo</label>
+              <input id="downCmd" class="config-input" value="D" maxlength="5">
+            </div>
+            <div>
+              <label class="config-label">⬅️ Izquierda</label>
+              <input id="leftCmd" class="config-input" value="L" maxlength="5">
+            </div>
+            <div>
+              <label class="config-label">➡️ Derecha</label>
+              <input id="rightCmd" class="config-input" value="R" maxlength="5">
+            </div>
+          </div>
+          
+          <!-- Estadísticas -->
+          <div class="panel-neon" style="padding: 1rem; margin-bottom: 1rem;">
+            <h3 style="color: #39ff14; text-align: center; margin-bottom: 0.8rem;">📊 Estadísticas</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
+              <div>
+                <div style="color: #00d2ff; font-size: 0.9rem;">Comandos enviados</div>
+                <div id="commandCount" style="font-size: 1.8rem; font-weight: bold; color: #39ff14;">0</div>
+              </div>
+              <div>
+                <div style="color: #00d2ff; font-size: 0.9rem;">Tiempo conectado</div>
+                <div id="connectionTime" style="font-size: 1.8rem; font-weight: bold; color: #39ff14;">00:00</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Botones de acción -->
+          <button id="testBtn" class="btn-neon" style="width: 100%; margin-bottom: 0.5rem;" disabled>
+            🧪 Probar Conexión
+          </button>
+          <button id="resetBtn" class="btn-neon" style="width: 100%;">
+            🔄 Restaurar Comandos
+          </button>
+        </div>
+      </div>
+      
+      <!-- Instrucciones detalladas -->
+      <div class="card-glass" style="margin-top: 2rem;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">📚 Guía Completa - Control de Flechas</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+          <div>
+            <h3 style="color: #39ff14; margin-bottom: 1rem;">🎯 ¿Para qué sirve?</h3>
+            <ul style="line-height: 1.6; color: #e0e0e0;">
+              <li><strong>Controlar robots</strong> con movimientos direccionales</li>
+              <li><strong>Juegos interactivos</strong> donde la micro:bit responde a comandos</li>
+              <li><strong>Proyectos IoT</strong> que necesiten control remoto</li>
+              <li><strong>Prototipos</strong> de sistemas de navegación</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 style="color: #39ff14; margin-bottom: 1rem;">🔧 Cómo personalizar</h3>
+            <ul style="line-height: 1.6; color: #e0e0e0;">
+              <li><strong>Cambiar comandos</strong> en los campos de configuración</li>
+              <li><strong>Usar palabras completas</strong> como "ADELANTE", "ATRAS"</li>
+              <li><strong>Números</strong> para velocidades: "1", "2", "3"</li>
+              <li><strong>Botón reset</strong> restaura valores por defecto</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div style="background: rgba(57,255,20,0.1); border-radius: 12px; padding: 1.5rem; border-left: 4px solid #39ff14; margin-bottom: 2rem;">
+          <h3 style="color: #39ff14; margin-bottom: 1rem;">🚀 Ideas de proyectos</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+            <div>
+              <strong style="color: #00d2ff;">🤖 Robot caminante</strong><br>
+              Usar flechas para controlar servos de las piernas
+            </div>
+            <div>
+              <strong style="color: #00d2ff;">🚗 Auto RC</strong><br>
+              Controlar motores para adelante, atrás, izquierda, derecha  
+            </div>
+            <div>
+              <strong style="color: #00d2ff;">🎮 Juego Snake</strong><br>
+              Mover la serpiente en la matriz de LEDs de la micro:bit
+            </div>
+            <div>
+              <strong style="color: #00d2ff;">💡 Control de luces</strong><br>
+              Encender LEDs o tiras de colores según la dirección
+            </div>
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+          <div>
+            <h3 style="color: #39ff14; margin-bottom: 1rem;">⌨️ Controles disponibles</h3>
+            <ul style="line-height: 1.8; color: #e0e0e0;">
+              <li><strong>Botones en pantalla</strong> - Hacé click en las flechas</li>
+              <li><strong>Flechas del teclado</strong> - ⬆️⬇️⬅️➡️</li>
+              <li><strong>Teclas WASD</strong> - W(arriba), S(abajo), A(izquierda), D(derecha)</li>
+              <li><strong>Funciona en móvil</strong> - Solo toca los botones</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 style="color: #39ff14; margin-bottom: 1rem;">📊 Estadísticas útiles</h3>
+            <ul style="line-height: 1.8; color: #e0e0e0;">
+              <li><strong>Comandos enviados</strong> - Contador total</li>
+              <li><strong>Tiempo conectado</strong> - Duración de la sesión</li>
+              <li><strong>Último comando</strong> - Para debug y verificación</li>
+              <li><strong>Estado de conexión</strong> - Visual claro del estado</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div style="background: rgba(0,210,255,0.1); border-radius: 12px; padding: 1.5rem; border-left: 4px solid #00d2ff;">
+          <h3 style="color: #00d2ff; margin-bottom: 1rem;">💡 Consejos de uso</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div>
+              ✅ <strong>Usar comandos cortos</strong> para mejor rendimiento
+            </div>
+            <div>
+              ✅ <strong>Probar conexión</strong> con el botón de test
+            </div>
+            <div>
+              ✅ <strong>Verificar la micro:bit</strong> recibe datos correctamente
+            </div>
+            <div>
+              ✅ <strong>Personalizar comandos</strong> según tu código
+            </div>
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(57,255,20,0.2);">
+          <p style="color: #b0b0b0; font-size: 0.9rem;">
+            <strong>¿No funciona?</strong> Revisá que la micro:bit tenga el código Bluetooth cargado y esté encendida
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Variables globales
+    let device = null;
+    let server = null;
+    let uartService = null;
+    let txCharacteristic = null;
+    let isConnected = false;
+    let commandCounter = 0;
+    let connectionStartTime = null;
+    let timeInterval = null;
+    
+    // Comandos por defecto
+    let commands = {
+      up: "U",
+      down: "D", 
+      left: "L",
+      right: "R"
+    };
+    
+    // Elementos del DOM
+    const connectBtn = document.getElementById('connectBtn');
+    const connectionStatus = document.getElementById('connectionStatus');
+    const lastCommand = document.getElementById('lastCommand');
+    const commandCount = document.getElementById('commandCount');
+    const connectionTime = document.getElementById('connectionTime');
+    const testBtn = document.getElementById('testBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    
+    // Botones de control
+    const upBtn = document.getElementById('upBtn');
+    const downBtn = document.getElementById('downBtn');
+    const leftBtn = document.getElementById('leftBtn');
+    const rightBtn = document.getElementById('rightBtn');
+    
+    // Inputs de configuración
+    const upCmd = document.getElementById('upCmd');
+    const downCmd = document.getElementById('downCmd');
+    const leftCmd = document.getElementById('leftCmd');
+    const rightCmd = document.getElementById('rightCmd');
+    
+    // Event listeners
+    connectBtn.addEventListener('click', toggleConnection);
+    testBtn.addEventListener('click', testConnection);
+    resetBtn.addEventListener('click', resetCommands);
+    
+    // Controles direccionales
+    upBtn.addEventListener('click', () => sendCommand('up'));
+    downBtn.addEventListener('click', () => sendCommand('down'));
+    leftBtn.addEventListener('click', () => sendCommand('left'));
+    rightBtn.addEventListener('click', () => sendCommand('right'));
+    
+    // Actualizar comandos cuando cambian los inputs
+    upCmd.addEventListener('input', () => updateCommand('up', upCmd.value));
+    downCmd.addEventListener('input', () => updateCommand('down', downCmd.value));
+    leftCmd.addEventListener('input', () => updateCommand('left', leftCmd.value));
+    rightCmd.addEventListener('input', () => updateCommand('right', rightCmd.value));
+    
+    // Conectar/Desconectar
+    async function toggleConnection() {
+      if (isConnected) {
+        await disconnect();
+      } else {
+        await connect();
+      }
+    }
+    
+    // Conectar a micro:bit
+    async function connect() {
+      updateStatus('Buscando micro:bit...', 'disconnected');
+      connectBtn.disabled = true;
+      
+      try {
+        device = await navigator.bluetooth.requestDevice({
+          filters: [{ namePrefix: "BBC micro:bit" }],
+          optionalServices: ["6e400001-b5a3-f393-e0a9-e50e24dcca9e"]
+        });
+        
+        device.addEventListener('gattserverdisconnected', onDisconnected);
+        
+        server = await device.gatt.connect();
+        uartService = await server.getPrimaryService("6e400001-b5a3-f393-e0a9-e50e24dcca9e");
+        txCharacteristic = await uartService.getCharacteristic("6e400002-b5a3-f393-e0a9-e50e24dcca9e");
+        
+        isConnected = true;
+        connectionStartTime = Date.now();
+        startConnectionTimer();
+        
+        updateStatus('¡Conectado a micro:bit!', 'connected');
+        connectBtn.textContent = '❌ Desconectar';
+        enableControls(true);
+        
+      } catch (error) {
+        console.error('Error conectando:', error);
+        updateStatus('Error de conexión', 'disconnected');
+      } finally {
+        connectBtn.disabled = false;
+      }
+    }
+    
+    // Desconectar
+    async function disconnect() {
+      if (device && device.gatt.connected) {
+        await device.gatt.disconnect();
+      }
+      onDisconnected();
+    }
+    
+    // Manejar desconexión
+    function onDisconnected() {
+      isConnected = false;
+      connectionStartTime = null;
+      if (timeInterval) {
+        clearInterval(timeInterval);
+        timeInterval = null;
+      }
+      
+      updateStatus('Desconectado', 'disconnected');
+      connectBtn.textContent = '📡 Conectar micro:bit';
+      enableControls(false);
+      connectionTime.textContent = '00:00';
+    }
+    
+    // Enviar comando
+    async function sendCommand(direction) {
+      if (!txCharacteristic || !isConnected) {
+        lastCommand.textContent = 'Error: No conectado';
+        return;
+      }
+      
+      const cmd = commands[direction];
+      
+      try {
+        const encoder = new TextEncoder();
+        await txCharacteristic.writeValue(encoder.encode(cmd));
+        
+        commandCounter++;
+        commandCount.textContent = commandCounter;
+        lastCommand.textContent = `${getDirectionEmoji(direction)} ${cmd}`;
+        
+        // Feedback visual
+        const btn = document.getElementById(direction + 'Btn');
+        btn.classList.add('feedback-pulse');
+        setTimeout(() => btn.classList.remove('feedback-pulse'), 500);
+        
+      } catch (error) {
+        console.error('Error enviando comando:', error);
+        lastCommand.textContent = 'Error enviando';
+      }
+    }
+    
+    // Probar conexión
+    async function testConnection() {
+      if (!isConnected) return;
+      
+      const testCmd = "TEST";
+      try {
+        const encoder = new TextEncoder();
+        await txCharacteristic.writeValue(encoder.encode(testCmd));
+        lastCommand.textContent = `🧪 ${testCmd}`;
+        
+        // Feedback visual
+        testBtn.classList.add('feedback-pulse');
+        setTimeout(() => testBtn.classList.remove('feedback-pulse'), 500);
+        
+      } catch (error) {
+        lastCommand.textContent = 'Error en test';
+      }
+    }
+    
+    // Actualizar comando
+    function updateCommand(direction, value) {
+      commands[direction] = value.toUpperCase();
+    }
+    
+    // Restaurar comandos por defecto
+    function resetCommands() {
+      commands = { up: "U", down: "D", left: "L", right: "R" };
+      upCmd.value = "U";
+      downCmd.value = "D";
+      leftCmd.value = "L";
+      rightCmd.value = "R";
+      
+      lastCommand.textContent = 'Comandos restaurados';
+      
+      // Feedback visual
+      resetBtn.classList.add('feedback-pulse');
+      setTimeout(() => resetBtn.classList.remove('feedback-pulse'), 500);
+    }
+    
+    // Actualizar estado de conexión
+    function updateStatus(text, status) {
+      connectionStatus.textContent = text;
+      connectionStatus.className = `status-indicator status-${status}`;
+    }
+    
+    // Habilitar/deshabilitar controles
+    function enableControls(enabled) {
+      upBtn.disabled = !enabled;
+      downBtn.disabled = !enabled;
+      leftBtn.disabled = !enabled;
+      rightBtn.disabled = !enabled;
+      testBtn.disabled = !enabled;
+    }
+    
+    // Obtener emoji de dirección
+    function getDirectionEmoji(direction) {
+      const emojis = { up: '⬆️', down: '⬇️', left: '⬅️', right: '➡️' };
+      return emojis[direction] || '❓';
+    }
+    
+    // Timer de conexión
+    function startConnectionTimer() {
+      timeInterval = setInterval(() => {
+        if (connectionStartTime) {
+          const elapsed = Math.floor((Date.now() - connectionStartTime) / 1000);
+          const minutes = Math.floor(elapsed / 60);
+          const seconds = elapsed % 60;
+          connectionTime.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+      }, 1000);
+    }
+    
+    // Soporte para teclas (opcional)
+    document.addEventListener('keydown', (e) => {
+      if (!isConnected) return;
+      
+      switch(e.key) {
+        case 'ArrowUp':
+        case 'w':
+        case 'W':
+          e.preventDefault();
+          sendCommand('up');
+          break;
+        case 'ArrowDown':
+        case 's':
+        case 'S':
+          e.preventDefault();
+          sendCommand('down');
+          break;
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+          e.preventDefault();
+          sendCommand('left');
+          break;
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+          e.preventDefault();
+          sendCommand('right');
+          break;
+      }
+    });
+    
+  </script>
+</body>
+</html>

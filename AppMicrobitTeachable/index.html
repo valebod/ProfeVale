@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teachable Machine + micro:bit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .webcam-container {
+      position: relative;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    
+    #webcam {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 0 24px #00d2ff;
+    }
+    
+    #overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      pointer-events: none;
+    }
+    
+    .model-input {
+      background: rgba(44,62,80,0.8);
+      border: 2px solid #39ff14;
+      border-radius: 8px;
+      padding: 0.7rem;
+      color: #e0e0e0;
+      font-size: 1rem;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    
+    .model-input:focus {
+      outline: none;
+      box-shadow: 0 0 12px #39ff14;
+    }
+    
+    .status-badge {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    .status-disconnected {
+      background: rgba(255,46,99,0.2);
+      border: 2px solid #ff2e63;
+      color: #ff2e63;
+    }
+    
+    .status-connected {
+      background: rgba(57,255,20,0.2);
+      border: 2px solid #39ff14;
+      color: #39ff14;
+    }
+    
+    .prediction-display {
+      background: rgba(0,210,255,0.1);
+      border: 2px solid #00d2ff;
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    .prediction-class {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00d2ff;
+      text-shadow: 0 0 8px #00d2ff;
+    }
+    
+    .prediction-confidence {
+      font-size: 1rem;
+      color: #e0e0e0;
+      margin-top: 0.5rem;
+    }
+    
+    .help-text {
+      font-size: 0.9rem;
+      color: #b0b0b0;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    
+    @media (max-width: 700px) {
+      .container { padding: 1rem 0.5rem; }
+      .card-glass { padding: 0.8rem; }
+      .model-input { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="header-glow">🤖 Teachable Machine + micro:bit</h1>
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+      <!-- Panel de configuración -->
+      <div style="flex: 1; min-width: 320px; max-width: 500px;">
+        <div class="card-glass">
+          <h2>📝 Configuración del Modelo</h2>
+          <p class="help-text">
+            Pegá acá el link de tu modelo de Teachable Machine. Debe ser el link que termina con tu ID de proyecto.
+          </p>
+          <input 
+            type="url" 
+            id="modelUrl" 
+            class="model-input"
+            placeholder="https://storage.googleapis.com/tm-model/tu-proyecto-id/"
+            value="">
+          <button id="loadModelBtn" class="btn-neon" style="width: 100%;">🔄 Cargar Modelo</button>
+          <div id="modelStatus" class="status-badge status-disconnected">Modelo no cargado</div>
+        </div>
+        
+        <div class="card-glass">
+          <h2>📡 Conexión micro:bit</h2>
+          <p class="help-text">
+            Conectá tu micro:bit por Bluetooth. Asegurate de que tenga el código que recibe datos por UART.
+          </p>
+          <button id="connectBtn" class="btn-neon" style="width: 100%; margin-bottom: 0.5rem;">🔗 Conectar micro:bit</button>
+          <button id="disconnectBtn" class="btn-neon" style="width: 100%;" disabled>❌ Desconectar</button>
+          <div id="btStatus" class="status-badge status-disconnected">Desconectado</div>
+        </div>
+        
+        <div class="card-glass">
+          <h2>📊 Estadísticas</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
+            <div>
+              <div style="color: #39ff14; font-weight: bold;">Predicciones</div>
+              <div id="predictionCount" style="font-size: 1.5rem;">0</div>
+            </div>
+            <div>
+              <div style="color: #00d2ff; font-weight: bold;">Enviados</div>
+              <div id="sentCount" style="font-size: 1.5rem;">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Panel de cámara y predicciones -->
+      <div style="flex: 1; min-width: 320px; max-width: 500px;">
+        <div class="card-glass">
+          <h2>📹 Cámara y Predicciones</h2>
+          <div class="webcam-container">
+            <video id="webcam" autoplay playsinline muted></video>
+            <canvas id="overlay"></canvas>
+          </div>
+          <button id="toggleCameraBtn" class="btn-neon" style="width: 100%; margin-top: 1rem;">🔄 Cambiar Cámara</button>
+        </div>
+        
+        <div class="card-glass">
+          <h2>🎯 Predicción Actual</h2>
+          <div class="prediction-display">
+            <div id="prediction" class="prediction-class">Sin predicción</div>
+            <div id="confidence" class="prediction-confidence">Cargá un modelo y conectá la cámara</div>
+          </div>
+          <div style="font-size: 0.9rem; color: #b0b0b0;">
+            <strong>Última clase enviada:</strong> <span id="lastSent">Ninguna</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card-glass" style="max-width: 1000px; margin: 2rem auto 0;">
+      <h2>ℹ️ Instrucciones</h2>
+      <ol style="line-height: 1.6;">
+        <li><strong>Entrená tu modelo:</strong> Andá a <a href="https://teachablemachine.withgoogle.com/" target="_blank" style="color: #39ff14;">teachablemachine.withgoogle.com</a> y creá un modelo de imagen.</li>
+        <li><strong>Exportá el modelo:</strong> Cuando termines de entrenar, clickeá "Export Model" y copiá el link.</li>
+        <li><strong>Pegá el link:</strong> Pegá el link en el campo de arriba y clickeá "Cargar Modelo".</li>
+        <li><strong>Conectá la micro:bit:</strong> Asegurate de que tu micro:bit tenga código para recibir datos por Bluetooth.</li>
+        <li><strong>¡Experimentá!:</strong> Mostrá objetos/gestos a la cámara y mirá cómo se envían las predicciones a la micro:bit.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  
+  <script>
+    // Variables globales
+    let model = null;
+    let webcam = null;
+    let ctx = null;
+    let overlay = null;
+    let maxPredictions = 0;
+    let isLooping = false;
+    let cameraFacing = 'environment'; // 'user' para frontal, 'environment' para trasera
+    
+    // Bluetooth variables
+    let btDevice = null;
+    let btServer = null;
+    let uartService = null;
+    let txChar = null;
+    let isBtConnected = false;
+    
+    // Contadores
+    let predictionCounter = 0;
+    let sentCounter = 0;
+    let lastSentClass = '';
+    
+    // Elementos del DOM
+    const modelUrlInput = document.getElementById('modelUrl');
+    const loadModelBtn = document.getElementById('loadModelBtn');
+    const modelStatus = document.getElementById('modelStatus');
+    const connectBtn = document.getElementById('connectBtn');
+    const disconnectBtn = document.getElementById('disconnectBtn');
+    const btStatus = document.getElementById('btStatus');
+    const webcamElement = document.getElementById('webcam');
+    const toggleCameraBtn = document.getElementById('toggleCameraBtn');
+    const predictionElement = document.getElementById('prediction');
+    const confidenceElement = document.getElementById('confidence');
+    const lastSentElement = document.getElementById('lastSent');
+    const predictionCountElement = document.getElementById('predictionCount');
+    const sentCountElement = document.getElementById('sentCount');
+    
+    // Inicialización
+    overlay = document.getElementById('overlay');
+    ctx = overlay.getContext('2d');
+    
+    // Cargar modelo de Teachable Machine
+    loadModelBtn.onclick = async () => {
+      const url = modelUrlInput.value.trim();
+      
+      if (!url) {
+        updateModelStatus('Ingresá un URL válido', 'disconnected');
+        return;
+      }
+      
+      // Validar URL básico
+      if (!url.includes('teachablemachine') && !url.includes('storage.googleapis.com')) {
+        updateModelStatus('URL debe ser de Teachable Machine', 'disconnected');
+        return;
+      }
+      
+      updateModelStatus('Cargando modelo...', 'disconnected');
+      loadModelBtn.disabled = true;
+      
+      try {
+        // Asegurar que termine con /
+        const modelURL = url.endsWith('/') ? url : url + '/';
+        
+        model = await tmImage.load(modelURL + 'model.json', modelURL + 'metadata.json');
+        maxPredictions = model.getTotalClasses();
+        
+        updateModelStatus(`Modelo cargado (${maxPredictions} clases)`, 'connected');
+        await startWebcam();
+        
+      } catch (error) {
+        console.error('Error cargando modelo:', error);
+        updateModelStatus('Error: Verificá el URL del modelo', 'disconnected');
+      } finally {
+        loadModelBtn.disabled = false;
+      }
+    };
+    
+    // Iniciar webcam
+    async function startWebcam() {
+      try {
+        // Detener webcam anterior si existe
+        if (webcam) {
+          webcam.stop();
+        }
+        
+        const constraints = {
+          video: { 
+            facingMode: cameraFacing,
+            width: { ideal: 480 },
+            height: { ideal: 360 }
+          }
+        };
+        
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        webcamElement.srcObject = stream;
+        
+        webcamElement.onloadedmetadata = () => {
+          overlay.width = webcamElement.videoWidth;
+          overlay.height = webcamElement.videoHeight;
+          
+          if (!isLooping && model) {
+            isLooping = true;
+            predictionLoop();
+          }
+        };
+        
+      } catch (error) {
+        console.error('Error accediendo a la cámara:', error);
+        updatePrediction('Error de cámara', 'Verificá permisos');
+      }
+    }
+    
+    // Cambiar cámara
+    toggleCameraBtn.onclick = async () => {
+      cameraFacing = cameraFacing === 'user' ? 'environment' : 'user';
+      if (model) {
+        await startWebcam();
+      }
+    };
+    
+    // Loop de predicciones
+    async function predictionLoop() {
+      if (!model || !webcamElement.videoWidth) {
+        isLooping = false;
+        return;
+      }
+      
+      try {
+        // Hacer predicción
+        const prediction = await model.predict(webcamElement);
+        
+        // Encontrar la clase con mayor confianza
+        let bestPrediction = prediction[0];
+        for (let i = 1; i < prediction.length; i++) {
+          if (prediction[i].probability > bestPrediction.probability) {
+            bestPrediction = prediction[i];
+          }
+        }
+        
+        predictionCounter++;
+        predictionCountElement.textContent = predictionCounter;
+        
+        // Actualizar UI
+        const confidence = (bestPrediction.probability * 100).toFixed(1);
+        updatePrediction(bestPrediction.className, `${confidence}%`);
+        
+        // Enviar a micro:bit si la confianza es alta y es diferente a la anterior
+        if (isBtConnected && bestPrediction.probability > 0.75 && bestPrediction.className !== lastSentClass) {
+          await sendToMicrobit(bestPrediction.className);
+          lastSentClass = bestPrediction.className;
+          sentCounter++;
+          sentCountElement.textContent = sentCounter;
+          lastSentElement.textContent = bestPrediction.className;
+        }
+        
+        // Dibujar overlay
+        drawOverlay(bestPrediction, confidence);
+        
+      } catch (error) {
+        console.error('Error en predicción:', error);
+      }
+      
+      if (isLooping) {
+        requestAnimationFrame(predictionLoop);
+      }
+    }
+    
+    // Dibujar overlay en canvas
+    function drawOverlay(prediction, confidence) {
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+      
+      // Configurar estilo
+      ctx.font = '24px Montserrat';
+      ctx.fillStyle = 'rgba(57,255,20,0.9)';
+      ctx.strokeStyle = '#232946';
+      ctx.lineWidth = 2;
+      
+      // Texto de predicción
+      const text = `${prediction.className}: ${confidence}%`;
+      const metrics = ctx.measureText(text);
+      const x = 10;
+      const y = 35;
+      
+      // Fondo del texto
+      ctx.fillStyle = 'rgba(35,41,70,0.8)';
+      ctx.fillRect(x - 5, y - 25, metrics.width + 10, 35);
+      
+      // Texto
+      ctx.fillStyle = '#39ff14';
+      ctx.fillText(text, x, y);
+    }
+    
+    // Conexión Bluetooth
+    connectBtn.onclick = async () => {
+      updateBtStatus('Buscando micro:bit...', 'disconnected');
+      
+      try {
+        btDevice = await navigator.bluetooth.requestDevice({
+          filters: [{ namePrefix: 'BBC micro:bit' }],
+          optionalServices: ['6e400001-b5a3-f393-e0a9-e50e24dcca9e']
+        });
+        
+        btDevice.addEventListener('gattserverdisconnected', onBtDisconnected);
+        
+        btServer = await btDevice.gatt.connect();
+        uartService = await btServer.getPrimaryService('6e400001-b5a3-f393-e0a9-e50e24dcca9e');
+        txChar = await uartService.getCharacteristic('6e400002-b5a3-f393-e0a9-e50e24dcca9e');
+        
+        isBtConnected = true;
+        updateBtStatus('¡micro:bit conectado!', 'connected');
+        connectBtn.disabled = true;
+        disconnectBtn.disabled = false;
+        
+      } catch (error) {
+        console.error('Error conectando Bluetooth:', error);
+        updateBtStatus('Error de conexión', 'disconnected');
+      }
+    };
+    
+    // Desconectar Bluetooth
+    disconnectBtn.onclick = async () => {
+      if (btDevice && btDevice.gatt.connected) {
+        await btDevice.gatt.disconnect();
+      }
+      onBtDisconnected();
+    };
+    
+    // Manejar desconexión
+    function onBtDisconnected() {
+      isBtConnected = false;
+      updateBtStatus('Desconectado', 'disconnected');
+      connectBtn.disabled = false;
+      disconnectBtn.disabled = true;
+      lastSentClass = '';
+    }
+    
+    // Enviar datos a micro:bit
+    async function sendToMicrobit(className) {
+      if (!txChar) return;
+      
+      try {
+        const encoder = new TextEncoder();
+        await txChar.writeValue(encoder.encode(className + '\\n'));
+      } catch (error) {
+        console.error('Error enviando a micro:bit:', error);
+        updateBtStatus('Error enviando datos', 'disconnected');
+      }
+    }
+    
+    // Funciones de actualización de UI
+    function updateModelStatus(text, status) {
+      modelStatus.textContent = text;
+      modelStatus.className = `status-badge status-${status}`;
+    }
+    
+    function updateBtStatus(text, status) {
+      btStatus.textContent = text;
+      btStatus.className = `status-badge status-${status}`;
+    }
+    
+    function updatePrediction(className, confidence) {
+      predictionElement.textContent = className;
+      confidenceElement.textContent = confidence;
+    }
+    
+    // Ejemplo de URL para ayudar al usuario
+    modelUrlInput.placeholder = "https://storage.googleapis.com/tm-model/tu-proyecto-id/";
+    
+  </script>
+</body>
+</html>

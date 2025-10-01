@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Profe Vale - Robótica Educativa</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <!-- Header principal con logo -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <img src="logo.svg" alt="Profe Vale Logo" style="width: 80px; height: 80px;">
+        <div>
+          <h1 class="header-glow" style="margin: 0; font-size: 2rem;">Profe Vale</h1>
+          <p style="margin: 0; font-size: 1rem; color: #68d391;">Robótica Educativa</p>
+        </div>
+      </div>
+      <p style="font-size: 1.1rem; color: #cbd5e1; margin-top: 0.5rem;">
+        Aprendé robótica e IA con micro:bit de forma divertida
+      </p>
+    </div>
+
+    <!-- Acciones rápidas -->
+    <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+      <a href="chat/" class="btn-neon" style="display: flex; align-items: center; gap: 0.5rem;">
+        <span>🤖</span> Chatbot IA
+      </a>
+      <a href="https://cafecito.app/profesoravale" target="_blank" class="cafecito-btn" style="display: flex; align-items: center; gap: 0.5rem;">
+        <span>☕</span> Invitame un cafecito
+      </a>
+    </div>
+
+
+    <!-- Sección de presentación -->
+    <div class="card-glass" style="max-width: 900px; margin: 0 auto 1.5rem;">
+      <div style="text-align: center;">
+        <p style="font-size: 1.1rem; line-height: 1.6; color: #e2e8f0;">
+          Herramientas digitales que conectan la <strong style="color: #68d391;">inteligencia artificial</strong> 
+          con la <strong style="color: #f59e0b;">micro:bit</strong>. Perfectas para <strong style="color: #06b6d4;">estudiantes, 
+          docentes y makers</strong> que quieren experimentar con IA y robótica usando solo el navegador.
+        </p>
+      </div>
+    </div>
+
+    <!-- Apps disponibles -->
+    <div class="card-glass" style="max-width: 1000px; margin: 0 auto 3rem;">
+      <h2 style="text-align: center; margin-bottom: 3rem;">🚀 Aplicaciones Disponibles</h2>
+      
+      <div class="app-grid">
+        <!-- App 1: Teachable Machine -->
+        <div class="app-card">
+          <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🧠</div>
+          <h3>Teachable Machine + micro:bit</h3>
+          <p>Entrená tu propio modelo de IA con imágenes, sonidos o poses y controlá la micro:bit en tiempo real.</p>
+          
+          <div class="feature-list">
+            <div>✅ Carga modelos desde URL</div>
+            <div>✅ Detección por cámara</div>
+            <div>✅ Envío automático a micro:bit</div>
+            <div>✅ Estadísticas en vivo</div>
+          </div>
+          
+          <a href="AppMicrobitTeachable/" class="btn-neon">Abrir App</a>
+          
+          <div class="makecode-section">
+            <p><strong>Código MakeCode recomendado:</strong></p>
+            <a href="https://makecode.microbit.org/_7qjF5wbsEKUf" class="makecode-link" target="_blank">
+              Ver proyecto en MakeCode
+            </a>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+              Incluye: Bluetooth UART, LEDs que cambian según la clase detectada, botones para resetear.
+            </p>
+          </div>
+        </div>
+
+        <!-- App 2: Reconocimiento Facial -->
+        <div class="app-card">
+          <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">👁️</div>
+          <h3>Reconocimiento Facial</h3>
+          <p>Detecta caras y envía 12 parámetros faciales (posición, rotación, expresiones) a tu micro:bit.</p>
+          
+          <div class="feature-list">
+            <div>✅ Detección facial en tiempo real</div>
+            <div>✅ 12 parámetros diferentes</div>
+            <div>✅ Control de cámara frontal/trasera</div>
+            <div>✅ Visualización de datos</div>
+          </div>
+          
+          <a href="AppMicrobitRF/" class="btn-neon">Abrir App</a>
+          
+          <div class="makecode-section">
+            <p><strong>Código MakeCode recomendado:</strong></p>
+            <a href="https://makecode.microbit.org/_C2M1t9L6jLhf" class="makecode-link" target="_blank">
+              Ver proyecto en MakeCode
+            </a>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+              Incluye: Recepción de datos faciales, servos que siguen la cara, LEDs de expresión.
+            </p>
+          </div>
+        </div>
+
+        <!-- App 3: Control de Flechas -->
+        <div class="app-card">
+          <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🎮</div>
+          <h3>Control de Flechas</h3>
+          <p>Controla tu micro:bit con comandos direccionales personalizables. Ideal para robots móviles.</p>
+          
+          <div class="feature-list">
+            <div>✅ Comandos personalizables</div>
+            <div>✅ Control por teclado</div>
+            <div>✅ Estadísticas de uso</div>
+            <div>✅ Grid de control intuitivo</div>
+          </div>
+          
+          <a href="AppMicrobitFlechas/" class="btn-neon">Abrir App</a>
+          
+          <div class="makecode-section">
+            <p><strong>Código MakeCode recomendado:</strong></p>
+            <a href="https://makecode.microbit.org/_M4dRm8VzaPcr" class="makecode-link" target="_blank">
+              Ver proyecto en MakeCode
+            </a>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+              Incluye: Control de motores, LEDs direccionales, buzzer para confirmación.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instrucciones rápidas -->
+    <div class="card-glass" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h3 style="text-align: center; margin-bottom: 1.5rem; color: #68d391;">🛠️ Cómo Empezar</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; text-align: center;">
+        <div><strong style="color: #06b6d4;">1.</strong> Cargá el código MakeCode</div>
+        <div><strong style="color: #06b6d4;">2.</strong> Conectá por Bluetooth</div>
+        <div><strong style="color: #06b6d4;">3.</strong> ¡Experimentá!</div>
+      </div>
+    </div>
+
+    <!-- Características técnicas -->
+    <div class="card-glass" style="max-width: 900px; margin: 0 auto 2rem;">
+      <h3 style="text-align: center; margin-bottom: 1.5rem; color: #68d391;">⚡ Tecnologías</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: center; font-size: 0.9rem;">
+        <div>📡 <strong>Bluetooth Web</strong></div>
+        <div>🎯 <strong>TensorFlow.js</strong></div>
+        <div>⚡ <strong>Tiempo Real</strong></div>
+        <div>🌍 <strong>Multiplataforma</strong></div>
+      </div>
+    </div>    <!-- Contacto -->
+    <div class="card-glass" style="max-width: 600px; margin: 0 auto 2rem;">
+      <h3 style="text-align: center; margin-bottom: 1.5rem; color: #68d391;">📧 Contacto</h3>
+      <form action="https://formspree.io/f/xyznwavn" method="POST" style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <input type="text" name="name" placeholder="Tu nombre" required style="padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(96, 165, 250, 0.3); background: rgba(30, 41, 59, 0.8); color: #f7fafc;">
+        <input type="email" name="email" placeholder="Tu email" required style="padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(96, 165, 250, 0.3); background: rgba(30, 41, 59, 0.8); color: #f7fafc;">
+        <textarea name="message" placeholder="Tu mensaje" rows="3" required style="padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(96, 165, 250, 0.3); background: rgba(30, 41, 59, 0.8); color: #f7fafc; resize: vertical;"></textarea>
+        <button type="submit" class="btn-neon">Enviar Mensaje</button>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 2rem 0; border-top: 1px solid rgba(96, 165, 250, 0.2); margin-top: 3rem;">
+      <p style="color: #94a3b8;">© 2024 Profe Vale - Robótica Educativa | Hecho with ❤️ para la educación</p>
+    </div>
+  </div>
+
+  <script>
+    // Intersection Observer para animaciones
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    });
+
+    // Aplicar animaciones a las cards
+    document.querySelectorAll('.card-glass, .app-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html>
