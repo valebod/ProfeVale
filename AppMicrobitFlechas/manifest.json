@@ -1,0 +1,19 @@
+{
+  "name": "Control Remoto Profe Vale",
+  "short_name": "Control Remoto",
+  "description": "Control remoto para micro:bit con flechas editables",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#232946",
+  "theme_color": "#39ff14",
+  "orientation": "portrait",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

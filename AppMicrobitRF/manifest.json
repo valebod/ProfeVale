@@ -1,0 +1,19 @@
+{
+  "name": "Reconocimiento Facial Profe Vale",
+  "short_name": "Face Detection",
+  "description": "Reconocimiento facial con TensorFlow para micro:bit",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#232946",
+  "theme_color": "#39ff14",
+  "orientation": "portrait",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
