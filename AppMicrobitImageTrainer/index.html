@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Trainer Profe Vale</title>
-    <meta name="description" content="Entrenador de imágenes con IA para micro:bit - Profe Vale">
-    <meta name="theme-color" content="#39ff14">
+    <title>Image Trainer Profe Vale</title>                    <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='🔗 Abrir MakeCode para pegar', 2000)" class="btn-neon" style="font-size: 0.8rem;">
+                        🔗 Abrir MakeCode para pegar
+                    </button>
+                </div>
+                <div style="text-align: center; margin-top: 0.5rem;">
+                    <a href="https://makecode.microbit.org" target="_blank" style="color: #00d2ff; font-size: 0.8rem; text-decoration: underline;">🌐 makecode.microbit.org</a>  <meta name="description" content="Entrenador de imágenes con IA para micro:bit - Profe Vale">
+    <meta name="theme-color" content="#0077ff">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" href="./icon.png">
     <link rel="stylesheet" href="../style.css">
@@ -14,7 +18,7 @@
 </head>
 <body>
     <!-- Header con navegación -->
-    <div style="background: #fff; padding: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+    <div style="background: transparent; padding: 1rem 0; margin-bottom: 2rem;">
         <div class="container">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
@@ -378,7 +382,7 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
         <div class="card-glass" style="padding: 2rem;">
             <h4 style="margin-bottom: 1rem; font-size: 1.2rem;">📱 ¡Instala Image Trainer!</h4>
             <p style="font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Agrega esta app a tu pantalla de inicio para entrenar IA sin navegador</p>
-            <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem; background: linear-gradient(45deg, #39ff14, #00d2ff); color: #000; font-weight: bold;">
+            <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem; background: linear-gradient(45deg, #0077ff, #00d2ff); color: #fff; font-weight: bold;">
                 📲 Instalar App
             </button>
         </div>

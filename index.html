@@ -590,5 +590,14 @@
       }
     });
   </script>
+  
+  <!-- Sección PWA siempre visible al final -->
+  <div class="card-glass" style="max-width: 500px; margin: 3rem auto 2rem; text-align: center; display: block;">
+    <h3 style="color: #0077ff; margin-bottom: 1rem;">📱 ¡Instala Profe Vale!</h3>
+    <p style="margin-bottom: 1.5rem; line-height: 1.5;">Agrega esta plataforma a tu pantalla de inicio para acceso rápido sin navegador</p>
+    <button onclick="if(navigator.share && navigator.userAgent.includes('Mobile')){navigator.share({title:'Profe Vale - IA y Robótica',text:'Plataforma educativa con apps para micro:bit',url:window.location.href})}else{alert('📱 Para instalar:\n\n• Chrome/Edge: Botón de instalación en la barra de direcciones\n• Safari iOS: Botón Compartir → Añadir a pantalla de inicio\n• Android: Menú → Instalar app')}" class="btn-neon" style="background: linear-gradient(45deg, #0077ff, #00d2ff); color: #fff; font-weight: bold; padding: 0.8rem 2rem;">
+      📦 Obtener App
+    </button>
+  </div>
 </body>
 </html>

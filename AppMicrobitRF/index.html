@@ -34,9 +34,12 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     basic.pause(100)
 })</textarea>
             <div style="text-align: center; margin: 1rem 0;">
-              <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='📋 Copiar Código', 2000)" class="btn-neon" style="font-size: 0.8rem;">
-                📋 Copiar Código
+              <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='� Abrir MakeCode para pegar', 2000)" class="btn-neon" style="font-size: 0.8rem;">
+                � Abrir MakeCode para pegar
               </button>
+            </div>
+            <div style="text-align: center; margin-top: 0.5rem;">
+              <a href="https://makecode.microbit.org" target="_blank" style="color: #00d2ff; font-size: 0.8rem; text-decoration: underline;">🌐 makecode.microbit.org</a>
             </div>ensorFlow para micro:bit - Profe Vale">
   <meta name="theme-color" content="#0077ff">
   <link rel="manifest" href="./manifest.json">

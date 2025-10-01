@@ -49,6 +49,21 @@
       box-shadow: 0 0 32px #0077ff, 0 0 64px #00d2ff;
     }
     
+    /* Layout móvil mejorado */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .control-grid {
+        max-width: 250px;
+      }
+      .control-btn {
+        min-height: 60px;
+        font-size: 1.5rem;
+      }
+    }
+    
     .control-btn:disabled {
       opacity: 0.3;
       cursor: not-allowed;
@@ -200,9 +215,12 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     pins.digitalWritePin(DigitalPin.P8, 0)
 })</textarea>
             <div style="text-align: center; margin: 1rem 0;">
-              <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='📋 Copiar Código', 2000)" class="btn-neon" style="font-size: 0.8rem;">
-                📋 Copiar Código
+              <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='� Abrir MakeCode para pegar', 2000)" class="btn-neon" style="font-size: 0.8rem;">
+                � Abrir MakeCode para pegar
               </button>
+            </div>
+            <div style="text-align: center; margin-top: 0.5rem;">
+              <a href="https://makecode.microbit.org" target="_blank" style="color: #00d2ff; font-size: 0.8rem; text-decoration: underline;">🌐 makecode.microbit.org</a>
             </div>
           
           <div style="text-align: center; margin-bottom: 1.5rem;">
