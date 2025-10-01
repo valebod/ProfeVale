@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Control Remoto Profe Vale</title>
   <meta name="description" content="Control remoto para micro:bit con flechas editables - Profe Vale">
-  <meta name="theme-color" content="#39ff14">
+  <meta name="theme-color" content="#0077ff">
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -23,13 +23,13 @@
     
     .control-btn {
       background: transparent;
-      color: #39ff14;
-      border: 3px solid #39ff14;
+      color: #0077ff;
+      border: 3px solid #0077ff;
       border-radius: 16px;
       font-size: 2rem;
       font-weight: bold;
       padding: 1rem;
-      box-shadow: 0 0 12px #39ff14, 0 0 24px #00d2ff;
+      box-shadow: 0 0 12px #0077ff, 0 0 24px #00d2ff;
       cursor: pointer;
       transition: all 0.2s ease;
       display: flex;
@@ -40,13 +40,13 @@
     
     .control-btn:hover, .control-btn:active {
       background: rgba(57,255,20,0.2);
-      box-shadow: 0 0 24px #39ff14, 0 0 48px #00d2ff;
+      box-shadow: 0 0 24px #0077ff, 0 0 48px #00d2ff;
       transform: scale(1.05);
     }
     
     .control-btn:active {
       transform: scale(0.95);
-      box-shadow: 0 0 32px #39ff14, 0 0 64px #00d2ff;
+      box-shadow: 0 0 32px #0077ff, 0 0 64px #00d2ff;
     }
     
     .control-btn:disabled {
@@ -69,8 +69,8 @@
     
     .config-input:focus {
       outline: none;
-      border-color: #39ff14;
-      box-shadow: 0 0 12px #39ff14;
+      border-color: #0077ff;
+      box-shadow: 0 0 12px #0077ff;
     }
     
     .config-label {
@@ -97,12 +97,9 @@
     }
     
     .status-connected {
-      background: rgba(57,255,20,0.2);
-      border: 2px solid #39ff14;
-      color: #39ff14;
-    }
-    
-    .feedback-display {
+      background: rgba(0,119,255,0.2);
+      color: #0077ff;
+    }    .feedback-display {
       background: rgba(0,210,255,0.1);
       border: 2px solid #00d2ff;
       border-radius: 12px;
@@ -125,7 +122,7 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="header-glow">🎮 Control de Flechas Bluetooth</h1>
+    <h1 class="header-glow">🎮 Control Remoto por Bluetooth</h1>
     
     <div style="max-width: 800px; margin: 0 auto;">
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
@@ -150,7 +147,7 @@
             <button id="upBtn" class="control-btn" disabled>⬆️</button>
             <div></div>
             <button id="leftBtn" class="control-btn" disabled>⬅️</button>
-            <div style="display: flex; align-items: center; justify-content: center; color: #39ff14; font-size: 1.5rem;">🎯</div>
+            <div style="display: flex; align-items: center; justify-content: center; color: #0077ff; font-size: 1.5rem;">🎯</div>
             <button id="rightBtn" class="control-btn" disabled>➡️</button>
             <div></div>
             <button id="downBtn" class="control-btn" disabled>⬇️</button>
@@ -174,8 +171,8 @@
             Usa este código en tu micro:bit para recibir los comandos de las flechas por Bluetooth
           </p>
           
-          <div style="background: #1a1a1a; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #39ff14;">
-            <h4 style="color: #39ff14; margin-bottom: 1rem;">📝 Instrucciones:</h4>
+          <div style="background: #1a1a1a; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #0077ff;">
+            <h4 style="color: #0077ff; margin-bottom: 1rem;">📝 Instrucciones:</h4>
             <ol style="color: #e0e0e0; line-height: 1.6;">
               <li>Abre <strong>MakeCode Editor</strong> en tu computadora</li>
               <li>Agrega la extensión <strong>Bluetooth</strong></li>
@@ -191,8 +188,8 @@
             </a>
           </div>
           
-          <div style="background: #2a2a2a; border-radius: 8px; padding: 1rem; border-left: 4px solid #39ff14;">
-            <h4 style="color: #39ff14; margin-bottom: 0.8rem;">🔧 Funcionalidades del código:</h4>
+          <div style="background: #2a2a2a; border-radius: 8px; padding: 1rem; border-left: 4px solid #0077ff;">
+            <h4 style="color: #0077ff; margin-bottom: 0.8rem;">🔧 Funcionalidades del código:</h4>
             <ul style="color: #e0e0e0; line-height: 1.6; font-size: 0.9rem;">
               <li><strong>U (Arriba)</strong>: Muestra flecha ↑ y activa LED (0,0)</li>
               <li><strong>D (Abajo)</strong>: Muestra flecha ↓ y activa LED (0,4)</li>
@@ -233,15 +230,15 @@
           
           <!-- Estadísticas -->
           <div class="panel-neon" style="padding: 1rem; margin-bottom: 1rem;">
-            <h3 style="color: #39ff14; text-align: center; margin-bottom: 0.8rem;">📊 Estadísticas</h3>
+            <h3 style="color: #0077ff; text-align: center; margin-bottom: 0.8rem;">📊 Estadísticas</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
               <div>
                 <div style="color: #00d2ff; font-size: 0.9rem;">Comandos enviados</div>
-                <div id="commandCount" style="font-size: 1.8rem; font-weight: bold; color: #39ff14;">0</div>
+                <div id="commandCount" style="font-size: 1.8rem; font-weight: bold; color: #0077ff;">0</div>
               </div>
               <div>
                 <div style="color: #00d2ff; font-size: 0.9rem;">Tiempo conectado</div>
-                <div id="connectionTime" style="font-size: 1.8rem; font-weight: bold; color: #39ff14;">00:00</div>
+                <div id="connectionTime" style="font-size: 1.8rem; font-weight: bold; color: #0077ff;">00:00</div>
               </div>
             </div>
           </div>
@@ -258,11 +255,11 @@
       
       <!-- Instrucciones detalladas -->
       <div class="card-glass" style="margin-top: 2rem;">
-        <h2 style="text-align: center; margin-bottom: 2rem;">📚 Guía Completa - Control de Flechas</h2>
+        <h2 style="text-align: center; margin-bottom: 2rem;">📚 Guía Completa - Control Remoto por Bluetooth</h2>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
           <div>
-            <h3 style="color: #39ff14; margin-bottom: 1rem;">🎯 ¿Para qué sirve?</h3>
+            <h3 style="color: #0077ff; margin-bottom: 1rem;">🎯 ¿Para qué sirve?</h3>
             <ul style="line-height: 1.6; color: #e0e0e0;">
               <li><strong>Controlar robots</strong> con movimientos direccionales</li>
               <li><strong>Juegos interactivos</strong> donde la micro:bit responde a comandos</li>
@@ -272,7 +269,7 @@
           </div>
           
           <div>
-            <h3 style="color: #39ff14; margin-bottom: 1rem;">🔧 Cómo personalizar</h3>
+            <h3 style="color: #0077ff; margin-bottom: 1rem;">🔧 Cómo personalizar</h3>
             <ul style="line-height: 1.6; color: #e0e0e0;">
               <li><strong>Cambiar comandos</strong> en los campos de configuración</li>
               <li><strong>Usar palabras completas</strong> como "ADELANTE", "ATRAS"</li>
@@ -282,8 +279,8 @@
           </div>
         </div>
         
-        <div style="background: rgba(57,255,20,0.1); border-radius: 12px; padding: 1.5rem; border-left: 4px solid #39ff14; margin-bottom: 2rem;">
-          <h3 style="color: #39ff14; margin-bottom: 1rem;">🚀 Ideas de proyectos</h3>
+        <div style="background: rgba(57,255,20,0.1); border-radius: 12px; padding: 1.5rem; border-left: 4px solid #0077ff; margin-bottom: 2rem;">
+          <h3 style="color: #0077ff; margin-bottom: 1rem;">🚀 Ideas de proyectos</h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
             <div>
               <strong style="color: #00d2ff;">🤖 Robot caminante</strong><br>
@@ -306,7 +303,7 @@
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
           <div>
-            <h3 style="color: #39ff14; margin-bottom: 1rem;">⌨️ Controles disponibles</h3>
+            <h3 style="color: #0077ff; margin-bottom: 1rem;">⌨️ Controles disponibles</h3>
             <ul style="line-height: 1.8; color: #e0e0e0;">
               <li><strong>Botones en pantalla</strong> - Hacé click en las flechas</li>
               <li><strong>Flechas del teclado</strong> - ⬆️⬇️⬅️➡️</li>
@@ -316,7 +313,7 @@
           </div>
           
           <div>
-            <h3 style="color: #39ff14; margin-bottom: 1rem;">📊 Estadísticas útiles</h3>
+            <h3 style="color: #0077ff; margin-bottom: 1rem;">📊 Estadísticas útiles</h3>
             <ul style="line-height: 1.8; color: #e0e0e0;">
               <li><strong>Comandos enviados</strong> - Contador total</li>
               <li><strong>Tiempo conectado</strong> - Duración de la sesión</li>
@@ -649,7 +646,7 @@
     <div class="card-glass" style="padding: 2rem;">
       <h4 style="margin-bottom: 1rem; font-size: 1.2rem;">📱 ¡Instala Control Remoto!</h4>
       <p style="font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Agrega esta app a tu pantalla de inicio para acceso directo sin navegador</p>
-      <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem; background: linear-gradient(45deg, #39ff14, #00d2ff); color: #000; font-weight: bold;">
+      <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem; background: linear-gradient(45deg, #0077ff, #00d2ff); color: #000; font-weight: bold;">
         📲 Instalar App
       </button>
     </div>
