@@ -430,3 +430,12 @@ input:focus, select:focus, textarea:focus {
   background: linear-gradient(45deg, #e55a00, #e57400) !important;
   color: white !important;
 }
+
+/* Estandarización de texto - todos los párrafos usan el tamaño de "bienvenidos" (1.1rem) */
+/* Las reglas móviles anteriores seguirán aplicándose */
+p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Los párrafos con font-size inline mantienen su tamaño específico */
