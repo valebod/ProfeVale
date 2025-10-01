@@ -166,6 +166,44 @@
           </div>
         </div>
         
+        <!-- Código MakeCode -->
+        <div class="card-glass">
+          <h2 style="text-align: center; margin-bottom: 1.5rem;">💻 Código MakeCode para micro:bit</h2>
+          
+          <p style="text-align: center; color: #b0b0b0; margin-bottom: 1.5rem; font-size: 0.9rem;">
+            Usa este código en tu micro:bit para recibir los comandos de las flechas por Bluetooth
+          </p>
+          
+          <div style="background: #1a1a1a; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #39ff14;">
+            <h4 style="color: #39ff14; margin-bottom: 1rem;">📝 Instrucciones:</h4>
+            <ol style="color: #e0e0e0; line-height: 1.6;">
+              <li>Abre <strong>MakeCode Editor</strong> en tu computadora</li>
+              <li>Agrega la extensión <strong>Bluetooth</strong></li>
+              <li>Copia este código de bloques</li>
+              <li>Descarga el programa a tu micro:bit</li>
+              <li>¡Conecta desde esta app y controla tu micro:bit!</li>
+            </ol>
+          </div>
+          
+          <div style="text-align: center; margin-bottom: 1.5rem;">
+            <a href="https://makecode.microbit.org/_L1jgysMmqEP6" target="_blank" class="btn-neon">
+              📱 Abrir Código en MakeCode
+            </a>
+          </div>
+          
+          <div style="background: #2a2a2a; border-radius: 8px; padding: 1rem; border-left: 4px solid #39ff14;">
+            <h4 style="color: #39ff14; margin-bottom: 0.8rem;">🔧 Funcionalidades del código:</h4>
+            <ul style="color: #e0e0e0; line-height: 1.6; font-size: 0.9rem;">
+              <li><strong>U (Arriba)</strong>: Muestra flecha ↑ y activa LED (0,0)</li>
+              <li><strong>D (Abajo)</strong>: Muestra flecha ↓ y activa LED (0,4)</li>
+              <li><strong>L (Izquierda)</strong>: Muestra flecha ← y activa LED (0,2)</li>
+              <li><strong>R (Derecha)</strong>: Muestra flecha → y activa LED (4,2)</li>
+              <li><strong>Bluetooth</strong>: Configurado para recibir comandos de texto</li>
+              <li><strong>Feedback visual</strong>: LEDs y flechas confirman el comando</li>
+            </ul>
+          </div>
+        </div>
+        
         <!-- Panel de configuración -->
         <div class="card-glass">
           <h2 style="text-align: center; margin-bottom: 1.5rem;">⚙️ Configuración</h2>
@@ -355,22 +393,24 @@
     const leftCmd = document.getElementById('leftCmd');
     const rightCmd = document.getElementById('rightCmd');
     
-    // Event listeners
-    connectBtn.addEventListener('click', toggleConnection);
-    testBtn.addEventListener('click', testConnection);
-    resetBtn.addEventListener('click', resetCommands);
-    
-    // Controles direccionales
-    upBtn.addEventListener('click', () => sendCommand('up'));
-    downBtn.addEventListener('click', () => sendCommand('down'));
-    leftBtn.addEventListener('click', () => sendCommand('left'));
-    rightBtn.addEventListener('click', () => sendCommand('right'));
-    
-    // Actualizar comandos cuando cambian los inputs
-    upCmd.addEventListener('input', () => updateCommand('up', upCmd.value));
-    downCmd.addEventListener('input', () => updateCommand('down', downCmd.value));
-    leftCmd.addEventListener('input', () => updateCommand('left', leftCmd.value));
-    rightCmd.addEventListener('input', () => updateCommand('right', rightCmd.value));
+    // Event listeners - Esperar a que el DOM esté listo
+    document.addEventListener('DOMContentLoaded', function() {
+      connectBtn.addEventListener('click', toggleConnection);
+      testBtn.addEventListener('click', testConnection);
+      resetBtn.addEventListener('click', resetCommands);
+      
+      // Controles direccionales
+      upBtn.addEventListener('click', () => sendCommand('up'));
+      downBtn.addEventListener('click', () => sendCommand('down'));
+      leftBtn.addEventListener('click', () => sendCommand('left'));
+      rightBtn.addEventListener('click', () => sendCommand('right'));
+      
+      // Actualizar comandos cuando cambian los inputs
+      upCmd.addEventListener('input', () => updateCommand('up', upCmd.value));
+      downCmd.addEventListener('input', () => updateCommand('down', downCmd.value));
+      leftCmd.addEventListener('input', () => updateCommand('left', leftCmd.value));
+      rightCmd.addEventListener('input', () => updateCommand('right', rightCmd.value));
+    });
     
     // Conectar/Desconectar
     async function toggleConnection() {
@@ -600,7 +640,7 @@
     }
     
     // Llamar la función de instalación al cargar
-    handleInstallApp();
+    window.addEventListener('load', handleInstallApp);
     
   </script>
   
