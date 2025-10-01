@@ -4,8 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reconocimiento Facial Profe Vale</title>
-  <meta name="description" content="Reconocimiento facial con TensorFlow para micro:bit - Profe Vale">
-  <meta name="theme-color" content="#39ff14">
+  <meta name="description" content="Reconocimiento fac        <div>
+          <h3 style="color: #0077ff; margin-bottom: 1rem;">💻 Código MakeCode</h3>
+          <div style="background: #1a1a1a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #0077ff;">
+            <h4 style="color: #0077ff; margin-bottom: 0.8rem; font-size: 0.9rem;">📱 Programa tu micro:bit:</h4>
+            <p style="color: #e0e0e0; font-size: 0.85rem; margin-bottom: 1rem;">Copia este código en MakeCode (makecode.microbit.org):</p>
+            <textarea readonly style="width: 100%; height: 150px; background: #000; color: #0f0; border: 1px solid #333; border-radius: 4px; padding: 0.5rem; font-family: monospace; font-size: 0.75rem; resize: vertical;">bluetooth.startUartService()
+basic.showString("RF")
+
+bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+    let datos = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
+    let parametros = datos.split(",")
+    
+    // Mostrar emoción en LEDs
+    let sonrisa = parseFloat(parametros[8])
+    if (sonrisa > 0.7) {
+        basic.showIcon(IconNames.Happy)
+    } else if (sonrisa < 0.3) {
+        basic.showIcon(IconNames.Sad)
+    } else {
+        basic.showIcon(IconNames.Asleep)
+    }
+    
+    // Control de servo según posición X
+    let x = parseFloat(parametros[0])
+    let servoAngle = pins.map(x, 0, 1, 0, 180)
+    pins.servoWritePin(AnalogPin.P0, servoAngle)
+    
+    basic.pause(100)
+})</textarea>
+            <div style="text-align: center; margin: 1rem 0;">
+              <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='📋 Copiar Código', 2000)" class="btn-neon" style="font-size: 0.8rem;">
+                📋 Copiar Código
+              </button>
+            </div>ensorFlow para micro:bit - Profe Vale">
+  <meta name="theme-color" content="#0077ff">
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -101,7 +134,7 @@
       font-size: 1.1rem;
       font-weight: 600;
       padding: 0.75rem 2rem;
-      box-shadow: 0 0 8px #39ff14, 0 0 24px #00d2ff;
+      box-shadow: 0 0 8px #0077ff, 0 0 24px #00d2ff;
       cursor: pointer;
       transition: box-shadow 0.2s, background 0.2s;
     }
@@ -118,12 +151,24 @@
       }
     }
     .btn-neon:hover, .btn-neon:focus {
-      background: rgba(39,255,20,0.12);
-      box-shadow: 0 0 24px #39ff14, 0 0 48px #00d2ff;
+      background: rgba(0,119,255,0.12);
+      box-shadow: 0 0 24px #0077ff, 0 0 48px #00d2ff;
     }
   </style>
 </head>
 <body>
+  <!-- Header -->
+  <div style="text-align: center; margin-bottom: 2rem; padding: 1rem;">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+      <img src="../LogoProfeVale.png" alt="Profe Vale Logo" style="width: 80px; height: 80px;">
+      <div>
+        <h1 class="header-glow" style="margin: 0; font-size: 2rem; color: #fff; text-shadow: 0 0 10px rgba(0, 119, 255, 0.8), 0 0 20px rgba(0, 119, 255, 0.4);">🤖 Reconocimiento Facial</h1>
+        <p style="margin: 0; color: #e6f3ff;">TensorFlow + micro:bit</p>
+      </div>
+    </div>
+    <a href="../index.html" class="btn-neon" style="display: inline-block; font-size: 0.8rem;">← Volver al inicio</a>
+  </div>
+  
   <div class="container">
     <div class="camera-panel">
       <div class="card-glass" style="padding:0.5rem 0.5rem 1.5rem 0.5rem; display:flex; flex-direction:column; align-items:center;">

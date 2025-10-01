@@ -333,7 +333,7 @@
         <div class="card-glass" style="padding: 2rem;">
           <h4 style="margin-bottom: 1rem; font-size: 1.2rem;">📱 ¡Instala la App Principal!</h4>
           <p style="font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Agrega Profe Vale a tu pantalla de inicio para acceso completo a todas las herramientas</p>
-          <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem; background: linear-gradient(45deg, #39ff14, #00d2ff); color: #000; font-weight: bold;">
+          <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem; background: linear-gradient(45deg, #0077ff, #00d2ff); color: #fff; font-weight: bold;">
             📲 Instalar App Principal
           </button>
         </div>
@@ -508,30 +508,64 @@
 
     // PWA Installation
     let deferredPrompt;
+    let installSection;
+    
+    // Mostrar sección de instalación en iOS Safari o si no hay soporte nativo
+    function showInstallPrompt() {
+      installSection = document.getElementById('installSection');
+      if (installSection) {
+        installSection.style.display = 'block';
+        
+        // Mostrar instrucciones específicas para iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+        
+        if (isIOS && isSafari) {
+          const instructionText = installSection.querySelector('p');
+          if (instructionText) {
+            instructionText.innerHTML = '📱 En Safari iOS: Toca el botón <strong>Compartir</strong> ↗️ y luego <strong>"Añadir a la pantalla de inicio"</strong>';
+          }
+          const installBtn = installSection.querySelector('#installBtn');
+          if (installBtn) {
+            installBtn.style.display = 'none';
+          }
+        }
+      }
+    }
     
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      
-      const installSection = document.getElementById('installSection');
-      if (installSection) {
-        installSection.style.display = 'block';
-      }
+      showInstallPrompt();
+    });
+    
+    // Mostrar también en dispositivos donde no se dispara beforeinstallprompt
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (!deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
+          showInstallPrompt();
+        }
+      }, 3000);
     });
     
     function handleInstallApp() {
       const installBtn = document.getElementById('installBtn');
-      if (installBtn && deferredPrompt) {
+      if (installBtn) {
         installBtn.addEventListener('click', async () => {
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          
-          if (outcome === 'accepted') {
-            console.log('App instalada');
-            document.getElementById('installSection').style.display = 'none';
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+              console.log('App instalada');
+              document.getElementById('installSection').style.display = 'none';
+            }
+            
+            deferredPrompt = null;
+          } else {
+            // Fallback para navegadores sin soporte
+            alert('💡 Para instalar: Usa el menú de tu navegador y selecciona "Añadir a pantalla de inicio" o "Instalar app"');
           }
-          
-          deferredPrompt = null;
         });
       }
     }

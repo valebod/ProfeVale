@@ -171,16 +171,39 @@
             Usa este código en tu micro:bit para recibir los comandos de las flechas por Bluetooth
           </p>
           
-          <div style="background: #1a1a1a; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #0077ff;">
-            <h4 style="color: #0077ff; margin-bottom: 1rem;">📝 Instrucciones:</h4>
-            <ol style="color: #e0e0e0; line-height: 1.6;">
-              <li>Abre <strong>MakeCode Editor</strong> en tu computadora</li>
-              <li>Agrega la extensión <strong>Bluetooth</strong></li>
-              <li>Copia este código de bloques</li>
-              <li>Descarga el programa a tu micro:bit</li>
-              <li>¡Conecta desde esta app y controla tu micro:bit!</li>
-            </ol>
-          </div>
+                    <div style="background: #1a1a1a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #0077ff;">
+            <h4 style="color: #0077ff; margin-bottom: 0.8rem;">� Programa tu micro:bit:</h4>
+            <p style="color: #e0e0e0; font-size: 0.85rem; margin-bottom: 1rem;">Copia este código en MakeCode (makecode.microbit.org):</p>
+            <textarea readonly style="width: 100%; height: 120px; background: #000; color: #0f0; border: 1px solid #333; border-radius: 4px; padding: 0.5rem; font-family: monospace; font-size: 0.8rem; resize: vertical;">bluetooth.startUartService()
+basic.showString("Listo")
+
+bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+    let comando = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
+    if (comando == "U") {
+        basic.showArrow(ArrowNames.North)
+        pins.digitalWritePin(DigitalPin.P0, 1)
+    } else if (comando == "D") {
+        basic.showArrow(ArrowNames.South)
+        pins.digitalWritePin(DigitalPin.P1, 1)
+    } else if (comando == "L") {
+        basic.showArrow(ArrowNames.West)
+        pins.digitalWritePin(DigitalPin.P2, 1)
+    } else if (comando == "R") {
+        basic.showArrow(ArrowNames.East)
+        pins.digitalWritePin(DigitalPin.P8, 1)
+    }
+    basic.pause(500)
+    basic.clearScreen()
+    pins.digitalWritePin(DigitalPin.P0, 0)
+    pins.digitalWritePin(DigitalPin.P1, 0)
+    pins.digitalWritePin(DigitalPin.P2, 0)
+    pins.digitalWritePin(DigitalPin.P8, 0)
+})</textarea>
+            <div style="text-align: center; margin: 1rem 0;">
+              <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='📋 Copiar Código', 2000)" class="btn-neon" style="font-size: 0.8rem;">
+                📋 Copiar Código
+              </button>
+            </div>
           
           <div style="text-align: center; margin-bottom: 1.5rem;">
             <a href="https://makecode.microbit.org/_L1jgysMmqEP6" target="_blank" class="btn-neon">

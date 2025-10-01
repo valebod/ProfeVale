@@ -191,12 +191,39 @@
     
     <div class="card-glass" style="max-width: 1000px; margin: 2rem auto 0;">
       <h2>💻 Código MakeCode</h2>
-      <div style="background: #1a1a1a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #39ff14;">
-        <h4 style="color: #39ff14; margin-bottom: 0.8rem;">📱 Programa tu micro:bit:</h4>
+      <div style="background: #1a1a1a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #0077ff;">
+        <h4 style="color: #0077ff; margin-bottom: 0.8rem;">📱 Programa tu micro:bit:</h4>
+        <p style="color: #e0e0e0; font-size: 0.85rem; margin-bottom: 1rem;">Copia este código en MakeCode (makecode.microbit.org):</p>
+        <textarea readonly style="width: 100%; height: 130px; background: #000; color: #0f0; border: 1px solid #333; border-radius: 4px; padding: 0.5rem; font-family: monospace; font-size: 0.75rem; resize: vertical;">bluetooth.startUartService()
+basic.showString("TM")
+
+bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+    let clase = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
+    
+    if (clase == "Clase1") {
+        basic.showIcon(IconNames.Heart)
+        pins.digitalWritePin(DigitalPin.P0, 1)
+        music.playTone(262, music.beat(BeatFraction.Half))
+    } else if (clase == "Clase2") {
+        basic.showIcon(IconNames.Diamond)
+        pins.digitalWritePin(DigitalPin.P1, 1)
+        music.playTone(392, music.beat(BeatFraction.Half))
+    } else if (clase == "Clase3") {
+        basic.showIcon(IconNames.Square)
+        pins.digitalWritePin(DigitalPin.P2, 1)
+        music.playTone(523, music.beat(BeatFraction.Half))
+    }
+    
+    basic.pause(1000)
+    basic.clearScreen()
+    pins.digitalWritePin(DigitalPin.P0, 0)
+    pins.digitalWritePin(DigitalPin.P1, 0)
+    pins.digitalWritePin(DigitalPin.P2, 0)
+})</textarea>
         <div style="text-align: center; margin: 1rem 0;">
-          <a href="https://makecode.microbit.org/_DrgV4xT9R5Ku" target="_blank" class="btn-neon" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
-            📂 Abrir en MakeCode
-          </a>
+          <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='📋 Copiar Código', 2000)" class="btn-neon" style="font-size: 0.8rem;">
+            📋 Copiar Código
+          </button>
         </div>
         <ul style="color: #e0e0e0; line-height: 1.4; font-size: 0.8rem;">
           <li><strong>Recibe clases</strong> del modelo Teachable Machine</li>
