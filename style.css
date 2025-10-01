@@ -241,8 +241,9 @@ input:focus, select:focus, textarea:focus {
   }
   
   .mobile-layout .card-glass p {
-    font-size: 0.9rem !important;
-    margin-bottom: 1rem !important;
+    font-size: 0.7rem !important;
+    margin-bottom: 0.5rem !important;
+    line-height: 1.2 !important;
   }
   
   /* Logo más pequeño en móvil */

@@ -17,7 +17,7 @@
       <!-- Header compartido que abarca las 3 columnas -->
       <div class="shared-header">
         <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
-          <img src="LogoProfeVale.png" alt="Profe Vale Logo" style="width: 100px; height: 100px;">
+          <img src="logo.svg" alt="Profe Vale Logo" style="width: 100px; height: 100px;">
           <div>
             <h1 class="header-glow" style="margin: 0; font-size: 5rem; text-shadow: 0 0 10px rgba(28, 105, 168, 0.8), 0 0 20px rgba(28, 105, 168, 0.4), 0 0 30px rgba(28, 105, 168, 0.2);">Profe Vale</h1>
             <p style="margin: 0; font-size: 1.2rem; color: #e6f3ff;">IA y robotica con Micro:bit</p>
@@ -217,7 +217,7 @@
       <!-- Header Móvil -->
       <div style="text-align: center; margin-bottom: 2rem;">
         <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
-          <img src="LogoProfeVale.png" alt="Profe Vale Logo" style="width: 100px; height: 100px;">
+          <img src="logo.svg" alt="Profe Vale Logo" style="width: 100px; height: 100px;">
           <div>
             <h1 class="header-glow" style="margin: 0; font-size: 5rem; text-shadow: 0 0 10px rgba(28, 105, 168, 0.8), 0 0 20px rgba(28, 105, 168, 0.4), 0 0 30px rgba(28, 105, 168, 0.2);">Profe Vale</h1>
             <p style="margin: 0; font-size: 1.2rem; color: #e6f3ff;">IA y robotica con Micro:bit</p>
@@ -247,6 +247,17 @@
         </div>
       </div>
 
+      <!-- Botón Instalar App (Móvil) -->
+      <div id="installSection" style="display: none; text-align: center; margin: 1rem 0;">
+        <div class="card-glass" style="max-width: 400px; margin: 0 auto; padding: 1.5rem; background: rgba(57, 255, 20, 0.1); border: 1px solid rgba(57, 255, 20, 0.3); box-shadow: 0 0 20px rgba(57, 255, 20, 0.1);">
+          <h4 style="margin-bottom: 0.5rem; color: #39ff14; font-size: 1.1rem;">📱 ¡Instala la App!</h4>
+          <p style="font-size: 0.8rem; margin-bottom: 1rem; color: #e6f3ff;">Agrega Profe Vale a tu pantalla de inicio para acceso rápido</p>
+          <button id="installBtn" class="btn-neon" style="font-size: 0.9rem; background: linear-gradient(45deg, #39ff14, #00d2ff); color: #000; font-weight: bold;">
+            � Instalar Ahora
+          </button>
+        </div>
+      </div>
+      
       <!-- Apps disponibles (Móvil) -->
       <div class="card-glass" style="max-width: 1000px; margin: 0 auto 3rem;">
         <h2 style="text-align: center; margin-bottom: 3rem;">🚀 Aplicaciones Propias</h2>
@@ -484,11 +495,43 @@
       });
     }
 
+    // PWA Installation
+    let deferredPrompt;
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      // Mostrar botón de instalación
+      const installSection = document.getElementById('installSection');
+      if (installSection) {
+        installSection.style.display = 'block';
+      }
+    });
+    
+    function handleInstallApp() {
+      const installBtn = document.getElementById('installBtn');
+      if (installBtn && deferredPrompt) {
+        installBtn.addEventListener('click', async () => {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          
+          if (outcome === 'accepted') {
+            console.log('App instalada');
+            document.getElementById('installSection').style.display = 'none';
+          }
+          
+          deferredPrompt = null;
+        });
+      }
+    }
+
     // Inicializar funcionalidades al cargar
     window.addEventListener('load', () => {
       loadUserProgress();
       handleContactForm();
       handleContactFormMobile();
+      handleInstallApp();
     });
 
     // Búsqueda en tiempo real
