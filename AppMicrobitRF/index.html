@@ -249,14 +249,22 @@
           <div class="card-glass" style="background: rgba(0,0,0,0.35); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #39ff14;">
             <h4 style="color: #39ff14; margin-bottom: 0.8rem; font-size: 0.9rem;">⚠️ PROGRAMA REQUERIDO para tu micro:bit</h4>
             <p style="color: #fff; margin-bottom: 1rem; font-size: 0.9rem; background: rgba(255,100,100,0.2); padding: 0.75rem; border-radius: 6px; border-left: 3px solid #ff6464;">
-              <strong>Sin este programa, la conexión Bluetooth fallará.</strong> Tu micro:bit DEBE tener "bluetooth startUartService()" al inicio.
+              <strong>ORDEN CRÍTICO:</strong> Tu programa debe tener "bluetooth.startUartService()" ANTES de cualquier otra función Bluetooth.
             </p>
+            <div style="background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 3px solid #39ff14;">
+              <h5 style="color: #39ff14; margin: 0 0 0.5rem; font-size: 0.9rem;">✅ ORDEN CORRECTO:</h5>
+              <code style="color: #e6f3ff; font-size: 0.8rem; line-height: 1.4;">
+                1. bluetooth.startUartService()<br>
+                2. basic.showIcon(IconNames.Square)<br>
+                3. Después: variables y eventos
+              </code>
+            </div>
             <div style="display: flex; gap: 0.5rem; justify-content: center; margin: 1rem 0; flex-wrap: wrap;">
-              <a href="https://makecode.microbit.org/_JdJ9EWE2YCra" target="_blank" class="btn-neon" style="font-size: 0.8rem; padding: 0.5rem 1rem; background: #39ff14; border-color: #39ff14;">
-                📂 ¡USAR ESTE ENLACE!
-              </a>
-              <a href="https://makecode.microbit.org/S92774-32768-05331-91691" target="_blank" class="btn-neon" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
-                📂 (Versión anterior)
+              <button onclick="copyCorrectCode()" class="btn-neon" style="font-size: 0.8rem; padding: 0.5rem 1rem; background: #39ff14; border-color: #39ff14;">
+                � Copiar Código Correcto
+              </button>
+              <a href="https://makecode.microbit.org/" target="_blank" class="btn-neon" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
+                🌐 Abrir MakeCode
               </a>
             </div>
             <ul style="color: #e0e0e0; line-height: 1.4; font-size: 0.8rem;">
@@ -440,6 +448,88 @@ bluetooth.startUartService()
     }
     
     window.addEventListener('load', handleInstallApp);
+    
+    // Función para copiar código correcto
+    function copyCorrectCode() {
+      const correctCode = `// ORDEN CRÍTICO: bluetooth.startUartService() PRIMERO
+bluetooth.startUartService()
+basic.showIcon(IconNames.Square)
+
+// Variables globales
+let rostroVisible = 0, sonrisa = 0, giro = 0, ojoDerecho = 0
+let ojoIzquierdo = 0, boca = 0, inclinacion = 0, guinada = 0
+let distancia = 0, posY = 0, posX = 0, datos = ""
+
+// Eventos de conexión
+bluetooth.onBluetoothConnected(function () {
+    basic.showIcon(IconNames.Yes)
+})
+bluetooth.onBluetoothDisconnected(function () {
+    basic.showIcon(IconNames.No)
+})
+
+// Recepción de datos (19 caracteres + NewLine)
+bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+    music.play(music.tonePlayable(988, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
+    datos = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
+    if (datos.length != 19) {
+        music.play(music.tonePlayable(262, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
+        return
+    }
+    posX = parseFloat(datos.substr(0, 2))
+    posY = parseFloat(datos.substr(2, 2))
+    distancia = parseFloat(datos.substr(4, 2))
+    guinada = parseFloat(datos.substr(6, 2))
+    inclinacion = parseFloat(datos.substr(8, 2))
+    boca = parseFloat(datos.substr(10, 2))
+    ojoIzquierdo = parseFloat(datos.substr(12, 2))
+    ojoDerecho = parseFloat(datos.substr(14, 2))
+    giro = parseFloat(datos.substr(16, 1))
+    sonrisa = parseFloat(datos.substr(17, 1))
+    rostroVisible = parseFloat(datos.substr(18, 1))
+    led.plotBarGraph(guinada, 99)
+    if (rostroVisible == 0) {
+        basic.clearScreen()
+    } else if (posX < 35) {
+        basic.showArrow(ArrowNames.West)
+    } else if (posX > 65) {
+        basic.showArrow(ArrowNames.East)
+    } else if (posY < 35) {
+        basic.showArrow(ArrowNames.North)
+    } else if (posY > 65) {
+        basic.showArrow(ArrowNames.South)
+    } else if (boca > 50) {
+        basic.showIcon(IconNames.Surprised)
+    } else if (ojoIzquierdo < 30) {
+        basic.showLeds(\`
+            . . . . .
+            . . . # #
+            . . . . .
+            . # # # .
+            . . . . .
+            \`)
+    } else if (distancia > 60) {
+        basic.showIcon(IconNames.Happy)
+    } else if (ojoDerecho < 30) {
+        basic.showLeds(\`
+            . . . . .
+            # # . . .
+            . . . . .
+            . # # # .
+            . . . . .
+            \`)
+    } else {
+        basic.showIcon(IconNames.Chessboard)
+    }
+})`;
+      
+      try {
+        navigator.clipboard.writeText(correctCode);
+        alert('✅ Código copiado al portapapeles\\n\\n📋 Pégalo en MakeCode (Editor JavaScript)\\n🔧 IMPORTANTE: bluetooth.startUartService() debe ser la PRIMERA línea');
+      } catch (err) {
+        alert('⚠️ No se pudo copiar automáticamente.\\n\\n📋 Copia manualmente desde la sección de código de abajo.');
+      }
+    }
     
     // Registrar Service Worker
     if ('serviceWorker' in navigator) {

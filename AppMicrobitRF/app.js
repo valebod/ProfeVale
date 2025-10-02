@@ -491,9 +491,9 @@ connectBtn.addEventListener('click', async () => {
             logFeedback(`🔗 UART listo | write:${p.write?'sí':'no'} sinResp:${p.writeWithoutResponse?'sí':'no'} | permisos:${canWrite?'OK':'FALTA'}`);
             if (!canWrite) {
                 logFeedback('⚠️ Característica SIN permisos de escritura - verificar programa micro:bit');
-                logFeedback('💡 SOLUCIÓN: Tu programa micro:bit DEBE tener "bluetooth startUartService()" al inicio');
-                logFeedback('🔗 Programa correcto: https://makecode.microbit.org/_JdJ9EWE2YCra');
-                logFeedback('📋 O copia: Control Facial micro:bit en MakeCode');
+                logFeedback('💡 PROBLEMA: Orden de inicialización incorrecto en programa micro:bit');
+                logFeedback('� SOLUCIÓN: bluetooth.startUartService() debe ser la PRIMERA línea');
+                logFeedback('📋 Copiar programa corregido desde la página de ayuda');
             }
         } catch(e){ logFeedback('🔗 UART listo | props error: ' + e.message); }
         // Enviar pequeño ping de prueba al conectar (no crítico)
