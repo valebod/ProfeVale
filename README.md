@@ -1,5 +1,12 @@
 # Micro:bit Bluetooth Web Apps – Profe Vale
 
+En el trabajo en el aula con inteligencia artificial (incluyendo su uso ético) y robótica educativa, he tenido que buscar herramientas para poder trabajar en el aula. En este sitio web comparto:
+- aplicaciones que he diseñado especialmente (con ayuda de la IA) para enviar comandos a la Micro:bit con bluetooth: un control remoto simple, una app que deja copiar un enlace de Teachable Machine, un "Teachable Machine propio" (hecho con TensorFlow) y una app de reconocimiento facial, que envia los comandos de los movimientos de la cara a la Micro:bit.
+- Recursos varios: lista de articulos sobre IA, páginas útiles, playlist de videos de youtube sobre IA, etc.
+- Videos explicativos (algunos todavía en preparación).
+
+  Espero que les sirva! Me pueden contactar por dudas o para dar ideas o material.
+
 Sitio web con aplicaciones web (PWA) para controlar y explorar micro:bit por Bluetooth, pensado para robótica educativa e introducción práctica a la IA en el aula.
 
 ## ¿Qué hay en este sitio?
