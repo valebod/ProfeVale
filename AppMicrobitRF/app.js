@@ -31,6 +31,7 @@ const advBtn = document.getElementById('advBtn');
 const testSendBtn = document.getElementById('testSendBtn');
 const lastPacketEl = document.getElementById('last-packet');
 const bleDiagBtn = document.getElementById('bleDiagBtn');
+const charSelect = document.getElementById('charSelect');
 let pageHidden = false;
 let sendingNow = false;
 let lastErrorAt = 0;
@@ -39,13 +40,15 @@ let lastErrorAt = 0;
 // (Sin selector de terminador ni modo seguro)
 
 let writePathLogged = false;
+let altTxChar = null; // cuando el usuario elige escribir en 0003
 async function writeUart(u8) {
-    if (!txChar) throw new Error('TX no inicializado');
-    const props = txChar.properties || {};
+    const targetChar = (charSelect && charSelect.value === '6e400003-b5a3-f393-e0a9-e50e24dcca9e' && altTxChar) ? altTxChar : txChar;
+    if (!targetChar) throw new Error('TX no inicializado');
+    const props = targetChar.properties || {};
     // Intentar withoutResponse primero si existe
-    if (typeof txChar.writeValueWithoutResponse === 'function' && (props.writeWithoutResponse || !props.write)) {
+    if (typeof targetChar.writeValueWithoutResponse === 'function' && (props.writeWithoutResponse || !props.write)) {
         try {
-            const r = await txChar.writeValueWithoutResponse(u8);
+            const r = await targetChar.writeValueWithoutResponse(u8);
             if (!writePathLogged) { logFeedback('✍️ writeWithoutResponse'); writePathLogged = true; }
             return r;
         } catch (e) {
@@ -53,9 +56,9 @@ async function writeUart(u8) {
         }
     }
     // Luego con respuesta si está disponible
-    if (typeof txChar.writeValueWithResponse === 'function' && props.write) {
+    if (typeof targetChar.writeValueWithResponse === 'function' && props.write) {
         try {
-            const r = await txChar.writeValueWithResponse(u8);
+            const r = await targetChar.writeValueWithResponse(u8);
             if (!writePathLogged) { logFeedback('✍️ writeWithResponse'); writePathLogged = true; }
             return r;
         } catch (e) {
@@ -63,8 +66,8 @@ async function writeUart(u8) {
         }
     }
     // Fallback antiguo
-    if (typeof txChar.writeValue === 'function') {
-        const r = await txChar.writeValue(u8);
+    if (typeof targetChar.writeValue === 'function') {
+        const r = await targetChar.writeValue(u8);
         if (!writePathLogged) { logFeedback('✍️ writeValue (legacy)'); writePathLogged = true; }
         return r;
     }
@@ -508,6 +511,8 @@ connectBtn.addEventListener('click', async () => {
                 logFeedback('📥 ' + txt.trim());
             });
         } catch (_) { }
+        // Intentar también obtener la char 0003 como alternativa de prueba
+        try { altTxChar = await uartService.getCharacteristic('6e400003-b5a3-f393-e0a9-e50e24dcca9e'); } catch(_) { altTxChar = null; }
         isBtConnected = true;
         statusBadge.textContent = '¡Conectado!';
         connectBtn.textContent = '🔌 Desconectar del Micro:bit';
@@ -517,7 +522,7 @@ connectBtn.addEventListener('click', async () => {
             logFeedback(`🔗 UART listo | write:${p.write?'sí':'no'} sinResp:${p.writeWithoutResponse?'sí':'no'}`);
         } catch(_){ logFeedback('🔗 UART listo'); }
         // Enviar pequeño ping de prueba al conectar (no crítico)
-        try { await sendToMicrobit('0000000000000000000'); } catch(_){}
+    try { await sendToMicrobit('0000000000000000000'); } catch(_){ }
         // Ejecutar diagnóstico GATT automáticamente tras conectar
         try { await enumerateGatt(); } catch(_){}
     } catch (e) {
