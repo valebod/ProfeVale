@@ -12,7 +12,8 @@ let drawOverlayOn = true;
 let lastSendTs = 0;
 const unMirrorFront = true; // Forzar no-"espejo" en cámara frontal
 let advancedMode = false;
-const SEND_INTERVAL_MS = 150; // ~6-7Hz para mayor estabilidad UART
+const SEND_INTERVAL_MS = 200; // ~5Hz para mayor estabilidad UART
+const ERROR_COOLDOWN_MS = 600; // tras error, enfriar un poco para no saturar
 
 // Utilidades matemáticas globales
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -31,6 +32,21 @@ const testSendBtn = document.getElementById('testSendBtn');
 const lastPacketEl = document.getElementById('last-packet');
 let pageHidden = false;
 let sendingNow = false;
+let lastErrorAt = 0;
+
+async function writeUart(u8) {
+    if (!txChar) throw new Error('TX no inicializado');
+    // Preferencia: writeWithoutResponse si está soportado por NUS
+    const props = txChar.properties || {};
+    if (typeof txChar.writeValueWithoutResponse === 'function' && (props.writeWithoutResponse || !props.write)) {
+        return txChar.writeValueWithoutResponse(u8);
+    }
+    if (typeof txChar.writeValueWithResponse === 'function' && props.write) {
+        return txChar.writeValueWithResponse(u8);
+    }
+    // Fallback antiguo
+    return txChar.writeValue(u8);
+}
 if (advBtn) {
     advBtn.addEventListener('click', () => {
         advancedMode = !advancedMode;
@@ -435,28 +451,27 @@ function onDisconnected() {
 async function sendToMicrobit(text) {
     if (!isBtConnected || !txChar) return;
     if (sendingNow) return; // evitar solapamientos
+    // Pequeño cooldown después de errores para evitar "GATT operation not permitted"
+    if (Date.now() - lastErrorAt < ERROR_COOLDOWN_MS) return;
     sendingNow = true;
     try {
         const encoder = new TextEncoder();
-        // Intento 1: envío en una única escritura con salto de línea
-        try {
-            await txChar.writeValue(encoder.encode(text + '\n'));
-        } catch (e1) {
-            // Fallback: dos escrituras separadas
-            try {
-                await txChar.writeValue(encoder.encode(text));
-                // breve espera
-                await new Promise(r=>setTimeout(r, 10));
-                await txChar.writeValue(encoder.encode('\n'));
-            } catch (e2) {
-                throw e2;
-            }
+        // Asegurar longitud por debajo del MTU habitual (20 bytes). Nuestros paquetes son 20 con \n.
+        const payload = text + '\n';
+        const bytes = encoder.encode(payload);
+        // Trocear por si acaso, aunque hoy cabe en 20
+        for (let i = 0; i < bytes.length; i += 20) {
+            const slice = bytes.slice(i, i + 20);
+            await writeUart(slice);
+            // micro pausa entre chunks
+            if (bytes.length > 20) await new Promise(r=>setTimeout(r, 8));
         }
         sendCount++;
         sendCountEl.textContent = sendCount;
         logFeedback('📤 ' + text);
         if (lastPacketEl) lastPacketEl.textContent = text;
     } catch (e) {
+        lastErrorAt = Date.now();
         logFeedback('⚠️ Error al enviar: ' + (e && e.message ? e.message : ''));
         // Si se desconectó, reflejar estado
         if (device && device.gatt && !device.gatt.connected) {
