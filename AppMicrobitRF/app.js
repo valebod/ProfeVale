@@ -12,7 +12,7 @@ let drawOverlayOn = true;
 let lastSendTs = 0;
 const unMirrorFront = true; // Forzar no-"espejo" en cámara frontal
 let advancedMode = false;
-const SEND_INTERVAL_MS = 100; // 10 Hz como especifica la app de referencia (19 dígitos, sin delimitador)
+const SEND_INTERVAL_MS = 500; // 2 Hz para pruebas de estabilidad (19 dígitos, sin delimitador)
 const ERROR_COOLDOWN_MS = 600; // tras error, enfriar un poco para no saturar
 
 // Utilidades matemáticas globales
@@ -316,7 +316,7 @@ async function loopDetection() {
                     setText('confidence-value', (confidence*100).toFixed(0));
                     setText('blink-value', blink ? '✔' : '✖');
 
-                    // Envío (~10 Hz)
+                    // Envío (~2 Hz)
                     const now = Date.now();
                     if (now - lastSendTs > SEND_INTERVAL_MS) {
                         lastSendTs = now;
