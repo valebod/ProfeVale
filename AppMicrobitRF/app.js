@@ -332,27 +332,70 @@ stopBtn.addEventListener('click', async () => {
 });
 
 // Bluetooth
+function logFeedback(msg) {
+    const fb = document.getElementById('feedback');
+    if (!fb) return;
+    const span = document.createElement('span');
+    span.textContent = msg;
+    span.style.fontSize = '0.8rem';
+    span.style.color = '#a8e6ff';
+    fb.appendChild(span);
+}
+
 connectBtn.addEventListener('click', async () => {
+    // Si ya está conectado, desconectar primero
+    try { if (device && device.gatt && device.gatt.connected) device.gatt.disconnect(); } catch(_){}
     statusBadge.textContent = 'Buscando micro:bit...';
+    logFeedback('🔎 Buscando dispositivos...');
+    const UART_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+    const TX_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+    const RX_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
     try {
-        device = await navigator.bluetooth.requestDevice({
-            filters: [{ namePrefix: 'BBC micro:bit' }],
-            optionalServices: ['6e400001-b5a3-f393-e0a9-e50e24dcca9e']
-        });
+        try {
+            device = await navigator.bluetooth.requestDevice({
+                filters: [
+                    { namePrefix: 'BBC micro:bit' },
+                    { namePrefix: 'micro:bit' },
+                    { services: [UART_UUID] }
+                ],
+                optionalServices: [UART_UUID]
+            });
+        } catch (e1) {
+            // Fallback amplio
+            logFeedback('ℹ️ Reintentando con búsqueda amplia...');
+            device = await navigator.bluetooth.requestDevice({
+                acceptAllDevices: true,
+                optionalServices: [UART_UUID]
+            });
+        }
         device.addEventListener('gattserverdisconnected', onDisconnected);
         server = await device.gatt.connect();
-        uartService = await server.getPrimaryService('6e400001-b5a3-f393-e0a9-e50e24dcca9e');
-        txChar = await uartService.getCharacteristic('6e400002-b5a3-f393-e0a9-e50e24dcca9e');
+        logFeedback('✅ Conectado al GATT');
+        uartService = await server.getPrimaryService(UART_UUID);
+        txChar = await uartService.getCharacteristic(TX_UUID);
+        // Suscribirse a RX si está disponible (para debug)
+        try {
+            const rxChar = await uartService.getCharacteristic(RX_UUID);
+            await rxChar.startNotifications();
+            rxChar.addEventListener('characteristicvaluechanged', (event) => {
+                const dec = new TextDecoder();
+                const txt = dec.decode(event.target.value);
+                logFeedback('📥 ' + txt.trim());
+            });
+        } catch (_) {}
         isBtConnected = true;
         statusBadge.textContent = '¡Conectado!';
+        logFeedback('🔗 UART listo');
     } catch (e) {
         statusBadge.textContent = 'Error de conexión';
+        logFeedback('⚠️ ' + (e && e.message ? e.message : 'Fallo al conectar'));
     }
 });
 
 function onDisconnected() {
     isBtConnected = false;
     statusBadge.textContent = 'Desconectado';
+    logFeedback('🔌 Desconectado');
 }
 
 async function sendToMicrobit(text) {
