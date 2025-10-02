@@ -28,6 +28,8 @@ const sendCountEl = document.getElementById('sendCount');
 let sendCount = 0;
 const advBtn = document.getElementById('advBtn');
 const testSendBtn = document.getElementById('testSendBtn');
+const lastPacketEl = document.getElementById('last-packet');
+let pageHidden = false;
 if (advBtn) {
     advBtn.addEventListener('click', () => {
         advancedMode = !advancedMode;
@@ -97,6 +99,10 @@ async function startDetection() {
 
 async function loopDetection() {
     if (!detectionRunning) return;
+    if (pageHidden) { // Pausar procesamiento y envío cuando la pestaña no está visible
+        requestAnimationFrame(loopDetection);
+        return;
+    }
         try {
             if (!cameraOn || videoEl.readyState < 2) {
                 ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
@@ -427,6 +433,7 @@ async function sendToMicrobit(text) {
         sendCount++;
         sendCountEl.textContent = sendCount;
         logFeedback('📤 ' + text);
+        if (lastPacketEl) lastPacketEl.textContent = text;
     } catch (e) {
         logFeedback('⚠️ Error al enviar');
     }
@@ -462,10 +469,22 @@ async function sendPacketZeros() {
 if (testSendBtn) {
     testSendBtn.addEventListener('click', async () => {
         // X(50) Y(50) Z(50) Yaw(50) Pitch(50) Mouth(50) Left(50) Right(50) Roll(0) Smile(0) Visible(1)
-        await sendToMicrobit('5050505050505050001');
+        const pkt = '5050505050505050001';
+        if (lastPacketEl) lastPacketEl.textContent = pkt;
+        await sendToMicrobit(pkt);
     });
 }
 
 // Arranque
 initCamera();
 startDetection();
+
+// Pausar/retomar con Page Visibility API
+document.addEventListener('visibilitychange', () => {
+    pageHidden = document.hidden;
+    if (pageHidden) {
+        logFeedback('⏸️ Pestaña oculta: pausando envío');
+    } else {
+        logFeedback('▶️ Pestaña visible: reanudando');
+    }
+});
