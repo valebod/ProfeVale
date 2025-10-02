@@ -491,6 +491,9 @@ connectBtn.addEventListener('click', async () => {
             logFeedback(`🔗 UART listo | write:${p.write?'sí':'no'} sinResp:${p.writeWithoutResponse?'sí':'no'} | permisos:${canWrite?'OK':'FALTA'}`);
             if (!canWrite) {
                 logFeedback('⚠️ Característica SIN permisos de escritura - verificar programa micro:bit');
+                logFeedback('💡 SOLUCIÓN: Tu programa micro:bit DEBE tener "bluetooth startUartService()" al inicio');
+                logFeedback('🔗 Programa correcto: https://makecode.microbit.org/_JdJ9EWE2YCra');
+                logFeedback('📋 O copia: Control Facial micro:bit en MakeCode');
             }
         } catch(e){ logFeedback('🔗 UART listo | props error: ' + e.message); }
         // Enviar pequeño ping de prueba al conectar (no crítico)
@@ -521,6 +524,7 @@ async function sendToMicrobit(text) {
     const props = txChar.properties || {};
     if (!props.write && !props.writeWithoutResponse) {
         logFeedback('⚠️ No se puede escribir: característica sin permisos. Verificar programa micro:bit.');
+        logFeedback('💡 Usa este programa: https://makecode.microbit.org/_JdJ9EWE2YCra');
         return;
     }
     
