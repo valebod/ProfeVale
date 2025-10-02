@@ -706,6 +706,7 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
       e.preventDefault();
       deferredPrompt = e;
       showInstallSection();
+      if (installBtnEl) installBtnEl.style.display = 'inline-block';
     });
 
     if (installBtnEl) {
@@ -720,8 +721,6 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
           const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
           if (isIOS && isSafari) {
             alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
-          } else {
-            alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
           }
         }
       });

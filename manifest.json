@@ -2,11 +2,12 @@
   "name": "Profe Vale - Robótica e IA Educativa",
   "short_name": "Profe Vale",
   "description": "Plataforma educativa de robótica e inteligencia artificial con micro:bit",
-  "start_url": "/",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#1C69A8",
   "orientation": "portrait-primary",
+  "scope": "./",
   "icons": [
     {
       "src": "LogoProfeVale.png",

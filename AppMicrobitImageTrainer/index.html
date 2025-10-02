@@ -379,8 +379,8 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     <script>
     // PWA Installation
     let deferredPrompt;
-    let installSection = document.getElementById('installSection');
-    let installBtn = document.getElementById('installBtn');
+    let installSection;
+    let installBtn;
     
         function isPortraitMobile() {
             const ua = navigator.userAgent;
@@ -390,17 +390,21 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
             return (isMobileUA && (isPortrait || smallViewport));
         }
     
-        function showInstallSection() {
-            if (isPortraitMobile()) {
-        installSection.style.display = 'block';
-      }
-    }
+                function showInstallSection() {
+                        if (!installSection) installSection = document.getElementById('installSection');
+                        if (isPortraitMobile()) {
+                            installSection.style.display = 'block';
+                        }
+                }
     
-    function hideInstallSection() {
-      installSection.style.display = 'none';
-    }
+        function hideInstallSection() {
+            if (!installSection) installSection = document.getElementById('installSection');
+            installSection.style.display = 'none';
+        }
     
         function handleInstallApp() {
+            installSection = document.getElementById('installSection');
+            installBtn = document.getElementById('installBtn');
             if (!isPortraitMobile()) return;
       
       // Check if already installed
@@ -412,33 +416,11 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     // Show section initially on portrait/mobile
     showInstallSection();
       
-    window.addEventListener('beforeinstallprompt', (e) => {
+        window.addEventListener('beforeinstallprompt', (e) => {
         console.log('beforeinstallprompt triggered');
         e.preventDefault();
         deferredPrompt = e;
-        
-        installBtn.addEventListener('click', async () => {
-          if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`Install outcome: ${outcome}`);
-            
-            if (outcome === 'accepted') {
-              hideInstallSection();
-            }
-            deferredPrompt = null;
-          } else {
-            // Fallback for browsers without beforeinstallprompt
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            
-            if (isIOS && isSafari) {
-              alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
-            } else {
-              alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
-            }
-          }
-        });
+                if (installBtn) installBtn.style.display = 'inline-block';
             });
 
             ['orientationchange','resize'].forEach(evt => {
@@ -450,7 +432,31 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
             });
     }
     
-    window.addEventListener('load', handleInstallApp);
+        // Manejador de botón que funciona aunque no haya beforeinstallprompt
+        function wireButton() {
+            installBtn = document.getElementById('installBtn');
+            if (!installBtn) return;
+            installBtn.onclick = async () => {
+                if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+                    hideInstallSection();
+                    return;
+                }
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') hideInstallSection();
+                    deferredPrompt = null;
+                } else {
+                    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+                    if (isIOS && isSafari) {
+                        alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
+                    }
+                }
+            };
+        }
+
+        window.addEventListener('load', () => { handleInstallApp(); wireButton(); });
     
     // Registrar Service Worker
     if ('serviceWorker' in navigator) {
