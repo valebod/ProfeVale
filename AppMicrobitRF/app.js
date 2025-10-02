@@ -12,7 +12,7 @@ let drawOverlayOn = true;
 let lastSendTs = 0;
 const unMirrorFront = true; // Forzar no-"espejo" en cámara frontal
 let advancedMode = false;
-const SEND_INTERVAL_MS = 100; // ~10Hz compatible con UART
+const SEND_INTERVAL_MS = 150; // ~6-7Hz para mayor estabilidad UART
 
 // Utilidades matemáticas globales
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -30,6 +30,7 @@ const advBtn = document.getElementById('advBtn');
 const testSendBtn = document.getElementById('testSendBtn');
 const lastPacketEl = document.getElementById('last-packet');
 let pageHidden = false;
+let sendingNow = false;
 if (advBtn) {
     advBtn.addEventListener('click', () => {
         advancedMode = !advancedMode;
@@ -106,7 +107,11 @@ async function loopDetection() {
         try {
             if (!cameraOn || videoEl.readyState < 2) {
                 ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
-                await sendPacketZeros();
+                const now = Date.now();
+                if (now - lastSendTs > SEND_INTERVAL_MS) {
+                    lastSendTs = now;
+                    await sendPacketZeros();
+                }
                 requestAnimationFrame(loopDetection);
                 return;
             }
@@ -308,7 +313,11 @@ async function loopDetection() {
                     // Limpiar UI cuando no hay rostro
                     const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
                     setText('visible-value', '✖');
-                    await sendPacketZeros();
+                    const now2 = Date.now();
+                    if (now2 - lastSendTs > SEND_INTERVAL_MS) {
+                        lastSendTs = now2;
+                        await sendPacketZeros();
+                    }
         }
     } catch (e) {
         console.error('Error en loop detección:', e);
@@ -425,17 +434,36 @@ function onDisconnected() {
 
 async function sendToMicrobit(text) {
     if (!isBtConnected || !txChar) return;
+    if (sendingNow) return; // evitar solapamientos
+    sendingNow = true;
     try {
         const encoder = new TextEncoder();
-        // Escribir payload y newline por separado mejora compatibilidad en algunos firmwares
-        await txChar.writeValue(encoder.encode(text));
-        await txChar.writeValue(encoder.encode('\n'));
+        // Intento 1: envío en una única escritura con salto de línea
+        try {
+            await txChar.writeValue(encoder.encode(text + '\n'));
+        } catch (e1) {
+            // Fallback: dos escrituras separadas
+            try {
+                await txChar.writeValue(encoder.encode(text));
+                // breve espera
+                await new Promise(r=>setTimeout(r, 10));
+                await txChar.writeValue(encoder.encode('\n'));
+            } catch (e2) {
+                throw e2;
+            }
+        }
         sendCount++;
         sendCountEl.textContent = sendCount;
         logFeedback('📤 ' + text);
         if (lastPacketEl) lastPacketEl.textContent = text;
     } catch (e) {
-        logFeedback('⚠️ Error al enviar');
+        logFeedback('⚠️ Error al enviar: ' + (e && e.message ? e.message : ''));
+        // Si se desconectó, reflejar estado
+        if (device && device.gatt && !device.gatt.connected) {
+            onDisconnected();
+        }
+    } finally {
+        sendingNow = false;
     }
 }
 
