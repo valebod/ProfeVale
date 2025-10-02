@@ -113,10 +113,11 @@
           <video id="video" width="480" height="360" autoplay playsinline style="width:100%; max-width:480px; border-radius:16px; box-shadow:0 0 24px #00d2ff;"></video>
           <canvas id="canvas" width="480" height="360" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"></canvas>
         </div>
-        <div style="display:flex;gap:0.5rem;margin-top:1rem;width:100%;max-width:480px;">
-          <button id="startBtn" class="btn-neon" style="flex:1;" disabled>▶️ Iniciar Detección</button>
-          <button id="stopBtn" class="btn-neon" style="flex:1;" disabled>⏹️ Detener</button>
-          <button id="toggleCameraBtn" class="btn-neon" style="flex:1;">🔄 Cambiar cámara</button>
+        <div style="display:flex;gap:0.5rem;margin-top:1rem;width:100%;max-width:480px;flex-wrap:wrap;">
+          <button id="startBtn" class="btn-neon" style="flex:1;min-width:180px;" disabled>▶️ Iniciar Detección</button>
+          <button id="stopBtn" class="btn-neon" style="flex:1;min-width:180px;" disabled>⏹️ Detener</button>
+          <button id="toggleCameraBtn" class="btn-neon" style="flex:1;min-width:180px;">🔄 Cambiar cámara</button>
+          <button id="advBtn" class="btn-neon" style="flex:1;min-width:180px;">Modo avanzado: OFF</button>
         </div>
       </div>
     </div>

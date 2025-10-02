@@ -11,6 +11,7 @@ let cameraOn = false;
 let drawOverlayOn = true;
 let lastSendTs = 0;
 const unMirrorFront = true; // Forzar no-"espejo" en cámara frontal
+let advancedMode = false;
 
 // Bluetooth
 let device, server, uartService, txChar;
@@ -19,6 +20,13 @@ const connectBtn = document.getElementById('connectBtn');
 const statusBadge = document.getElementById('statusBadge');
 const sendCountEl = document.getElementById('sendCount');
 let sendCount = 0;
+const advBtn = document.getElementById('advBtn');
+if (advBtn) {
+    advBtn.addEventListener('click', () => {
+        advancedMode = !advancedMode;
+        advBtn.textContent = advancedMode ? 'Modo avanzado: ON' : 'Modo avanzado: OFF';
+    });
+}
 
 // Inicialización cámara
 async function initCamera() {
@@ -124,6 +132,25 @@ async function loopDetection() {
                 ctx.restore();
             };
 
+            // Helper centro promedio
+            const center = (pts) => {
+                if (!pts || pts.length===0) return null;
+                let sx=0, sy=0; for (const pt of pts) { sx+=pt[0]; sy+=pt[1]; }
+                return [sx/pts.length, sy/pts.length];
+            };
+
+            // --- Caja/medidas de cara antes de cálculos ---
+            const box = p.box || p.boundingBox || null;
+            let faceW = canvasEl.width, faceH = canvasEl.height;
+            let centerX = canvasEl.width/2, centerY = canvasEl.height/2;
+            if (box) {
+                const x = box.xMin || box.topLeft[0];
+                const y = box.yMin || box.topLeft[1];
+                const w = (box.xMax || box.bottomRight[0]) - x;
+                const h = (box.yMax || box.bottomRight[1]) - y;
+                faceW = w; faceH = h; centerX = x + w/2; centerY = y + h/2;
+            }
+
             // Silueta (contorno de la cara)
             if (drawOverlayOn && ann.silhouette) drawPath(ann.silhouette, { close:false, color:'#00d2ff', width:2, glow:18 });
 
@@ -155,11 +182,6 @@ async function loopDetection() {
             if (drawOverlayOn && leftEye) drawPath(leftEye, { close:true, color:eyeColor, width:2, glow:12 });
             if (drawOverlayOn && rightEye) drawPath(rightEye, { close:true, color:eyeColor, width:2, glow:12 });
             // Centros aproximados de ojos
-            const center = (pts) => {
-                if (!pts || pts.length===0) return null;
-                let sx=0, sy=0; for (const pt of pts) { sx+=pt[0]; sy+=pt[1]; }
-                return [sx/pts.length, sy/pts.length];
-            };
             const leftCenter = center(leftEye);
             const rightCenter = center(rightEye);
             if (drawOverlayOn && leftCenter) drawPoints([leftCenter], { color:'#ffffff', radius:2.5, glow:8 });
@@ -190,17 +212,12 @@ async function loopDetection() {
                         if (drawOverlayOn) drawPoints([leftCorner, rightCorner], { color:'#fffb00', radius:4, glow:16 });
             }
 
-                    // --- Cálculo de parámetros ---
-                    const box = p.box || p.boundingBox || null;
-                    let faceW = canvasEl.width, faceH = canvasEl.height;
-                    let centerX = canvasEl.width/2, centerY = canvasEl.height/2;
-                    if (box) {
-                        const x = box.xMin || box.topLeft[0];
-                        const y = box.yMin || box.topLeft[1];
-                        const w = (box.xMax || box.bottomRight[0]) - x;
-                        const h = (box.yMax || box.bottomRight[1]) - y;
-                        faceW = w; faceH = h; centerX = x + w/2; centerY = y + h/2;
-                    }
+            // Modo avanzado: puntos del mesh
+            if (advancedMode && drawOverlayOn && p.scaledMesh) {
+                drawPoints(p.scaledMesh, { color:'#00d2ff', radius:1.2, glow:4 });
+            }
+
+                    // --- Cálculo de parámetros (usa medidas ya obtenidas) ---
 
                     const norm = (v, max) => Math.max(0, Math.min(1, v / max));
                     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
