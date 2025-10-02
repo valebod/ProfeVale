@@ -34,6 +34,7 @@ let pageHidden = false;
 let sendingNow = false;
 let lastErrorAt = 0;
 let selectedDelimiter = 'lf'; // por defecto LF
+let forceWithResponse = false;
 
 // Leer selección de terminador desde el selector si existe
 const delimSelect = document.getElementById('delimSelect');
@@ -44,11 +45,23 @@ if (delimSelect) {
         logFeedback('🔧 Terminador: ' + selectedDelimiter);
     });
 }
+const forceWithRespChk = document.getElementById('forceWithResp');
+if (forceWithRespChk) {
+    forceWithResponse = !!forceWithRespChk.checked;
+    forceWithRespChk.addEventListener('change', () => {
+        forceWithResponse = !!forceWithRespChk.checked;
+        logFeedback('🛡️ writeWithResponse: ' + (forceWithResponse ? 'ON' : 'OFF'));
+    });
+}
 
 async function writeUart(u8) {
     if (!txChar) throw new Error('TX no inicializado');
-    // Preferencia: writeWithoutResponse si está soportado por NUS
     const props = txChar.properties || {};
+    // Forzar modo seguro con respuesta si el usuario lo pidió
+    if (forceWithResponse && typeof txChar.writeValueWithResponse === 'function' && (props.write || !props.writeWithoutResponse)) {
+        return txChar.writeValueWithResponse(u8);
+    }
+    // Preferencia: withoutResponse si está disponible y no se fuerza withResponse
     if (typeof txChar.writeValueWithoutResponse === 'function' && (props.writeWithoutResponse || !props.write)) {
         return txChar.writeValueWithoutResponse(u8);
     }
@@ -495,7 +508,7 @@ async function sendToMicrobit(text) {
             const slice = bytes.slice(i, i + 20);
             await writeUart(slice);
             // micro pausa entre chunks
-            if (bytes.length > 20) await new Promise(r=>setTimeout(r, 8));
+            if (bytes.length > 20) await new Promise(r=>setTimeout(r, 12));
         }
         sendCount++;
         sendCountEl.textContent = sendCount;
@@ -546,6 +559,17 @@ if (testSendBtn) {
         const pkt = '5050505050505050001';
         if (lastPacketEl) lastPacketEl.textContent = pkt;
         await sendToMicrobit(pkt);
+    });
+}
+
+// Envío manual desde UI
+const manualSendBtn = document.getElementById('manualSendBtn');
+const manualTextInput = document.getElementById('manualText');
+if (manualSendBtn && manualTextInput) {
+    manualSendBtn.addEventListener('click', async () => {
+        let txt = manualTextInput.value || '';
+        // Si el texto tiene 19 dígitos exactos, se envía tal cual; si no, se envía como debug
+        await sendToMicrobit(txt);
     });
 }
 

@@ -129,7 +129,7 @@
           <span id="statusBadge" style="font-weight:bold;">Desconectado</span>
           <button id="connectBtn" class="btn-neon" style="min-width:140px;">🔗 Conectar al Micro:bit</button>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem;font-size:0.98rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem;font-size:0.98rem;align-items:center;">
           <div>Enviados: <span id="sendCount">0</span></div>
           <div style="display:flex;align-items:center;gap:0.4rem;">
             <label for="delimSelect" style="font-size:0.85rem;color:#a8e6ff;">Terminador:</label>
@@ -140,6 +140,13 @@
               <option value="none">Sin delimitador</option>
             </select>
           </div>
+          <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;color:#a8e6ff;">
+            <input type="checkbox" id="forceWithResp"> Modo seguro (withResponse)
+          </label>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.5rem;">
+          <input id="manualText" type="text" placeholder="Texto de prueba (p.ej. TEST)" style="flex:1;min-width:180px;padding:0.4rem;border-radius:6px;border:1px solid rgba(0,210,255,0.35);background:rgba(0,0,0,0.3);color:#e6f3ff;">
+          <button id="manualSendBtn" class="btn-neon" style="min-width:140px;">📤 Enviar manual</button>
         </div>
         <div id="feedback" style="margin-bottom:0.5rem;display:flex;flex-wrap:wrap;gap:0.5rem;max-height:40px;overflow-y:auto;"></div>
         <div id="lastPacketRow" style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
