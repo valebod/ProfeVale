@@ -12,6 +12,7 @@ let drawOverlayOn = true;
 let lastSendTs = 0;
 const unMirrorFront = true; // Forzar no-"espejo" en cámara frontal
 let advancedMode = false;
+const SEND_INTERVAL_MS = 100; // ~10Hz compatible con UART
 
 // Utilidades matemáticas globales
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -26,6 +27,7 @@ const statusBadge = document.getElementById('statusBadge');
 const sendCountEl = document.getElementById('sendCount');
 let sendCount = 0;
 const advBtn = document.getElementById('advBtn');
+const testSendBtn = document.getElementById('testSendBtn');
 if (advBtn) {
     advBtn.addEventListener('click', () => {
         advancedMode = !advancedMode;
@@ -287,9 +289,9 @@ async function loopDetection() {
                     setText('confidence-value', (confidence*100).toFixed(0));
                     setText('blink-value', blink ? '✔' : '✖');
 
-                    // Envío (12 Hz)
+                    // Envío (~10 Hz)
                     const now = Date.now();
-                    if (now - lastSendTs > 80) {
+                    if (now - lastSendTs > SEND_INTERVAL_MS) {
                         lastSendTs = now;
                         await sendFixedPacket({
                             xN, yN, zN, yawDeg, pitchDeg, rollDeg, mouthOpen,
@@ -332,6 +334,12 @@ stopBtn.addEventListener('click', async () => {
 });
 
 // Bluetooth
+function supportsWebBluetooth() {
+    const secure = (window.isSecureContext === true) || location.protocol === 'https:' || location.hostname === 'localhost';
+    const hasApi = !!(navigator && navigator.bluetooth);
+    return secure && hasApi;
+}
+
 function logFeedback(msg) {
     const fb = document.getElementById('feedback');
     if (!fb) return;
@@ -343,6 +351,11 @@ function logFeedback(msg) {
 }
 
 connectBtn.addEventListener('click', async () => {
+    if (!supportsWebBluetooth()) {
+        alert('Tu navegador no soporta Web Bluetooth o esta página no está en HTTPS. Usá Chrome/Edge en HTTPS (o Bluefy en iOS).');
+        logFeedback('❌ Web Bluetooth no disponible. Verificá HTTPS y navegador.');
+        return;
+    }
     // Si ya está conectado, desconectar primero
     try { if (device && device.gatt && device.gatt.connected) device.gatt.disconnect(); } catch(_){}
     statusBadge.textContent = 'Buscando micro:bit...';
@@ -350,6 +363,12 @@ connectBtn.addEventListener('click', async () => {
     const UART_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
     const TX_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
     const RX_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+    try {
+        if (navigator.bluetooth.getAvailability) {
+            const avail = await navigator.bluetooth.getAvailability();
+            logFeedback('📶 Bluetooth disponible: ' + (avail ? 'sí' : 'no'));
+        }
+    } catch(_){}
     try {
         try {
             device = await navigator.bluetooth.requestDevice({
@@ -402,11 +421,14 @@ async function sendToMicrobit(text) {
     if (!isBtConnected || !txChar) return;
     try {
         const encoder = new TextEncoder();
-        await txChar.writeValue(encoder.encode(text + '\n'));
+        // Escribir payload y newline por separado mejora compatibilidad en algunos firmwares
+        await txChar.writeValue(encoder.encode(text));
+        await txChar.writeValue(encoder.encode('\n'));
         sendCount++;
         sendCountEl.textContent = sendCount;
+        logFeedback('📤 ' + text);
     } catch (e) {
-        // Silencioso para no molestar la UI
+        logFeedback('⚠️ Error al enviar');
     }
 }
 
@@ -434,6 +456,13 @@ async function sendFixedPacket({ xN, yN, zN, yawDeg, pitchDeg, rollDeg, mouthOpe
 async function sendPacketZeros() {
     // 8 campos de 2 dígitos en 00 -> 16, más 3 de 1 dígito -> 000 => 19
     await sendToMicrobit('0000000000000000000');
+}
+
+// Botón de prueba de envío UART
+if (testSendBtn) {
+    testSendBtn.addEventListener('click', async () => {
+        await sendToMicrobit('1234567890123456789');
+    });
 }
 
 // Arranque
