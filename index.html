@@ -502,10 +502,11 @@
     let deferredPrompt;
     let installSection;
     
-    // Mostrar sección de instalación en iOS Safari o si no hay soporte nativo
+    // Mostrar sección de instalación solo en móvil
     function showInstallPrompt() {
+      const isMobile = window.innerWidth <= 768;
       installSection = document.getElementById('installSection');
-      if (installSection) {
+      if (installSection && isMobile) {
         installSection.style.display = 'block';
         
         // Mostrar instrucciones específicas para iOS
@@ -534,7 +535,8 @@
     // Mostrar también en dispositivos donde no se dispara beforeinstallprompt
     window.addEventListener('load', () => {
       setTimeout(() => {
-        if (!deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile && !deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
           showInstallPrompt();
         }
       }, 3000);
@@ -562,29 +564,30 @@
       }
     }
 
-    // Función para botón fallback
-    function handleFallbackInstall() {
-      const fallbackBtn = document.getElementById('fallbackInstallBtn');
-      if (fallbackBtn) {
-        fallbackBtn.addEventListener('click', () => {
+    // Función para botón de instalación principal
+    function handleMainInstall() {
+      const mainInstallBtn = document.getElementById('installBtn');
+      if (mainInstallBtn) {
+        mainInstallBtn.addEventListener('click', async () => {
           // Intentar usar el prompt diferido si está disponible
           if (deferredPrompt) {
             deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-              if (choiceResult.outcome === 'accepted') {
-                console.log('App instalada via fallback');
-              }
-              deferredPrompt = null;
-            });
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+              console.log('App instalada');
+              mainInstallBtn.closest('.card-glass').style.display = 'none';
+            }
+            deferredPrompt = null;
           } else {
-            // Si no hay prompt diferido, mostrar instrucciones
+            // Para iOS Safari, mostrar instrucciones específicas
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
             const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
             
             if (isIOS && isSafari) {
-              alert('📱 Para instalar en iOS Safari:\n\n1. Toca el botón Compartir ↗️\n2. Selecciona "Añadir a pantalla de inicio"\n3. Confirma la instalación');
+              alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
             } else {
-              alert('📱 Para instalar:\n\n• Chrome/Edge: Busca el botón de instalación en la barra de direcciones\n• Firefox: Menú → Instalar\n• Android: Menú → Añadir a pantalla de inicio');
+              // Buscar si hay prompt disponible después de un tiempo
+              alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
             }
           }
         });
@@ -597,7 +600,7 @@
       handleContactForm();
       handleContactFormMobile();
       handleInstallApp();
-      handleFallbackInstall();
+      handleMainInstall();
     });
 
     // Búsqueda en tiempo real
@@ -613,21 +616,12 @@
     });
   </script>
   
-  <!-- Sección PWA al final -->
-  <div id="installSection" class="card-glass" style="max-width: 500px; margin: 3rem auto 2rem; text-align: center; display: none;">
+  <!-- Sección PWA única -->
+  <div id="installSection" class="card-glass" style="max-width: 500px; margin: 1rem auto 2rem; text-align: center; display: none;">
     <h3 style="color: #0077ff; margin-bottom: 1rem;">📱 ¡Instala Profe Vale!</h3>
-    <p style="margin-bottom: 1.5rem; line-height: 1.5;">Agrega esta plataforma a tu pantalla de inicio para acceso rápido sin navegador</p>
-    <button id="installBtn" class="btn-neon" style="background: linear-gradient(45deg, #0077ff, #00d2ff); color: #fff; font-weight: bold; padding: 0.8rem 2rem;">
-      📦 Instalar Aplicación
-    </button>
-  </div>
-
-  <!-- Sección PWA alternativa siempre visible -->
-  <div class="card-glass" style="max-width: 500px; margin: 1rem auto 2rem; text-align: center; display: block;">
-    <h3 style="color: #0077ff; margin-bottom: 1rem;">📱 ¡Obtén Profe Vale!</h3>
     <p style="margin-bottom: 1.5rem; line-height: 1.5;">Agrega esta plataforma a tu pantalla de inicio para acceso rápido</p>
-    <button id="fallbackInstallBtn" class="btn-neon" style="background: linear-gradient(45deg, #0077ff, #00d2ff); color: #fff; font-weight: bold; padding: 0.8rem 2rem;">
-      📦 Obtener App
+    <button id="installBtn" class="btn-neon" style="background: linear-gradient(45deg, #0077ff, #00d2ff); color: #fff; font-weight: bold; padding: 0.8rem 2rem;">
+      📦 Instalar App
     </button>
   </div>
 </body>

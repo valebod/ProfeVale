@@ -439,3 +439,34 @@ p {
 }
 
 /* Los párrafos con font-size inline mantienen su tamaño específico */
+
+/* Responsive global para todas las apps */
+@media (max-width: 768px) {
+  /* Forzar columna única en móvil para todos los grids */
+  [style*="grid-template-columns"]:not(.control-grid):not(.app-grid) {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Asegurar que flex wrap funcione en móvil */
+  [style*="display: flex"]:not(.header) {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  /* Control más específico para mobile */
+  .container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .card-glass, .card {
+    padding: 1rem;
+    margin: 0.5rem 0;
+  }
+}
+
+@media (min-width: 769px) {
+  /* Ocultar botones PWA en desktop - pero permitir instalación si el navegador lo soporta */
+  #installSection {
+    display: none !important;
+  }
+}
