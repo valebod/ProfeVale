@@ -389,8 +389,10 @@ async function enumerateGatt() {
                 for (const ch of chars) {
                     const cu = ch.uuid;
                     const p = ch.properties || {};
-                    const props = Object.keys(p).filter(k=>p[k]).join(',') || '—';
-                    logFeedback(`   ◦ Char ${cu} | props: ${props}`);
+                    const propList = Object.keys(p).filter(k=>p[k]);
+                    const props = propList.length > 0 ? propList.join(',') : 'NINGUNA';
+                    const writeOK = p.write || p.writeWithoutResponse ? '✅' : '❌';
+                    logFeedback(`   ◦ Char ${cu} | props: ${props} ${writeOK}`);
                 }
             } catch (e) {
                 logFeedback(`   ◦ Error listando características: ${e && e.message ? e.message : e}`);
@@ -465,6 +467,8 @@ connectBtn.addEventListener('click', async () => {
         device.addEventListener('gattserverdisconnected', onDisconnected);
         server = await device.gatt.connect();
         logFeedback('✅ Conectado al GATT');
+        // Pequeño delay para asegurar que la conexión está estable
+        await new Promise(resolve => setTimeout(resolve, 500));
         uartService = await server.getPrimaryService(UART_UUID);
         txChar = await uartService.getCharacteristic(TX_UUID);
         // Suscribirse a RX si está disponible (para debug)
@@ -480,11 +484,15 @@ connectBtn.addEventListener('click', async () => {
         isBtConnected = true;
         statusBadge.textContent = '¡Conectado!';
         connectBtn.textContent = '🔌 Desconectar del Micro:bit';
-        // Log de propiedades
+        // Log de propiedades y verificar permisos
         try {
             const p = txChar.properties || {};
-            logFeedback(`🔗 UART listo | write:${p.write?'sí':'no'} sinResp:${p.writeWithoutResponse?'sí':'no'}`);
-        } catch(_){ logFeedback('🔗 UART listo'); }
+            const canWrite = p.write || p.writeWithoutResponse;
+            logFeedback(`🔗 UART listo | write:${p.write?'sí':'no'} sinResp:${p.writeWithoutResponse?'sí':'no'} | permisos:${canWrite?'OK':'FALTA'}`);
+            if (!canWrite) {
+                logFeedback('⚠️ Característica SIN permisos de escritura - verificar programa micro:bit');
+            }
+        } catch(e){ logFeedback('🔗 UART listo | props error: ' + e.message); }
         // Enviar pequeño ping de prueba al conectar (no crítico)
     try { await sendToMicrobit('0000000000000000000'); } catch(_){ }
         // Ejecutar diagnóstico GATT automáticamente tras conectar
@@ -508,6 +516,14 @@ function onDisconnected() {
 async function sendToMicrobit(text) {
     if (!isBtConnected || !txChar) return;
     if (sendingNow) return; // evitar solapamientos
+    
+    // Verificar permisos antes de escribir
+    const props = txChar.properties || {};
+    if (!props.write && !props.writeWithoutResponse) {
+        logFeedback('⚠️ No se puede escribir: característica sin permisos. Verificar programa micro:bit.');
+        return;
+    }
+    
     sendingNow = true;
     try {
         const encoder = new TextEncoder();
@@ -518,7 +534,11 @@ async function sendToMicrobit(text) {
         logFeedback('📤 ' + text);
         if (lastPacketEl) lastPacketEl.textContent = text;
     } catch (e) {
-        logFeedback('⚠️ Error al enviar: ' + (e && e.message ? e.message : ''));
+        if (e.message.includes('GATT operation not permitted')) {
+            logFeedback('⚠️ micro:bit rechaza escritura. Verificar que el programa tenga bluetooth.startUartService()');
+        } else {
+            logFeedback('⚠️ Error al enviar: ' + (e && e.message ? e.message : ''));
+        }
         // Si se desconectó, reflejar estado
         if (device && device.gatt && !device.gatt.connected) {
             onDisconnected();
