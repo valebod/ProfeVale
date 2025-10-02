@@ -129,15 +129,9 @@
           <span id="statusBadge" style="font-weight:bold;">Desconectado</span>
           <button id="connectBtn" class="btn-neon" style="min-width:140px;">🔗 Conectar al Micro:bit</button>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;font-size:0.98rem;align-items:center;">
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem;font-size:0.98rem;align-items:center;">
           <div>Enviados: <span id="sendCount">0</span></div>
-          <!-- Selector de característica de escritura (diagnóstico) -->
-          <label for="charSelect" style="margin-left:auto; font-size:0.75rem; color:#a8e6ff;">Destino escritura:</label>
-          <select id="charSelect" style="background:rgba(0,0,0,0.35); color:#e6f3ff; border:1px solid rgba(0,210,255,0.35); border-radius:6px; padding:0.25rem;">
-            <option value="6e400002-b5a3-f393-e0a9-e50e24dcca9e" selected>0002 (estándar)</option>
-            <option value="6e400003-b5a3-f393-e0a9-e50e24dcca9e">0003 (prueba)</option>
-          </select>
-          <button id="bleDiagBtn" class="btn-neon" style="min-width:140px;">🧪 Diagnóstico BLE</button>
+          <button id="bleDiagBtn" class="btn-neon" style="margin-left:auto;min-width:140px;">🧪 Diagnóstico BLE</button>
         </div>
         <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.5rem;">
           <input id="manualText" type="text" placeholder="Texto de prueba (p.ej. TEST)" style="flex:1;min-width:180px;padding:0.4rem;border-radius:6px;border:1px solid rgba(0,210,255,0.35);background:rgba(0,0,0,0.3);color:#e6f3ff;">

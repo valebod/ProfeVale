@@ -31,7 +31,6 @@ const advBtn = document.getElementById('advBtn');
 const testSendBtn = document.getElementById('testSendBtn');
 const lastPacketEl = document.getElementById('last-packet');
 const bleDiagBtn = document.getElementById('bleDiagBtn');
-const charSelect = document.getElementById('charSelect');
 let pageHidden = false;
 let sendingNow = false;
 let lastErrorAt = 0;
@@ -39,40 +38,7 @@ let lastErrorAt = 0;
 
 // (Sin selector de terminador ni modo seguro)
 
-let writePathLogged = false;
-let altTxChar = null; // cuando el usuario elige escribir en 0003
-async function writeUart(u8) {
-    const targetChar = (charSelect && charSelect.value === '6e400003-b5a3-f393-e0a9-e50e24dcca9e' && altTxChar) ? altTxChar : txChar;
-    if (!targetChar) throw new Error('TX no inicializado');
-    const props = targetChar.properties || {};
-    // Intentar withoutResponse primero si existe
-    if (typeof targetChar.writeValueWithoutResponse === 'function' && (props.writeWithoutResponse || !props.write)) {
-        try {
-            const r = await targetChar.writeValueWithoutResponse(u8);
-            if (!writePathLogged) { logFeedback('✍️ writeWithoutResponse'); writePathLogged = true; }
-            return r;
-        } catch (e) {
-            logFeedback('⚠️ fallo writeWithoutResponse, probando conResponse…');
-        }
-    }
-    // Luego con respuesta si está disponible
-    if (typeof targetChar.writeValueWithResponse === 'function' && props.write) {
-        try {
-            const r = await targetChar.writeValueWithResponse(u8);
-            if (!writePathLogged) { logFeedback('✍️ writeWithResponse'); writePathLogged = true; }
-            return r;
-        } catch (e) {
-            logFeedback('⚠️ fallo writeWithResponse, probando legacy…');
-        }
-    }
-    // Fallback antiguo
-    if (typeof targetChar.writeValue === 'function') {
-        const r = await targetChar.writeValue(u8);
-        if (!writePathLogged) { logFeedback('✍️ writeValue (legacy)'); writePathLogged = true; }
-        return r;
-    }
-    throw new Error('Ningún método de escritura disponible en característica UART');
-}
+// Usar writeValue directamente como en Flechas (método que funciona)
 if (advBtn) {
     advBtn.addEventListener('click', () => {
         advancedMode = !advancedMode;
@@ -434,7 +400,7 @@ async function enumerateGatt() {
         if (txChar) {
             try {
                 const test = new TextEncoder().encode('PING');
-                await writeUart(test);
+                await txChar.writeValue(test);
                 logFeedback('✅ Test write PING enviado');
             } catch (e) {
                 logFeedback('⚠️ Error en test write: ' + (e && e.message ? e.message : e));
@@ -511,8 +477,6 @@ connectBtn.addEventListener('click', async () => {
                 logFeedback('📥 ' + txt.trim());
             });
         } catch (_) { }
-        // Intentar también obtener la char 0003 como alternativa de prueba
-        try { altTxChar = await uartService.getCharacteristic('6e400003-b5a3-f393-e0a9-e50e24dcca9e'); } catch(_) { altTxChar = null; }
         isBtConnected = true;
         statusBadge.textContent = '¡Conectado!';
         connectBtn.textContent = '🔌 Desconectar del Micro:bit';
@@ -544,27 +508,16 @@ function onDisconnected() {
 async function sendToMicrobit(text) {
     if (!isBtConnected || !txChar) return;
     if (sendingNow) return; // evitar solapamientos
-    // Pequeño cooldown después de errores para evitar "GATT operation not permitted"
-    if (Date.now() - lastErrorAt < ERROR_COOLDOWN_MS) return;
     sendingNow = true;
     try {
-    const encoder = new TextEncoder();
-    // Enviar EXACTAMENTE 19 caracteres, sin terminador
-    const payload = text;
-        const bytes = encoder.encode(payload);
-        // Trocear por si acaso, aunque hoy cabe en 20
-        for (let i = 0; i < bytes.length; i += 20) {
-            const slice = bytes.slice(i, i + 20);
-            await writeUart(slice);
-            // micro pausa entre chunks
-            if (bytes.length > 20) await new Promise(r=>setTimeout(r, 12));
-        }
+        const encoder = new TextEncoder();
+        // Usar writeValue directamente como en Flechas (método que funciona)
+        await txChar.writeValue(encoder.encode(text));
         sendCount++;
         sendCountEl.textContent = sendCount;
         logFeedback('📤 ' + text);
         if (lastPacketEl) lastPacketEl.textContent = text;
     } catch (e) {
-        lastErrorAt = Date.now();
         logFeedback('⚠️ Error al enviar: ' + (e && e.message ? e.message : ''));
         // Si se desconectó, reflejar estado
         if (device && device.gatt && !device.gatt.connected) {
@@ -629,7 +582,7 @@ if (helloLFBtn) {
         if (!isBtConnected || !txChar) return;
         try {
             const enc = new TextEncoder();
-            await writeUart(enc.encode('HELLO\n'));
+            await txChar.writeValue(enc.encode('HELLO\n'));
             logFeedback('📤 HELLO + LF');
         } catch (e) {
             logFeedback('⚠️ Error enviando HELLO+LF');
