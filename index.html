@@ -109,9 +109,15 @@
           <!-- Enlaces Rápidos -->
           <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
             <a href="https://www.instagram.com/profevaleia/" target="_blank" class="btn-neon">📷 Instagram</a>
+            <button id="btnAliasAR" class="btn-neon" title="Alias Argentina" style="background: linear-gradient(45deg, #00a650, #00c853); color: #fff; border-color: #00a650;">
+              🇦🇷 Alias (Argentina)
+            </button>
+            <button id="btnAliasUY" class="btn-neon" title="Alias Uruguay" style="background: linear-gradient(45deg, #45aaf2, #00d2ff); color: #fff; border-color: #45aaf2;">
+              🇺🇾 Alias (Uruguay)
+            </button>
             <a href="https://ko-fi.com/profevale" target="_blank" class="btn-neon" 
                style="background: linear-gradient(45deg, #ff6b00, #ff8500); color: white; border-color: #ff6b00;">
-              ☕ Invitame un cafecito
+              🌍 Otros países (Ko‑fi)
             </a>
           </div>
           
@@ -587,6 +593,19 @@
       loadUserProgress();
       handleContactForm();
       handleContactFormMobile();
+      // Alias de pago locales
+      const btnAR = document.getElementById('btnAliasAR');
+      const btnUY = document.getElementById('btnAliasUY');
+      if (btnAR) btnAR.onclick = async () => {
+        try { await navigator.clipboard.writeText('profe.vale.ia'); } catch(_){ }
+        btnAR.textContent = '🇦🇷 Copiado: profe.vale.ia';
+        setTimeout(()=> btnAR.textContent = '🇦🇷 Alias (Argentina)', 2000);
+      };
+      if (btnUY) btnUY.onclick = async () => {
+        try { await navigator.clipboard.writeText('vale.uy.brou'); } catch(_){ }
+        btnUY.textContent = '🇺🇾 Copiado: vale.uy.brou';
+        setTimeout(()=> btnUY.textContent = '🇺🇾 Alias (Uruguay)', 2000);
+      };
       // Mostrar estado si ya está instalada
       installSection = document.getElementById('installSection');
       const installBtn = document.getElementById('installBtn');

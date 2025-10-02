@@ -131,6 +131,15 @@
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem;font-size:0.98rem;">
           <div>Enviados: <span id="sendCount">0</span></div>
+          <div style="display:flex;align-items:center;gap:0.4rem;">
+            <label for="delimSelect" style="font-size:0.85rem;color:#a8e6ff;">Terminador:</label>
+            <select id="delimSelect" class="btn-neon" style="padding:0.2rem 0.4rem;font-size:0.8rem;">
+              <option value="lf">LF (\\n)</option>
+              <option value="crlf">CRLF (\\r\\n)</option>
+              <option value="cr">CR (\\r)</option>
+              <option value="none">Sin delimitador</option>
+            </select>
+          </div>
         </div>
         <div id="feedback" style="margin-bottom:0.5rem;display:flex;flex-wrap:wrap;gap:0.5rem;max-height:40px;overflow-y:auto;"></div>
         <div id="lastPacketRow" style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">

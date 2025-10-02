@@ -33,6 +33,17 @@ const lastPacketEl = document.getElementById('last-packet');
 let pageHidden = false;
 let sendingNow = false;
 let lastErrorAt = 0;
+let selectedDelimiter = 'lf'; // por defecto LF
+
+// Leer selección de terminador desde el selector si existe
+const delimSelect = document.getElementById('delimSelect');
+if (delimSelect) {
+    selectedDelimiter = delimSelect.value || 'lf';
+    delimSelect.addEventListener('change', () => {
+        selectedDelimiter = delimSelect.value || 'lf';
+        logFeedback('🔧 Terminador: ' + selectedDelimiter);
+    });
+}
 
 async function writeUart(u8) {
     if (!txChar) throw new Error('TX no inicializado');
@@ -445,6 +456,8 @@ connectBtn.addEventListener('click', async () => {
         statusBadge.textContent = '¡Conectado!';
         connectBtn.textContent = '🔌 Desconectar del Micro:bit';
         logFeedback('🔗 UART listo');
+    // Enviar pequeño ping de prueba al conectar (no crítico)
+    try { await sendToMicrobit('0000000000000000000'); } catch(_){}
     } catch (e) {
         statusBadge.textContent = 'Error de conexión';
         logFeedback('⚠️ ' + (e && e.message ? e.message : 'Fallo al conectar'));
@@ -469,8 +482,13 @@ async function sendToMicrobit(text) {
     sendingNow = true;
     try {
     const encoder = new TextEncoder();
-    // Enviar 19 caracteres + "\n" (LF) para MakeCode onUartDataReceived(NewLine)
-    const payload = text + "\n";
+    // Armar payload según selector
+    let terminator = '';
+    if (selectedDelimiter === 'lf') terminator = "\n";
+    else if (selectedDelimiter === 'crlf') terminator = "\r\n";
+    else if (selectedDelimiter === 'cr') terminator = "\r";
+    else terminator = '';
+    const payload = text + terminator;
         const bytes = encoder.encode(payload);
         // Trocear por si acaso, aunque hoy cabe en 20
         for (let i = 0; i < bytes.length; i += 20) {
