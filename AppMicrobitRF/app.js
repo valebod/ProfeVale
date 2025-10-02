@@ -447,28 +447,15 @@ connectBtn.addEventListener('click', async () => {
         }
     } catch(_){ }
     try {
-        try {
-            device = await navigator.bluetooth.requestDevice({
-                filters: [
-                    { namePrefix: 'BBC micro:bit' },
-                    { namePrefix: 'micro:bit' },
-                    { services: [UART_UUID] }
-                ],
-                optionalServices: [UART_UUID]
-            });
-        } catch (e1) {
-            // Fallback amplio
-            logFeedback('ℹ️ Reintentando con búsqueda amplia...');
-            device = await navigator.bluetooth.requestDevice({
-                acceptAllDevices: true,
-                optionalServices: [UART_UUID]
-            });
-        }
+        // Usar exactamente la misma configuración que Flechas (que funciona)
+        device = await navigator.bluetooth.requestDevice({
+            filters: [{ namePrefix: "BBC micro:bit" }],
+            optionalServices: [UART_UUID]
+        });
+        
         device.addEventListener('gattserverdisconnected', onDisconnected);
         server = await device.gatt.connect();
         logFeedback('✅ Conectado al GATT');
-        // Pequeño delay para asegurar que la conexión está estable
-        await new Promise(resolve => setTimeout(resolve, 500));
         uartService = await server.getPrimaryService(UART_UUID);
         txChar = await uartService.getCharacteristic(TX_UUID);
         // Suscribirse a RX si está disponible (para debug)
