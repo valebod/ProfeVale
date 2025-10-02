@@ -7,6 +7,9 @@ let stopBtn = document.getElementById('stopBtn');
 let toggleCameraBtn = document.getElementById('toggleCameraBtn');
 let facingMode = 'user';
 let detectionRunning = false;
+let cameraOn = false;
+let drawOverlayOn = true;
+let lastSendTs = 0;
 
 // Bluetooth
 let device, server, uartService, txChar;
@@ -24,8 +27,13 @@ async function initCamera() {
         await videoEl.play();
         canvasEl.width = videoEl.videoWidth || 480;
         canvasEl.height = videoEl.videoHeight || 360;
+        cameraOn = true;
         startBtn.disabled = false;
         stopBtn.disabled = false;
+        // Botón de overlay
+        startBtn.textContent = drawOverlayOn ? 'Ocultar líneas' : 'Mostrar líneas';
+        // Botón de cámara
+        stopBtn.textContent = cameraOn ? 'Apagar cámara' : 'Encender cámara';
     } catch (e) {
         console.error('Error accediendo a la cámara:', e);
         startBtn.disabled = true;
@@ -61,8 +69,14 @@ async function startDetection() {
 
 async function loopDetection() {
     if (!detectionRunning) return;
-    try {
-        const predictions = await model.estimateFaces({ input: videoEl, returnTensors: false });
+        try {
+            if (!cameraOn || videoEl.readyState < 2) {
+                ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+                await sendToMicrobit('visible:0');
+                requestAnimationFrame(loopDetection);
+                return;
+            }
+            const predictions = await model.estimateFaces({ input: videoEl, returnTensors: false });
         ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
         if (predictions && predictions.length > 0) {
             const p = predictions[0];
@@ -98,13 +112,13 @@ async function loopDetection() {
             };
 
             // Silueta (contorno de la cara)
-            if (ann.silhouette) drawPath(ann.silhouette, { close:false, color:'#00d2ff', width:2, glow:18 });
+            if (drawOverlayOn && ann.silhouette) drawPath(ann.silhouette, { close:false, color:'#00d2ff', width:2, glow:18 });
 
             // Cejas
-            if (ann.leftEyebrowUpper) drawPath(ann.leftEyebrowUpper, { color:'#39ff14', width:2, glow:14 });
-            if (ann.leftEyebrowLower) drawPath(ann.leftEyebrowLower, { color:'#39ff14', width:2, glow:14 });
-            if (ann.rightEyebrowUpper) drawPath(ann.rightEyebrowUpper, { color:'#39ff14', width:2, glow:14 });
-            if (ann.rightEyebrowLower) drawPath(ann.rightEyebrowLower, { color:'#39ff14', width:2, glow:14 });
+            if (drawOverlayOn && ann.leftEyebrowUpper) drawPath(ann.leftEyebrowUpper, { color:'#39ff14', width:2, glow:14 });
+            if (drawOverlayOn && ann.leftEyebrowLower) drawPath(ann.leftEyebrowLower, { color:'#39ff14', width:2, glow:14 });
+            if (drawOverlayOn && ann.rightEyebrowUpper) drawPath(ann.rightEyebrowUpper, { color:'#39ff14', width:2, glow:14 });
+            if (drawOverlayOn && ann.rightEyebrowLower) drawPath(ann.rightEyebrowLower, { color:'#39ff14', width:2, glow:14 });
 
             // Ojos
             const eyeColor = '#ffee00';
@@ -114,8 +128,8 @@ async function loopDetection() {
             const rightEye = ann.rightEyeUpper0 ? [
                 ...(ann.rightEyeUpper0||[]), ...(ann.rightEyeUpper1||[]), ...(ann.rightEyeLower0||[]), ...(ann.rightEyeLower1||[])
             ] : null;
-            if (leftEye) drawPath(leftEye, { close:true, color:eyeColor, width:2, glow:12 });
-            if (rightEye) drawPath(rightEye, { close:true, color:eyeColor, width:2, glow:12 });
+            if (drawOverlayOn && leftEye) drawPath(leftEye, { close:true, color:eyeColor, width:2, glow:12 });
+            if (drawOverlayOn && rightEye) drawPath(rightEye, { close:true, color:eyeColor, width:2, glow:12 });
             // Centros aproximados de ojos
             const center = (pts) => {
                 if (!pts || pts.length===0) return null;
@@ -124,12 +138,12 @@ async function loopDetection() {
             };
             const leftCenter = center(leftEye);
             const rightCenter = center(rightEye);
-            if (leftCenter) drawPoints([leftCenter], { color:'#ffffff', radius:2.5, glow:8 });
-            if (rightCenter) drawPoints([rightCenter], { color:'#ffffff', radius:2.5, glow:8 });
+            if (drawOverlayOn && leftCenter) drawPoints([leftCenter], { color:'#ffffff', radius:2.5, glow:8 });
+            if (drawOverlayOn && rightCenter) drawPoints([rightCenter], { color:'#ffffff', radius:2.5, glow:8 });
 
             // Nariz
-            if (ann.noseBridge) drawPath(ann.noseBridge, { color:'#9b59b6', width:3, glow:16 });
-            if (ann.noseTip) drawPoints(ann.noseTip, { color:'#9b59b6', radius:3, glow:12 });
+            if (drawOverlayOn && ann.noseBridge) drawPath(ann.noseBridge, { color:'#9b59b6', width:3, glow:16 });
+            if (drawOverlayOn && ann.noseTip) drawPoints(ann.noseTip, { color:'#9b59b6', radius:3, glow:12 });
 
             // Labios (exteriores/interiores) con comisuras destacadas
             const lipsOuter = [
@@ -140,8 +154,8 @@ async function loopDetection() {
                 ...(ann.lipsUpperInner||[]),
                 ...(ann.lipsLowerInner||[])
             ];
-            if (lipsOuter.length>0) drawPath(lipsOuter, { close:true, color:'#ff2e63', width:3, glow:18 });
-            if (lipsInner.length>0) drawPath(lipsInner, { close:true, color:'#ff8fab', width:2, glow:14 });
+            if (drawOverlayOn && lipsOuter.length>0) drawPath(lipsOuter, { close:true, color:'#ff2e63', width:3, glow:18 });
+            if (drawOverlayOn && lipsInner.length>0) drawPath(lipsInner, { close:true, color:'#ff8fab', width:2, glow:14 });
             // Comisuras: usar minX y maxX de labios exteriores
             if (lipsOuter.length>0) {
                 let leftCorner = lipsOuter[0], rightCorner = lipsOuter[0];
@@ -149,16 +163,110 @@ async function loopDetection() {
                     if (pt[0] < leftCorner[0]) leftCorner = pt;
                     if (pt[0] > rightCorner[0]) rightCorner = pt;
                 }
-                drawPoints([leftCorner, rightCorner], { color:'#fffb00', radius:4, glow:16 });
+                        if (drawOverlayOn) drawPoints([leftCorner, rightCorner], { color:'#fffb00', radius:4, glow:16 });
             }
 
-            // Puntos clave opcionales (suaves) para dar efecto llamativo si hace falta
-            // drawPoints(p.scaledMesh, { color:'#00d2ff', radius:1.2, glow:4 });
+                    // --- Cálculo de parámetros ---
+                    const box = p.box || p.boundingBox || null;
+                    let faceW = canvasEl.width, faceH = canvasEl.height;
+                    let centerX = canvasEl.width/2, centerY = canvasEl.height/2;
+                    if (box) {
+                        const x = box.xMin || box.topLeft[0];
+                        const y = box.yMin || box.topLeft[1];
+                        const w = (box.xMax || box.bottomRight[0]) - x;
+                        const h = (box.yMax || box.bottomRight[1]) - y;
+                        faceW = w; faceH = h; centerX = x + w/2; centerY = y + h/2;
+                    }
 
-            // Enviar visible
-            await sendToMicrobit('visible:1');
+                    const norm = (v, max) => Math.max(0, Math.min(1, v / max));
+                    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+                    const deg = (rad) => rad * 180 / Math.PI;
+                    const dist = (a,b) => Math.hypot(a[0]-b[0], a[1]-b[1]);
+
+                    // x,y normalizados 0..1
+                    const xN = clamp(centerX / canvasEl.width, 0, 1);
+                    const yN = clamp(centerY / canvasEl.height, 0, 1);
+
+                    // z aproximada: inverso del tamaño (cara grande => z pequeño)
+                    const sizeRatio = clamp(Math.max(faceW, faceH) / Math.max(canvasEl.width, canvasEl.height), 0.05, 1);
+                    const zN = clamp(1 - sizeRatio, 0, 1);
+
+                    // Ojos centers ya calculados
+                    let rollDeg = 0;
+                    if (leftCenter && rightCenter) {
+                        rollDeg = deg(Math.atan2(rightCenter[1]-leftCenter[1], rightCenter[0]-leftCenter[0]));
+                    }
+
+                    // Yaw/Pitch aproximados
+                    const noseCenter = ann.noseTip && ann.noseTip.length ? center(ann.noseTip) : [centerX, centerY];
+                    const dx = (noseCenter[0] - centerX) / (faceW || 1);
+                    const dy = (noseCenter[1] - centerY) / (faceH || 1);
+                    const yawDeg = clamp(dx * 60, -60, 60);
+                    const pitchDeg = clamp(-dy * 60, -60, 60);
+
+                    // Boca: apertura relativa
+                    const lipsUpperMid = ann.lipsUpperInner && ann.lipsUpperInner[Math.floor(ann.lipsUpperInner.length/2)];
+                    const lipsLowerMid = ann.lipsLowerInner && ann.lipsLowerInner[Math.floor(ann.lipsLowerInner.length/2)];
+                    let mouthOpen = 0;
+                    if (lipsUpperMid && lipsLowerMid) mouthOpen = clamp(dist(lipsUpperMid, lipsLowerMid) / (faceH || 1), 0, 1);
+
+                    // Ojos: apertura promedio
+                    const verticalEyeOpenness = (eyePts) => {
+                        if (!eyePts || eyePts.length < 4) return 0;
+                        // aproximar con puntos primero y último vs medio
+                        const top = eyePts[0];
+                        const bottom = eyePts[Math.floor(eyePts.length/2)];
+                        return dist(top, bottom) / (faceH || 1);
+                    };
+                    const eyesOpen = clamp(((verticalEyeOpenness(ann.leftEyeUpper0||ann.leftEyeLower0) + verticalEyeOpenness(ann.rightEyeUpper0||ann.rightEyeLower0)) / 2) * 3, 0, 1);
+
+                    // Sonrisa: ancho de boca relativo
+                    let smile = 0;
+                    if (lipsOuter.length>0) {
+                        let leftCorner = lipsOuter[0], rightCorner = lipsOuter[0];
+                        for (const pt of lipsOuter) {
+                            if (pt[0] < leftCorner[0]) leftCorner = pt;
+                            if (pt[0] > rightCorner[0]) rightCorner = pt;
+                        }
+                        smile = clamp(dist(leftCorner, rightCorner) / (faceW || 1), 0, 1);
+                    }
+
+                    const visible = 1;
+                    const confidence = 1;
+                    const blink = eyesOpen < 0.04 ? 1 : 0;
+
+                    // Actualizar UI
+                    const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+                    setText('x-value', xN.toFixed(2));
+                    setText('y-value', yN.toFixed(2));
+                    setText('z-value', zN.toFixed(2));
+                    setText('yaw-value', yawDeg.toFixed(0));
+                    setText('pitch-value', pitchDeg.toFixed(0));
+                    setText('roll-value', rollDeg.toFixed(0));
+                    setText('mouth-value', mouthOpen.toFixed(2));
+                    setText('eyes-value', eyesOpen.toFixed(2));
+                    setText('smile-value', smile.toFixed(2));
+                    setText('visible-value', '✔');
+                    setText('confidence-value', (confidence*100).toFixed(0));
+                    setText('blink-value', blink ? '✔' : '✖');
+
+                    // Envío (12 Hz)
+                    const now = Date.now();
+                    if (now - lastSendTs > 80) {
+                        lastSendTs = now;
+                        const payload = {
+                            x: +xN.toFixed(2), y: +yN.toFixed(2), z: +zN.toFixed(2),
+                            yaw: Math.round(yawDeg), pitch: Math.round(pitchDeg), roll: Math.round(rollDeg),
+                            mouth: +mouthOpen.toFixed(2), eyes: +eyesOpen.toFixed(2), smile: +smile.toFixed(2),
+                            visible, confidence, blink
+                        };
+                        await sendToMicrobit(JSON.stringify(payload));
+                    }
         } else {
-            await sendToMicrobit('visible:0');
+                    // Limpiar UI cuando no hay rostro
+                    const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+                    setText('visible-value', '✖');
+                    await sendToMicrobit('visible:0');
         }
     } catch (e) {
         console.error('Error en loop detección:', e);
@@ -170,8 +278,24 @@ function stopDetection() {
     detectionRunning = false;
 }
 
-startBtn.addEventListener('click', startDetection);
-stopBtn.addEventListener('click', stopDetection);
+// Botón de líneas: mostrar/ocultar (detección corre mientras haya cámara)
+startBtn.addEventListener('click', () => {
+    drawOverlayOn = !drawOverlayOn;
+    startBtn.textContent = drawOverlayOn ? 'Ocultar líneas' : 'Mostrar líneas';
+});
+
+// Botón de cámara: apagar/encender
+stopBtn.addEventListener('click', async () => {
+    if (cameraOn) {
+        const stream = videoEl.srcObject;
+        if (stream) stream.getTracks().forEach(t => t.stop());
+        videoEl.srcObject = null;
+        cameraOn = false;
+    } else {
+        await initCamera();
+    }
+    stopBtn.textContent = cameraOn ? 'Apagar cámara' : 'Encender cámara';
+});
 
 // Bluetooth
 connectBtn.addEventListener('click', async () => {
@@ -211,3 +335,4 @@ async function sendToMicrobit(text) {
 
 // Arranque
 initCamera();
+startDetection();
