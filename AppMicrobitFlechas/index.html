@@ -672,17 +672,29 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     
     function handleInstallApp() {
       const installBtn = document.getElementById('installBtn');
-      if (installBtn && deferredPrompt) {
+      if (installBtn) {
         installBtn.addEventListener('click', async () => {
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          
-          if (outcome === 'accepted') {
-            console.log('App instalada');
-            document.getElementById('installSection').style.display = 'none';
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+              console.log('App instalada');
+              document.getElementById('installSection').style.display = 'none';
+            }
+            
+            deferredPrompt = null;
+          } else {
+            // Fallback para cuando no hay deferredPrompt
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+            
+            if (isIOS && isSafari) {
+              alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
+            } else {
+              alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
+            }
           }
-          
-          deferredPrompt = null;
         });
       }
     }

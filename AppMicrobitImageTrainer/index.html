@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Trainer Profe Vale</title>                    <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='🔗 Abrir MakeCode para pegar', 2000)" class="btn-neon" style="font-size: 0.8rem;">
-                        🔗 Abrir MakeCode para pegar
-                    </button>
-                </div>
-                <div style="text-align: center; margin-top: 0.5rem;">
-                    <a href="https://makecode.microbit.org" target="_blank" style="color: #00d2ff; font-size: 0.8rem; text-decoration: underline;">🌐 makecode.microbit.org</a>  <meta name="description" content="Entrenador de imágenes con IA para micro:bit - Profe Vale">
+    <title>Image Trainer Profe Vale</title>
+    <meta name="description" content="Entrenador de imágenes con IA para micro:bit - Profe Vale">
     <meta name="theme-color" content="#0077ff">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" href="./icon.png">
@@ -17,23 +13,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@latest"></script>
 </head>
 <body>
-    <!-- Header con navegación -->
-    <div style="background: transparent; padding: 1rem 0; margin-bottom: 2rem;">
-        <div class="container">
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                            <img src="../LogoProfeVale.png" alt="Profe Vale Logo" style="width: 80px; height: 80px;">
-                    <div>
-                        <h1 style="margin: 0; font-size: 1.5rem; color: #0077ff;">🧠 Entrenador de Imágenes IA</h1>
-                        <p style="margin: 0; color: #666; font-size: 0.9rem;">Crea tu propio clasificador de imágenes para micro:bit</p>
-                    </div>
-                </div>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                    <a href="../index.html" class="btn-neon" style="font-size: 0.8rem;">🏠 Inicio</a>
-                    <a href="../tutoriales/index.html" class="btn-neon" style="font-size: 0.8rem;">📚 Tutoriales</a>
-                </div>
-            </div>
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <img src="../LogoProfeVale.png" alt="Profe Vale Logo" style="width: 60px; height: 60px;">
+        <div>
+          <h1 class="header-glow" style="margin: 0;">🧠 Entrenador de Imágenes IA</h1>
+          <p style="margin: 0; color: #e6f3ff; font-size: 0.9rem;">Crea tu propio clasificador</p>
         </div>
+      </div>
+      <a href="../index.html" class="btn-neon" style="display: inline-block; font-size: 0.8rem;">← Volver al inicio</a>
     </div>
 
     <div class="container" style="max-width: 1400px;">
@@ -359,17 +348,29 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
         
         function handleInstallApp() {
             const installBtn = document.getElementById('installBtn');
-            if (installBtn && deferredPrompt) {
+            if (installBtn) {
                 installBtn.addEventListener('click', async () => {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    
-                    if (outcome === 'accepted') {
-                        console.log('App instalada');
-                        document.getElementById('installSection').style.display = 'none';
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        
+                        if (outcome === 'accepted') {
+                            console.log('App instalada');
+                            document.getElementById('installSection').style.display = 'none';
+                        }
+                        
+                        deferredPrompt = null;
+                    } else {
+                        // Fallback para cuando no hay deferredPrompt
+                        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                        const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+                        
+                        if (isIOS && isSafari) {
+                            alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
+                        } else {
+                            alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
+                        }
                     }
-                    
-                    deferredPrompt = null;
                 });
             }
         }

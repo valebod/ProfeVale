@@ -131,8 +131,8 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     }
     .btn-neon {
       background: transparent;
-      color: #39ff14;
-      border: 2px solid #39ff14;
+      color: #0077ff;
+      border: 2px solid #0077ff;
       border-radius: 10px;
       font-size: 1.1rem;
       font-weight: 600;
@@ -278,7 +278,7 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
         
         <div>
           <h3 style="color: #0077ff; margin-bottom: 1rem;">💻 Código MakeCode</h3>
-          <div style="background: #1a1a1a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #39ff14;">
+          <div style="background: #1a1a1a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #0077ff;">
             <h4 style="color: #0077ff; margin-bottom: 0.8rem; font-size: 0.9rem;">📱 Programa tu micro:bit:</h4>
             <div style="text-align: center; margin: 1rem 0;">
               <a href="https://makecode.microbit.org/_VKqFdyTzWYt6" target="_blank" class="btn-neon" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
@@ -407,7 +407,7 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
         const face = faces[0];
         const landmarks = face.scaledMesh || face.keypoints;
         // Dibujar puntos
-        ctx.fillStyle = '#00ff00';
+        ctx.fillStyle = '#0077ff';
         landmarks.forEach(p => { ctx.beginPath(); ctx.arc(p[0], p[1], 2, 0, 2*Math.PI); ctx.fill(); });
         // Calcular parámetros
         const xs = landmarks.map(p => p[0]);
@@ -531,17 +531,29 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     
     function handleInstallApp() {
       const installBtn = document.getElementById('installBtn');
-      if (installBtn && deferredPrompt) {
+      if (installBtn) {
         installBtn.addEventListener('click', async () => {
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          
-          if (outcome === 'accepted') {
-            console.log('App instalada');
-            document.getElementById('installSection').style.display = 'none';
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+              console.log('App instalada');
+              document.getElementById('installSection').style.display = 'none';
+            }
+            
+            deferredPrompt = null;
+          } else {
+            // Fallback para cuando no hay deferredPrompt
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+            
+            if (isIOS && isSafari) {
+              alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
+            } else {
+              alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
+            }
           }
-          
-          deferredPrompt = null;
         });
       }
     }
