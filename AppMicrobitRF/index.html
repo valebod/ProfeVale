@@ -133,10 +133,15 @@
           <div>Enviados: <span id="sendCount">0</span></div>
         </div>
         <div id="feedback" style="margin-bottom:0.5rem;display:flex;flex-wrap:wrap;gap:0.5rem;max-height:40px;overflow-y:auto;"></div>
-        <div id="lastPacketRow" style="display:flex;align-items:center;gap:0.5rem;">
+        <div id="lastPacketRow" style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
           <span style="font-size:0.85rem;color:#a8e6ff;">Último paquete:</span>
           <code id="last-packet" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; background: rgba(0,0,0,0.35); color:#e6f3ff; padding:0.2rem 0.4rem; border-radius:6px; border:1px solid rgba(0,210,255,0.35); letter-spacing:1px;">—</code>
           <button class="btn-neon" style="padding:0.2rem 0.5rem; font-size:0.75rem; line-height:1;" onclick="(function(){const el=document.getElementById('last-packet'); if(el && el.textContent && el.textContent.trim()!=='—'){ navigator.clipboard.writeText(el.textContent.trim()); }})()">Copiar</button>
+          <span style="margin-left:auto; font-size:0.8rem; color:#a8e6ff;">Delimitador:</span>
+          <select id="delimiterSelect" class="btn-neon" style="padding:0.2rem 0.4rem; font-size:0.75rem;">
+            <option value="lf" selected>LF (\n)</option>
+            <option value="crlf">CRLF (\r\n)</option>
+          </select>
         </div>
       </div>
       <div class="card-glass">
@@ -243,7 +248,7 @@
           <div class="card-glass" style="background: rgba(0,0,0,0.35); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #00d2ff;">
             <h4 style="color: #00d2ff; margin-bottom: 0.8rem; font-size: 0.9rem;">📱 Programa tu micro:bit</h4>
             <div style="text-align: center; margin: 1rem 0;">
-              <a href="https://makecode.microbit.org/_VKqFdyTzWYt6" target="_blank" class="btn-neon" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
+              <a href="https://makecode.microbit.org/S92774-32768-05331-91691" target="_blank" class="btn-neon" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
                 📂 Abrir en MakeCode
               </a>
             </div>

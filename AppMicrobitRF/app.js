@@ -456,8 +456,10 @@ async function sendToMicrobit(text) {
     sendingNow = true;
     try {
         const encoder = new TextEncoder();
-        // Asegurar longitud por debajo del MTU habitual (20 bytes). Nuestros paquetes son 20 con \n.
-        const payload = text + '\n';
+        // Asegurar longitud por debajo del MTU habitual (20 bytes). Nuestros paquetes son 20 con delimitador.
+        const sel = document.getElementById('delimiterSelect');
+        const delim = sel && sel.value === 'crlf' ? '\r\n' : '\n';
+        const payload = text + delim;
         const bytes = encoder.encode(payload);
         // Trocear por si acaso, aunque hoy cabe en 20
         for (let i = 0; i < bytes.length; i += 20) {
