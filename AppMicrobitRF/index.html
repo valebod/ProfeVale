@@ -97,23 +97,14 @@
     <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
       <img src="../LogoProfeVale.png" alt="Profe Vale Logo" style="width: 80px; height: 80px;">
       <div>
-        <h1 class="header-glow" style="margin: 0; font-size: 2rem;">🤖 Reconocimiento Facial</h1>
+  <h1 class="header-glow" style="margin: 0; font-size: 2rem;">Reconocimiento Facial</h1>
         <p style="margin: 0; color: #e6f3ff;">TensorFlow + micro:bit</p>
       </div>
     </div>
     <a href="../index.html" class="btn-neon" style="display: inline-block; font-size: 0.8rem;">← Volver al inicio</a>
   </div>
   
-  <!-- PWA Install Section (mobile only) -->
-  <div id="installSection" style="display: none; text-align: center; margin: 1rem auto; max-width: 500px;">
-    <div class="card-glass" style="padding: 1.5rem;">
-      <h4 style="margin-bottom: 1rem; font-size: 1.1rem; color: #0077ff;">📱 ¡Instala Reconocimiento Facial!</h4>
-      <p style="font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Agrega esta app a tu pantalla de inicio para detección facial instantánea</p>
-      <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem;">
-        📲 Instalar App
-      </button>
-    </div>
-  </div>
+  
   
   <div class="container">
     <div class="camera-panel">
@@ -192,6 +183,16 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Instalación PWA (footer, solo móvil) -->
+  <div id="installSection" style="display: none; text-align: center; margin: 2rem auto; max-width: 520px;">
+    <div class="card-glass" style="padding: 1.5rem;">
+      <img src="./icon.png" alt="Icono app" style="width:64px;height:64px;border-radius:12px;margin-bottom:0.75rem;box-shadow:0 0 12px rgba(0,210,255,0.35);">
+      <h4 style="margin-bottom: 1rem; font-size: 1.1rem; color: #0077ff;">Instalá Reconocimiento Facial</h4>
+      <p style="font-size: 0.9rem; margin-bottom: 1.2rem; line-height: 1.5;">Agregá esta app a tu pantalla de inicio para acceso rápido</p>
+      <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem;">Instalar App</button>
     </div>
   </div>
 
