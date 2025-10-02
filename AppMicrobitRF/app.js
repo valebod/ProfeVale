@@ -531,14 +531,12 @@ async function sendToMicrobit(text) {
     sendingNow = true;
     try {
         const encoder = new TextEncoder();
-        // Agregar delimitador NewLine que espera el programa micro:bit
-        const textWithNewline = text + '\n';
         // Usar writeValue directamente como en Flechas (método que funciona)
-        await txChar.writeValue(encoder.encode(textWithNewline));
+        await txChar.writeValue(encoder.encode(text));
         sendCount++;
         sendCountEl.textContent = sendCount;
-        logFeedback('📤 ' + text + '\\n');
-        if (lastPacketEl) lastPacketEl.textContent = text + '\\n';
+        logFeedback('📤 ' + text);
+        if (lastPacketEl) lastPacketEl.textContent = text;
     } catch (e) {
         if (e.message.includes('GATT operation not permitted')) {
             logFeedback('⚠️ micro:bit rechaza escritura. Verificar que el programa tenga bluetooth.startUartService()');
