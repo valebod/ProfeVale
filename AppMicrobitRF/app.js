@@ -12,7 +12,7 @@ let drawOverlayOn = true;
 let lastSendTs = 0;
 const unMirrorFront = true; // Forzar no-"espejo" en cámara frontal
 let advancedMode = false;
-const SEND_INTERVAL_MS = 500; // 2 Hz para pruebas de estabilidad (19 dígitos, sin delimitador)
+const SEND_INTERVAL_MS = 500; // 2 Hz para pruebas de estabilidad (19 dígitos + terminador \n)
 const ERROR_COOLDOWN_MS = 600; // tras error, enfriar un poco para no saturar
 
 // Utilidades matemáticas globales
@@ -468,9 +468,9 @@ async function sendToMicrobit(text) {
     if (Date.now() - lastErrorAt < ERROR_COOLDOWN_MS) return;
     sendingNow = true;
     try {
-        const encoder = new TextEncoder();
-        // Enviar EXACTAMENTE 19 caracteres, sin delimitador (sin \n, \r, \r\n)
-        const payload = text;
+    const encoder = new TextEncoder();
+    // Enviar 19 caracteres + "\n" (LF) para MakeCode onUartDataReceived(NewLine)
+    const payload = text + "\n";
         const bytes = encoder.encode(payload);
         // Trocear por si acaso, aunque hoy cabe en 20
         for (let i = 0; i < bytes.length; i += 20) {
