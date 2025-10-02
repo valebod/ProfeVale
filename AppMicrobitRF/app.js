@@ -13,6 +13,11 @@ let lastSendTs = 0;
 const unMirrorFront = true; // Forzar no-"espejo" en cámara frontal
 let advancedMode = false;
 
+// Utilidades matemáticas globales
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const deg = (rad) => rad * 180 / Math.PI;
+const dist = (a,b) => Math.hypot(a[0]-b[0], a[1]-b[1]);
+
 // Bluetooth
 let device, server, uartService, txChar;
 let isBtConnected = false;
@@ -139,6 +144,8 @@ async function loopDetection() {
                 return [sx/pts.length, sy/pts.length];
             };
 
+            // (utilidades matemáticas ya definidas arriba)
+
             // --- Caja/medidas de cara antes de cálculos ---
             const box = p.box || p.boundingBox || null;
             let faceW = canvasEl.width, faceH = canvasEl.height;
@@ -219,10 +226,7 @@ async function loopDetection() {
 
                     // --- Cálculo de parámetros (usa medidas ya obtenidas) ---
 
-                    const norm = (v, max) => Math.max(0, Math.min(1, v / max));
-                    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-                    const deg = (rad) => rad * 180 / Math.PI;
-                    const dist = (a,b) => Math.hypot(a[0]-b[0], a[1]-b[1]);
+                    // const norm = (v, max) => Math.max(0, Math.min(1, v / max));
 
                     // x,y normalizados 0..1
                     const xN = clamp(centerX / canvasEl.width, 0, 1);
