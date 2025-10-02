@@ -489,12 +489,19 @@
     // PWA Installation
     let deferredPrompt;
     let installSection;
+
+    function isPortraitMobile() {
+      const ua = navigator.userAgent;
+      const isMobileUA = /Android|iPhone|iPad|iPod|Mobile|Samsung|SM-|Pixel|Xiaomi|Huawei/i.test(ua);
+      const isPortrait = window.matchMedia && window.matchMedia('(orientation: portrait)').matches;
+      const smallViewport = Math.min(window.innerWidth, window.innerHeight) <= 820; // soporta pantallas de alta densidad
+      return (isMobileUA && (isPortrait || smallViewport));
+    }
     
-    // Mostrar sección de instalación solo en móvil
+    // Mostrar sección de instalación solo en móvil vertical
     function showInstallPrompt() {
-      const isMobile = window.innerWidth <= 768;
       installSection = document.getElementById('installSection');
-      if (installSection && isMobile) {
+      if (installSection && isPortraitMobile() && !window.matchMedia('(display-mode: standalone)').matches) {
         installSection.style.display = 'block';
         
         // Mostrar instrucciones específicas para iOS
@@ -523,11 +530,23 @@
     // Mostrar también en dispositivos donde no se dispara beforeinstallprompt
     window.addEventListener('load', () => {
       setTimeout(() => {
-        const isMobile = window.innerWidth <= 768;
-        if (isMobile && !deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
+        if (isPortraitMobile() && !deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
           showInstallPrompt();
         }
       }, 3000);
+    });
+
+    // Actualizar visibilidad al rotar o cambiar tamaño
+    ['orientationchange','resize'].forEach(evt => {
+      window.addEventListener(evt, () => {
+        if (!window.matchMedia('(display-mode: standalone)').matches) {
+          if (isPortraitMobile()) {
+            showInstallPrompt();
+          } else if (installSection) {
+            installSection.style.display = 'none';
+          }
+        }
+      });
     });
     
     function handleInstallApp() {

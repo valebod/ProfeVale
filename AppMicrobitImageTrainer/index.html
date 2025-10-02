@@ -185,8 +185,8 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     pins.analogWritePin(AnalogPin.P2, 0)
 })</textarea>
                 <div style="text-align: center; margin: 1rem 0;">
-                    <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='� Copiar Código', 2000)" class="btn-neon" style="font-size: 0.8rem;">
-                        📋 Copiar Código
+                        <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='📋 Copiar Código', 2000)" class="btn-neon" style="font-size: 0.8rem;">
+                                📋 Copiar Código
                     </button>
                 </div>
                 <ul style="color: #e0e0e0; line-height: 1.4; font-size: 0.8rem;">
@@ -382,12 +382,16 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     let installSection = document.getElementById('installSection');
     let installBtn = document.getElementById('installBtn');
     
-    function isMobile() {
-      return window.innerWidth <= 768;
-    }
+        function isPortraitMobile() {
+            const ua = navigator.userAgent;
+            const isMobileUA = /Android|iPhone|iPad|iPod|Mobile|Samsung|SM-|Pixel|Xiaomi|Huawei/i.test(ua);
+            const isPortrait = window.matchMedia && window.matchMedia('(orientation: portrait)').matches;
+            const smallViewport = Math.min(window.innerWidth, window.innerHeight) <= 820;
+            return (isMobileUA && (isPortrait || smallViewport));
+        }
     
-    function showInstallSection() {
-      if (isMobile()) {
+        function showInstallSection() {
+            if (isPortraitMobile()) {
         installSection.style.display = 'block';
       }
     }
@@ -396,8 +400,8 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
       installSection.style.display = 'none';
     }
     
-    function handleInstallApp() {
-      if (!isMobile()) return;
+        function handleInstallApp() {
+            if (!isPortraitMobile()) return;
       
       // Check if already installed
       if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
@@ -405,10 +409,10 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
         return;
       }
       
-      // Show section initially on mobile
-      showInstallSection();
+    // Show section initially on portrait/mobile
+    showInstallSection();
       
-      window.addEventListener('beforeinstallprompt', (e) => {
+    window.addEventListener('beforeinstallprompt', (e) => {
         console.log('beforeinstallprompt triggered');
         e.preventDefault();
         deferredPrompt = e;
@@ -435,7 +439,15 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
             }
           }
         });
-      });
+            });
+
+            ['orientationchange','resize'].forEach(evt => {
+                window.addEventListener(evt, () => {
+                    if (window.matchMedia('(display-mode: standalone)').matches) return;
+                    if (isPortraitMobile()) showInstallSection();
+                    else hideInstallSection();
+                });
+            });
     }
     
     window.addEventListener('load', handleInstallApp);

@@ -206,7 +206,7 @@
           
                     <div style="background: #1a1a1a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #0077ff;">
             <h4 style="color: #0077ff; margin-bottom: 0.8rem;">� Programa tu micro:bit:</h4>
-            <p style="color: #e0e0e0; font-size: 0.85rem; margin-bottom: 1rem;">Copia este código en MakeCode (makecode.microbit.org):</p>
+              <h4 style="color: #0077ff; margin-bottom: 0.8rem;">📱 Programa tu micro:bit:</h4>
             <textarea readonly style="width: 100%; height: 120px; background: #000; color: #0f0; border: 1px solid #333; border-radius: 4px; padding: 0.5rem; font-family: monospace; font-size: 0.8rem; resize: vertical;">bluetooth.startUartService()
 basic.showString("Listo")
 
@@ -234,7 +234,7 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
 })</textarea>
             <div style="text-align: center; margin: 1rem 0;">
               <button onclick="navigator.clipboard.writeText(this.parentNode.previousElementSibling.value); this.textContent='✅ ¡Copiado!'; setTimeout(()=>this.textContent='� Abrir MakeCode para pegar', 2000)" class="btn-neon" style="font-size: 0.8rem;">
-                � Abrir MakeCode para pegar
+             🔗 Abrir MakeCode para pegar
               </button>
             </div>
             <div style="text-align: center; margin-top: 0.5rem;">
@@ -675,50 +675,69 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
       }
     });
 
-    // PWA Installation
+    // PWA Installation (móvil en vertical)
     let deferredPrompt;
-    
+    const installSectionEl = document.getElementById('installSection');
+    const installBtnEl = document.getElementById('installBtn');
+
+    function isPortraitMobile() {
+      const ua = navigator.userAgent;
+      const isMobileUA = /Android|iPhone|iPad|iPod|Mobile|Samsung|SM-|Pixel|Xiaomi|Huawei/i.test(ua);
+      const isPortrait = window.matchMedia && window.matchMedia('(orientation: portrait)').matches;
+      const smallViewport = Math.min(window.innerWidth, window.innerHeight) <= 820;
+      return (isMobileUA && (isPortrait || smallViewport));
+    }
+
+    function showInstallSection() {
+      if (!installSectionEl) return;
+      // Evitar mostrar si ya está instalada como standalone
+      if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        installSectionEl.style.display = 'none';
+        return;
+      }
+      if (isPortraitMobile()) installSectionEl.style.display = 'block';
+    }
+
+    function hideInstallSection() {
+      if (installSectionEl) installSectionEl.style.display = 'none';
+    }
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      
-      const installSection = document.getElementById('installSection');
-      if (installSection) {
-        installSection.style.display = 'block';
-      }
+      showInstallSection();
     });
-    
-    function handleInstallApp() {
-      const installBtn = document.getElementById('installBtn');
-      if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-          if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            
-            if (outcome === 'accepted') {
-              console.log('App instalada');
-              document.getElementById('installSection').style.display = 'none';
-            }
-            
-            deferredPrompt = null;
+
+    if (installBtnEl) {
+      installBtnEl.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') hideInstallSection();
+          deferredPrompt = null;
+        } else {
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+          if (isIOS && isSafari) {
+            alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
           } else {
-            // Fallback para cuando no hay deferredPrompt
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
-            
-            if (isIOS && isSafari) {
-              alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
-            } else {
-              alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
-            }
+            alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
           }
-        });
-      }
+        }
+      });
     }
-    
-    // Llamar la función de instalación al cargar
-    window.addEventListener('load', handleInstallApp);
+
+    // Mostrar/ocultar según orientación y tamaño
+    ;['orientationchange','resize','pageshow'].forEach(evt => {
+      window.addEventListener(evt, () => {
+        if (window.matchMedia('(display-mode: standalone)').matches) return;
+        if (isPortraitMobile()) showInstallSection();
+        else hideInstallSection();
+      });
+    });
+
+    // Mostrar inicialmente si corresponde
+    showInstallSection();
     
     // Registrar Service Worker
     if ('serviceWorker' in navigator) {
