@@ -131,18 +131,7 @@
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem;font-size:0.98rem;align-items:center;">
           <div>Enviados: <span id="sendCount">0</span></div>
-          <div style="display:flex;align-items:center;gap:0.4rem;">
-            <label for="delimSelect" style="font-size:0.85rem;color:#a8e6ff;">Terminador:</label>
-            <select id="delimSelect" class="btn-neon" style="padding:0.2rem 0.4rem;font-size:0.8rem;">
-              <option value="lf">LF (\\n)</option>
-              <option value="crlf">CRLF (\\r\\n)</option>
-              <option value="cr">CR (\\r)</option>
-              <option value="none">Sin delimitador</option>
-            </select>
-          </div>
-          <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;color:#a8e6ff;">
-            <input type="checkbox" id="forceWithResp"> Modo seguro (withResponse)
-          </label>
+          <!-- Envío fijo sin delimitador (19 caracteres exactos) -->
         </div>
         <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.5rem;">
           <input id="manualText" type="text" placeholder="Texto de prueba (p.ej. TEST)" style="flex:1;min-width:180px;padding:0.4rem;border-radius:6px;border:1px solid rgba(0,210,255,0.35);background:rgba(0,0,0,0.3);color:#e6f3ff;">
@@ -271,74 +260,48 @@
             </ul>
 
             <div style="margin-top: 1rem;">
-              <p style="margin: 0 0 0.5rem; color: #e6f3ff;">Pegá este JavaScript en MakeCode (Editor JavaScript):</p>
+        <p style="margin: 0 0 0.5rem; color: #e6f3ff;">Pegá este JavaScript en MakeCode (Editor JavaScript) — versión SIN delimitador, leyendo de a 19 caracteres:</p>
               <pre id="mkcode" style="white-space: pre-wrap; background:#0b1020; color:#e6f3ff; padding:0.75rem; border-radius:8px; border:1px solid rgba(0,210,255,0.4); max-height:280px; overflow:auto; font-size:12px;">
-// Cuando se conecta por Bluetooth
+// Conexión/desconexión
 bluetooth.onBluetoothConnected(function () {
-    basic.showIcon(IconNames.Yes)
+  basic.showIcon(IconNames.Yes)
 })
-// Cuando se desconecta
 bluetooth.onBluetoothDisconnected(function () {
-    basic.showIcon(IconNames.No)
-})
-// Cuando se reciben datos (paquete fijo de 19 caracteres)
-bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
-    let datos = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
-    if (datos.length != 19) return
-    // Extraer parámetros
-    let posX = parseFloat(datos.substr(0, 2))
-    let posY = parseFloat(datos.substr(2, 2))
-    let distancia = parseFloat(datos.substr(4, 2))
-    let guinada = parseFloat(datos.substr(6, 2))
-    let inclinacion = parseFloat(datos.substr(8, 2))
-    let boca = parseFloat(datos.substr(10, 2))
-    let ojoIzquierdo = parseFloat(datos.substr(12, 2))
-    let ojoDerecho = parseFloat(datos.substr(14, 2))
-    let giro = parseFloat(datos.substr(16, 1))
-    let sonrisa = parseFloat(datos.substr(17, 1))
-    let rostroVisible = parseFloat(datos.substr(18, 1))
-
-    // Demo: gráfico de barras con guiñada (0..99)
-    led.plotBarGraph(guinada, 99)
-
-    // Ejemplo de reacciones
-    if (rostroVisible == 0) {
-        basic.clearScreen()
-    } else if (posX < 35) {
-        basic.showArrow(ArrowNames.West)
-    } else if (posX > 65) {
-        basic.showArrow(ArrowNames.East)
-    } else if (posY < 35) {
-        basic.showArrow(ArrowNames.North)
-    } else if (posY > 65) {
-        basic.showArrow(ArrowNames.South)
-    } else if (boca > 50) {
-        basic.showIcon(IconNames.Surprised)
-    } else if (ojoIzquierdo < 30) {
-        basic.showLeds(`
-            . . . . .
-            . . . # #
-            . . . . .
-            . # # # .
-            . . . . .
-        `)
-    } else if (distancia > 60) {
-        basic.showIcon(IconNames.Happy)
-    } else if (ojoDerecho < 30) {
-        basic.showLeds(`
-            . . . . .
-            # # . . .
-            . . . . .
-            . # # # .
-            . . . . .
-        `)
-    } else {
-        basic.showIcon(IconNames.Chessboard)
-    }
+  basic.showIcon(IconNames.No)
 })
 
-basic.showIcon(IconNames.Square)
+// Servicio UART
 bluetooth.startUartService()
+basic.showIcon(IconNames.Square)
+
+// Buffer sin delimitador; procesa de a 19
+let buf = ""
+basic.forever(function () {
+  let chunk = bluetooth.uartReadString()
+  if (chunk.length > 0) {
+    buf = buf + chunk
+    while (buf.length >= 19) {
+      let datos = buf.substr(0, 19)
+      buf = buf.substr(19)
+      music.playTone(988, music.beat(BeatFraction.Sixteenth)) // beep al recibir
+      // Parsear parámetros
+      let posX = parseFloat(datos.substr(0, 2))
+      let posY = parseFloat(datos.substr(2, 2))
+      let distancia = parseFloat(datos.substr(4, 2))
+      let guinada = parseFloat(datos.substr(6, 2))
+      let inclinacion = parseFloat(datos.substr(8, 2))
+      let boca = parseFloat(datos.substr(10, 2))
+      let ojoIzquierdo = parseFloat(datos.substr(12, 2))
+      let ojoDerecho = parseFloat(datos.substr(14, 2))
+      let giro = parseFloat(datos.substr(16, 1))
+      let sonrisa = parseFloat(datos.substr(17, 1))
+      let rostroVisible = parseFloat(datos.substr(18, 1))
+      // Demo
+      led.plotBarGraph(guinada, 99)
+    }
+  }
+  basic.pause(20)
+})
               </pre>
               <div style="text-align:right; margin-top:0.5rem;">
                 <button class="btn-neon" onclick="navigator.clipboard.writeText(document.getElementById('mkcode').innerText)">Copiar código</button>

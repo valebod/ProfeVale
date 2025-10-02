@@ -12,7 +12,7 @@ let drawOverlayOn = true;
 let lastSendTs = 0;
 const unMirrorFront = true; // Forzar no-"espejo" en cámara frontal
 let advancedMode = false;
-const SEND_INTERVAL_MS = 500; // 2 Hz para pruebas de estabilidad (19 dígitos + terminador \n)
+const SEND_INTERVAL_MS = 500; // 2 Hz: envío fijo de 19 dígitos SIN delimitador
 const ERROR_COOLDOWN_MS = 600; // tras error, enfriar un poco para no saturar
 
 // Utilidades matemáticas globales
@@ -33,35 +33,14 @@ const lastPacketEl = document.getElementById('last-packet');
 let pageHidden = false;
 let sendingNow = false;
 let lastErrorAt = 0;
-let selectedDelimiter = 'lf'; // por defecto LF
-let forceWithResponse = false;
+// Envío fijo sin delimitador
 
-// Leer selección de terminador desde el selector si existe
-const delimSelect = document.getElementById('delimSelect');
-if (delimSelect) {
-    selectedDelimiter = delimSelect.value || 'lf';
-    delimSelect.addEventListener('change', () => {
-        selectedDelimiter = delimSelect.value || 'lf';
-        logFeedback('🔧 Terminador: ' + selectedDelimiter);
-    });
-}
-const forceWithRespChk = document.getElementById('forceWithResp');
-if (forceWithRespChk) {
-    forceWithResponse = !!forceWithRespChk.checked;
-    forceWithRespChk.addEventListener('change', () => {
-        forceWithResponse = !!forceWithRespChk.checked;
-        logFeedback('🛡️ writeWithResponse: ' + (forceWithResponse ? 'ON' : 'OFF'));
-    });
-}
+// (Sin selector de terminador ni modo seguro)
 
 async function writeUart(u8) {
     if (!txChar) throw new Error('TX no inicializado');
     const props = txChar.properties || {};
-    // Forzar modo seguro con respuesta si el usuario lo pidió
-    if (forceWithResponse && typeof txChar.writeValueWithResponse === 'function' && (props.write || !props.writeWithoutResponse)) {
-        return txChar.writeValueWithResponse(u8);
-    }
-    // Preferencia: withoutResponse si está disponible y no se fuerza withResponse
+    // Preferencia: withoutResponse si está disponible
     if (typeof txChar.writeValueWithoutResponse === 'function' && (props.writeWithoutResponse || !props.write)) {
         return txChar.writeValueWithoutResponse(u8);
     }
@@ -468,7 +447,11 @@ connectBtn.addEventListener('click', async () => {
         isBtConnected = true;
         statusBadge.textContent = '¡Conectado!';
         connectBtn.textContent = '🔌 Desconectar del Micro:bit';
-        logFeedback('🔗 UART listo');
+        // Log de propiedades
+        try {
+            const p = txChar.properties || {};
+            logFeedback(`🔗 UART listo | write:${p.write?'sí':'no'} sinResp:${p.writeWithoutResponse?'sí':'no'}`);
+        } catch(_){ logFeedback('🔗 UART listo'); }
     // Enviar pequeño ping de prueba al conectar (no crítico)
     try { await sendToMicrobit('0000000000000000000'); } catch(_){}
     } catch (e) {
@@ -495,13 +478,8 @@ async function sendToMicrobit(text) {
     sendingNow = true;
     try {
     const encoder = new TextEncoder();
-    // Armar payload según selector
-    let terminator = '';
-    if (selectedDelimiter === 'lf') terminator = "\n";
-    else if (selectedDelimiter === 'crlf') terminator = "\r\n";
-    else if (selectedDelimiter === 'cr') terminator = "\r";
-    else terminator = '';
-    const payload = text + terminator;
+    // Enviar EXACTAMENTE 19 caracteres, sin terminador
+    const payload = text;
         const bytes = encoder.encode(payload);
         // Trocear por si acaso, aunque hoy cabe en 20
         for (let i = 0; i < bytes.length; i += 20) {
