@@ -461,7 +461,8 @@ async function sendPacketZeros() {
 // Botón de prueba de envío UART
 if (testSendBtn) {
     testSendBtn.addEventListener('click', async () => {
-        await sendToMicrobit('1234567890123456789');
+        // X(50) Y(50) Z(50) Yaw(50) Pitch(50) Mouth(50) Left(50) Right(50) Roll(0) Smile(0) Visible(1)
+        await sendToMicrobit('5050505050505050001');
     });
 }
 
