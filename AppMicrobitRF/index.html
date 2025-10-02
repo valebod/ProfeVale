@@ -198,7 +198,7 @@
 
   <div style="margin: 3rem auto; max-width: 1000px; padding: 0 1rem;">
     <div class="card-glass" style="padding: 2rem;">
-      <h2 style="text-align: center; color: #0077ff; margin-bottom: 2rem;">🚀 Ideas de Proyectos</h2>
+      <h2 style="text-align: center; color: #e6f3ff; text-shadow: 0 0 12px rgba(0,210,255,0.6); margin-bottom: 2rem;">🚀 Ideas de Proyectos</h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
         <div>
           <strong style="color: #0077ff;">🤖 Robot seguidor de caras</strong><br>
@@ -220,20 +220,20 @@
       
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
         <div>
-          <h3 style="color: #0077ff; margin-bottom: 1rem;">🔧 Cómo usar</h3>
+          <h3 style="color: #00d2ff; margin-bottom: 1rem;">🔧 Cómo usar</h3>
           <ol style="line-height: 1.8; color: #e0e0e0;">
             <li><strong>Permitir cámara</strong> cuando el navegador lo pida</li>
-            <li><strong>Conectar micro:bit</strong> con el botón azul</li>
-            <li><strong>Iniciar detección</strong> con el botón play</li>
+            <li><strong>Conectar micro:bit</strong> con el botón “Conectar al Micro:bit”</li>
+            <li><strong>Encender cámara</strong> si está apagada y <strong>mostrar líneas</strong> si querés ver el overlay</li>
             <li><strong>Mostrar tu cara</strong> a la cámara</li>
             <li><strong>Ver los parámetros</strong> actualizándose en tiempo real</li>
           </ol>
         </div>
         
         <div>
-          <h3 style="color: #0077ff; margin-bottom: 1rem;">💻 Código MakeCode</h3>
-          <div style="background: #1a1a1a; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #0077ff;">
-            <h4 style="color: #0077ff; margin-bottom: 0.8rem; font-size: 0.9rem;">📱 Programa tu micro:bit:</h4>
+          <h3 style="color: #00d2ff; margin-bottom: 1rem;">💻 Código MakeCode</h3>
+          <div class="card-glass" style="background: rgba(0,0,0,0.35); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #00d2ff;">
+            <h4 style="color: #00d2ff; margin-bottom: 0.8rem; font-size: 0.9rem;">📱 Programa tu micro:bit</h4>
             <div style="text-align: center; margin: 1rem 0;">
               <a href="https://makecode.microbit.org/_VKqFdyTzWYt6" target="_blank" class="btn-neon" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
                 📂 Abrir en MakeCode
@@ -245,6 +245,81 @@
               <li><strong>Detecta sonrisas</strong> y parpadeos</li>
               <li><strong>Servo control</strong> para seguimiento facial</li>
             </ul>
+
+            <div style="margin-top: 1rem;">
+              <p style="margin: 0 0 0.5rem; color: #e6f3ff;">Pegá este JavaScript en MakeCode (Editor JavaScript):</p>
+              <pre id="mkcode" style="white-space: pre-wrap; background:#0b1020; color:#e6f3ff; padding:0.75rem; border-radius:8px; border:1px solid rgba(0,210,255,0.4); max-height:280px; overflow:auto; font-size:12px;">
+// Cuando se conecta por Bluetooth
+bluetooth.onBluetoothConnected(function () {
+    basic.showIcon(IconNames.Yes)
+})
+// Cuando se desconecta
+bluetooth.onBluetoothDisconnected(function () {
+    basic.showIcon(IconNames.No)
+})
+// Cuando se reciben datos (paquete fijo de 19 caracteres)
+bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+    let datos = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
+    if (datos.length != 19) return
+    // Extraer parámetros
+    let posX = parseFloat(datos.substr(0, 2))
+    let posY = parseFloat(datos.substr(2, 2))
+    let distancia = parseFloat(datos.substr(4, 2))
+    let guinada = parseFloat(datos.substr(6, 2))
+    let inclinacion = parseFloat(datos.substr(8, 2))
+    let boca = parseFloat(datos.substr(10, 2))
+    let ojoIzquierdo = parseFloat(datos.substr(12, 2))
+    let ojoDerecho = parseFloat(datos.substr(14, 2))
+    let giro = parseFloat(datos.substr(16, 1))
+    let sonrisa = parseFloat(datos.substr(17, 1))
+    let rostroVisible = parseFloat(datos.substr(18, 1))
+
+    // Demo: gráfico de barras con guiñada (0..99)
+    led.plotBarGraph(guinada, 99)
+
+    // Ejemplo de reacciones
+    if (rostroVisible == 0) {
+        basic.clearScreen()
+    } else if (posX < 35) {
+        basic.showArrow(ArrowNames.West)
+    } else if (posX > 65) {
+        basic.showArrow(ArrowNames.East)
+    } else if (posY < 35) {
+        basic.showArrow(ArrowNames.North)
+    } else if (posY > 65) {
+        basic.showArrow(ArrowNames.South)
+    } else if (boca > 50) {
+        basic.showIcon(IconNames.Surprised)
+    } else if (ojoIzquierdo < 30) {
+        basic.showLeds(`
+            . . . . .
+            . . . # #
+            . . . . .
+            . # # # .
+            . . . . .
+        `)
+    } else if (distancia > 60) {
+        basic.showIcon(IconNames.Happy)
+    } else if (ojoDerecho < 30) {
+        basic.showLeds(`
+            . . . . .
+            # # . . .
+            . . . . .
+            . # # # .
+            . . . . .
+        `)
+    } else {
+        basic.showIcon(IconNames.Chessboard)
+    }
+})
+
+basic.showIcon(IconNames.Square)
+bluetooth.startUartService()
+              </pre>
+              <div style="text-align:right; margin-top:0.5rem;">
+                <button class="btn-neon" onclick="navigator.clipboard.writeText(document.getElementById('mkcode').innerText)">Copiar código</button>
+              </div>
+            </div>
           </div>
         </div>
         
