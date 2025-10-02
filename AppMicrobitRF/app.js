@@ -30,6 +30,7 @@ let sendCount = 0;
 const advBtn = document.getElementById('advBtn');
 const testSendBtn = document.getElementById('testSendBtn');
 const lastPacketEl = document.getElementById('last-packet');
+const bleDiagBtn = document.getElementById('bleDiagBtn');
 let pageHidden = false;
 let sendingNow = false;
 let lastErrorAt = 0;
@@ -37,18 +38,37 @@ let lastErrorAt = 0;
 
 // (Sin selector de terminador ni modo seguro)
 
+let writePathLogged = false;
 async function writeUart(u8) {
     if (!txChar) throw new Error('TX no inicializado');
     const props = txChar.properties || {};
-    // Preferencia: withoutResponse si está disponible
+    // Intentar withoutResponse primero si existe
     if (typeof txChar.writeValueWithoutResponse === 'function' && (props.writeWithoutResponse || !props.write)) {
-        return txChar.writeValueWithoutResponse(u8);
+        try {
+            const r = await txChar.writeValueWithoutResponse(u8);
+            if (!writePathLogged) { logFeedback('✍️ writeWithoutResponse'); writePathLogged = true; }
+            return r;
+        } catch (e) {
+            logFeedback('⚠️ fallo writeWithoutResponse, probando conResponse…');
+        }
     }
+    // Luego con respuesta si está disponible
     if (typeof txChar.writeValueWithResponse === 'function' && props.write) {
-        return txChar.writeValueWithResponse(u8);
+        try {
+            const r = await txChar.writeValueWithResponse(u8);
+            if (!writePathLogged) { logFeedback('✍️ writeWithResponse'); writePathLogged = true; }
+            return r;
+        } catch (e) {
+            logFeedback('⚠️ fallo writeWithResponse, probando legacy…');
+        }
     }
     // Fallback antiguo
-    return txChar.writeValue(u8);
+    if (typeof txChar.writeValue === 'function') {
+        const r = await txChar.writeValue(u8);
+        if (!writePathLogged) { logFeedback('✍️ writeValue (legacy)'); writePathLogged = true; }
+        return r;
+    }
+    throw new Error('Ningún método de escritura disponible en característica UART');
 }
 if (advBtn) {
     advBtn.addEventListener('click', () => {
@@ -377,11 +397,55 @@ function supportsWebBluetooth() {
 function logFeedback(msg) {
     const fb = document.getElementById('feedback');
     if (!fb) return;
-    const span = document.createElement('span');
-    span.textContent = msg;
-    span.style.fontSize = '0.8rem';
-    span.style.color = '#a8e6ff';
-    fb.appendChild(span);
+    const line = document.createElement('div');
+    line.textContent = msg;
+    line.style.fontSize = '0.8rem';
+    line.style.color = '#a8e6ff';
+    fb.appendChild(line);
+    // Auto-scroll
+    fb.scrollTop = fb.scrollHeight;
+}
+
+// Diagnóstico: listar servicios y características
+async function enumerateGatt() {
+    try {
+        if (!server) { logFeedback('ℹ️ No hay servidor GATT'); return; }
+        const services = await server.getPrimaryServices();
+        logFeedback(`🧭 Servicios primarios: ${services.length}`);
+        for (const svc of services) {
+            const su = svc.uuid;
+            logFeedback(`• Servicio ${su}`);
+            try {
+                const chars = await svc.getCharacteristics();
+                for (const ch of chars) {
+                    const cu = ch.uuid;
+                    const p = ch.properties || {};
+                    const props = Object.keys(p).filter(k=>p[k]).join(',') || '—';
+                    logFeedback(`   ◦ Char ${cu} | props: ${props}`);
+                }
+            } catch (e) {
+                logFeedback(`   ◦ Error listando características: ${e && e.message ? e.message : e}`);
+            }
+        }
+        // Extra: probar pequeño write si txChar existe
+        if (txChar) {
+            try {
+                const test = new TextEncoder().encode('PING');
+                await writeUart(test);
+                logFeedback('✅ Test write PING enviado');
+            } catch (e) {
+                logFeedback('⚠️ Error en test write: ' + (e && e.message ? e.message : e));
+            }
+        }
+    } catch (e) {
+        logFeedback('⚠️ Error en diagnóstico GATT: ' + (e && e.message ? e.message : e));
+    }
+}
+
+if (bleDiagBtn) {
+    bleDiagBtn.addEventListener('click', () => {
+        enumerateGatt();
+    });
 }
 
 connectBtn.addEventListener('click', async () => {
@@ -452,8 +516,10 @@ connectBtn.addEventListener('click', async () => {
             const p = txChar.properties || {};
             logFeedback(`🔗 UART listo | write:${p.write?'sí':'no'} sinResp:${p.writeWithoutResponse?'sí':'no'}`);
         } catch(_){ logFeedback('🔗 UART listo'); }
-    // Enviar pequeño ping de prueba al conectar (no crítico)
-    try { await sendToMicrobit('0000000000000000000'); } catch(_){}
+        // Enviar pequeño ping de prueba al conectar (no crítico)
+        try { await sendToMicrobit('0000000000000000000'); } catch(_){}
+        // Ejecutar diagnóstico GATT automáticamente tras conectar
+        try { await enumerateGatt(); } catch(_){}
     } catch (e) {
         statusBadge.textContent = 'Error de conexión';
         logFeedback('⚠️ ' + (e && e.message ? e.message : 'Fallo al conectar'));
@@ -548,6 +614,21 @@ if (manualSendBtn && manualTextInput) {
         let txt = manualTextInput.value || '';
         // Si el texto tiene 19 dígitos exactos, se envía tal cual; si no, se envía como debug
         await sendToMicrobit(txt);
+    });
+}
+
+// Botón HELLO + LF para diagnóstico de delimitador
+const helloLFBtn = document.getElementById('helloLFBtn');
+if (helloLFBtn) {
+    helloLFBtn.addEventListener('click', async () => {
+        if (!isBtConnected || !txChar) return;
+        try {
+            const enc = new TextEncoder();
+            await writeUart(enc.encode('HELLO\n'));
+            logFeedback('📤 HELLO + LF');
+        } catch (e) {
+            logFeedback('⚠️ Error enviando HELLO+LF');
+        }
     });
 }
 

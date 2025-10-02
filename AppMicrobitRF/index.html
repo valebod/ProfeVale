@@ -132,12 +132,14 @@
         <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem;font-size:0.98rem;align-items:center;">
           <div>Enviados: <span id="sendCount">0</span></div>
           <!-- Envío fijo sin delimitador (19 caracteres exactos) -->
+          <button id="bleDiagBtn" class="btn-neon" style="margin-left:auto;min-width:140px;">🧪 Diagnóstico BLE</button>
         </div>
         <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.5rem;">
           <input id="manualText" type="text" placeholder="Texto de prueba (p.ej. TEST)" style="flex:1;min-width:180px;padding:0.4rem;border-radius:6px;border:1px solid rgba(0,210,255,0.35);background:rgba(0,0,0,0.3);color:#e6f3ff;">
           <button id="manualSendBtn" class="btn-neon" style="min-width:140px;">📤 Enviar manual</button>
+          <button id="helloLFBtn" class="btn-neon" title="Enviar HELLO + salto de línea (LF)" style="min-width:160px;">🧪 HELLO + LF</button>
         </div>
-        <div id="feedback" style="margin-bottom:0.5rem;display:flex;flex-wrap:wrap;gap:0.5rem;max-height:40px;overflow-y:auto;"></div>
+        <div id="feedback" style="margin-bottom:0.5rem;display:flex;flex-direction:column;gap:0.3rem;max-height:140px;overflow-y:auto;"></div>
         <div id="lastPacketRow" style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
           <span style="font-size:0.85rem;color:#a8e6ff;">Último paquete:</span>
           <code id="last-packet" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; background: rgba(0,0,0,0.35); color:#e6f3ff; padding:0.2rem 0.4rem; border-radius:6px; border:1px solid rgba(0,210,255,0.35); letter-spacing:1px;">—</code>
