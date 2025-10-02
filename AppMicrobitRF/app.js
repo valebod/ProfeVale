@@ -12,7 +12,7 @@ let drawOverlayOn = true;
 let lastSendTs = 0;
 const unMirrorFront = true; // Forzar no-"espejo" en cámara frontal
 let advancedMode = false;
-const SEND_INTERVAL_MS = 500; // 2 Hz: envío fijo de 19 dígitos SIN delimitador
+const SEND_INTERVAL_MS = 200; // 5 Hz: envío fijo de 19 dígitos CON delimitador \\n como ayer
 const ERROR_COOLDOWN_MS = 600; // tras error, enfriar un poco para no saturar
 
 // Utilidades matemáticas globales
@@ -438,8 +438,8 @@ connectBtn.addEventListener('click', async () => {
     connectBtn.disabled = true;
     logFeedback('🔎 Buscando dispositivos...');
     const UART_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
-    const TX_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
-    const RX_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+    const TX_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+    const RX_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
     try {
         if (navigator.bluetooth.getAvailability) {
             const avail = await navigator.bluetooth.getAvailability();
@@ -519,7 +519,8 @@ async function sendToMicrobit(text) {
     try {
         const encoder = new TextEncoder();
         // Usar writeValue directamente como en Flechas (método que funciona)
-        await txChar.writeValue(encoder.encode(text));
+        // Añadir \n como en versión funcional de ayer
+        await txChar.writeValue(encoder.encode(text + '\n'));
         sendCount++;
         sendCountEl.textContent = sendCount;
         logFeedback('📤 ' + text);
