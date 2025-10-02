@@ -12,7 +12,7 @@ let drawOverlayOn = true;
 let lastSendTs = 0;
 const unMirrorFront = true; // Forzar no-"espejo" en cámara frontal
 let advancedMode = false;
-const SEND_INTERVAL_MS = 200; // ~5Hz para mayor estabilidad UART
+const SEND_INTERVAL_MS = 100; // 10 Hz como especifica la app de referencia (19 dígitos, sin delimitador)
 const ERROR_COOLDOWN_MS = 600; // tras error, enfriar un poco para no saturar
 
 // Utilidades matemáticas globales
@@ -469,15 +469,8 @@ async function sendToMicrobit(text) {
     sendingNow = true;
     try {
         const encoder = new TextEncoder();
-        // Asegurar longitud por debajo del MTU habitual (20 bytes). Nuestros paquetes son 20 con delimitador.
-        const sel = document.getElementById('delimiterSelect');
-        let delim = '\n';
-        if (sel) {
-            if (sel.value === 'crlf') delim = '\r\n';
-            else if (sel.value === 'cr') delim = '\r';
-            else delim = '\n';
-        }
-        const payload = text + delim;
+        // Enviar EXACTAMENTE 19 caracteres, sin delimitador (sin \n, \r, \r\n)
+        const payload = text;
         const bytes = encoder.encode(payload);
         // Trocear por si acaso, aunque hoy cabe en 20
         for (let i = 0; i < bytes.length; i += 20) {

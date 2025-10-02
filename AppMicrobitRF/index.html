@@ -137,12 +137,6 @@
           <span style="font-size:0.85rem;color:#a8e6ff;">Último paquete:</span>
           <code id="last-packet" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; background: rgba(0,0,0,0.35); color:#e6f3ff; padding:0.2rem 0.4rem; border-radius:6px; border:1px solid rgba(0,210,255,0.35); letter-spacing:1px;">—</code>
           <button class="btn-neon" style="padding:0.2rem 0.5rem; font-size:0.75rem; line-height:1;" onclick="(function(){const el=document.getElementById('last-packet'); if(el && el.textContent && el.textContent.trim()!=='—'){ navigator.clipboard.writeText(el.textContent.trim()); }})()">Copiar</button>
-          <span style="margin-left:auto; font-size:0.8rem; color:#a8e6ff;">Delimitador:</span>
-          <select id="delimiterSelect" class="btn-neon" style="padding:0.2rem 0.4rem; font-size:0.75rem;">
-            <option value="lf" selected>LF (\n)</option>
-            <option value="crlf">CRLF (\r\n)</option>
-            <option value="cr">CR (\r)</option>
-          </select>
         </div>
       </div>
       <div class="card-glass">
