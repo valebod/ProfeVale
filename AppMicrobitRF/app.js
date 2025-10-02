@@ -1,119 +1,135 @@
-// app.js - Teachable Machine + micro:bit
-let model, webcam, ctx, overlay, maxPredictions;
-let btDevice, btServer, uartService, txChar;
-let lastClass = "";
+// app.js - Reconocimiento Facial + micro:bit
+let videoEl = document.getElementById('video');
+let canvasEl = document.getElementById('canvas');
+let ctx = canvasEl.getContext('2d');
+let startBtn = document.getElementById('startBtn');
+let stopBtn = document.getElementById('stopBtn');
+let toggleCameraBtn = document.getElementById('toggleCameraBtn');
+let facingMode = 'user';
+let detectionRunning = false;
+
+// Bluetooth
+let device, server, uartService, txChar;
 let isBtConnected = false;
+const connectBtn = document.getElementById('connectBtn');
+const statusBadge = document.getElementById('statusBadge');
+const sendCountEl = document.getElementById('sendCount');
+let sendCount = 0;
 
-const MODEL_STATUS = document.getElementById('modelStatus');
-const BT_STATUS = document.getElementById('btStatus');
-const PREDICTION = document.getElementById('prediction');
-const LOAD_MODEL_BTN = document.getElementById('loadModelBtn');
-const CONNECT_BTN = document.getElementById('connectBtn');
-const DISCONNECT_BTN = document.getElementById('disconnectBtn');
-const MODEL_URL_INPUT = document.getElementById('modelUrl');
-const VIDEO = document.getElementById('webcam');
-overlay = document.getElementById('overlay');
-ctx = overlay.getContext('2d');
-
-// --- Modelo Teachable Machine ---
-LOAD_MODEL_BTN.onclick = async () => {
-    const url = MODEL_URL_INPUT.value.trim();
-    if (!url.match(/^https:\/\/storage\.googleapis\.com\/tm-model\//)) {
-        MODEL_STATUS.textContent = 'URL inválida. Debe ser de Google Storage.';
-        return;
-    }
-    MODEL_STATUS.textContent = 'Cargando modelo...';
+// Inicialización cámara
+async function initCamera() {
     try {
-        model = await tmImage.load(url + 'model.json', url + 'metadata.json');
-        maxPredictions = model.getTotalClasses();
-        MODEL_STATUS.textContent = 'Modelo cargado correctamente.';
-        startWebcam();
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } });
+        videoEl.srcObject = stream;
+        await videoEl.play();
+        canvasEl.width = videoEl.videoWidth || 480;
+        canvasEl.height = videoEl.videoHeight || 360;
+        startBtn.disabled = false;
+        stopBtn.disabled = false;
     } catch (e) {
-        MODEL_STATUS.textContent = 'Error al cargar el modelo.';
-    }
-};
-
-// --- Webcam y predicción ---
-async function startWebcam() {
-    try {
-        const constraints = {
-            video: { facingMode: { ideal: "environment" } }
-        };
-        VIDEO.srcObject = await navigator.mediaDevices.getUserMedia(constraints);
-        VIDEO.onloadedmetadata = () => {
-            VIDEO.play();
-            overlay.width = VIDEO.videoWidth;
-            overlay.height = VIDEO.videoHeight;
-            predictLoop();
-        };
-    } catch (e) {
-        PREDICTION.textContent = 'No se pudo acceder a la cámara.';
+        console.error('Error accediendo a la cámara:', e);
+        startBtn.disabled = true;
+        stopBtn.disabled = true;
     }
 }
 
-async function predictLoop() {
-    if (!model) return;
-    ctx.clearRect(0, 0, overlay.width, overlay.height);
-    const prediction = await model.predict(VIDEO);
-    let best = prediction[0];
-    for (let p of prediction) if (p.probability > best.probability) best = p;
-    PREDICTION.textContent = `${best.className} (${(best.probability*100).toFixed(1)}%)`;
-    // Overlay
-    ctx.font = '24px Arial';
-    ctx.fillStyle = 'rgba(45,140,240,0.8)';
-    ctx.fillText(`${best.className}: ${(best.probability*100).toFixed(1)}%`, 10, 30);
-    // Enviar a micro:bit si confianza > 70%
-    if (isBtConnected && best.probability > 0.7 && best.className !== lastClass) {
-        sendToMicrobit(best.className);
-        lastClass = best.className;
+toggleCameraBtn.addEventListener('click', async () => {
+    facingMode = facingMode === 'user' ? 'environment' : 'user';
+    await initCamera();
+});
+
+// Detección facial (placeholder; el modelo real se carga via script en index.html)
+let model;
+async function loadModelOnce() {
+    if (model) return model;
+    try {
+        // face-landmarks-detection API v0.0.3
+        model = await faceLandmarksDetection.load(faceLandmarksDetection.SupportedPackages.mediapipeFacemesh);
+        return model;
+    } catch (e) {
+        console.error('Error cargando modelo de rostro:', e);
+        return null;
     }
-    requestAnimationFrame(predictLoop);
 }
 
-// --- Bluetooth micro:bit ---
-CONNECT_BTN.onclick = async () => {
-    BT_STATUS.textContent = 'Buscando micro:bit...';
+async function startDetection() {
+    const m = await loadModelOnce();
+    if (!m) return;
+    detectionRunning = true;
+    loopDetection();
+}
+
+async function loopDetection() {
+    if (!detectionRunning) return;
     try {
-        btDevice = await navigator.bluetooth.requestDevice({
+        const predictions = await model.estimateFaces({ input: videoEl, returnTensors: false });
+        ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+        if (predictions && predictions.length > 0) {
+            // Dibujar un simple recuadro aproximado con los puntos
+            const p = predictions[0];
+            const box = p.box || p.boundingBox || null;
+            if (box) {
+                const x = box.xMin || box.topLeft[0];
+                const y = box.yMin || box.topLeft[1];
+                const w = (box.xMax || box.bottomRight[0]) - x;
+                const h = (box.yMax || box.bottomRight[1]) - y;
+                ctx.strokeStyle = '#00d2ff';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, w, h);
+            }
+            // Enviar un ejemplo simple: visible:1
+            await sendToMicrobit('visible:1');
+        } else {
+            await sendToMicrobit('visible:0');
+        }
+    } catch (e) {
+        console.error('Error en loop detección:', e);
+    }
+    requestAnimationFrame(loopDetection);
+}
+
+function stopDetection() {
+    detectionRunning = false;
+}
+
+startBtn.addEventListener('click', startDetection);
+stopBtn.addEventListener('click', stopDetection);
+
+// Bluetooth
+connectBtn.addEventListener('click', async () => {
+    statusBadge.textContent = 'Buscando micro:bit...';
+    try {
+        device = await navigator.bluetooth.requestDevice({
             filters: [{ namePrefix: 'BBC micro:bit' }],
             optionalServices: ['6e400001-b5a3-f393-e0a9-e50e24dcca9e']
         });
-        btDevice.addEventListener('gattserverdisconnected', onDisconnected);
-        btServer = await btDevice.gatt.connect();
-        uartService = await btServer.getPrimaryService('6e400001-b5a3-f393-e0a9-e50e24dcca9e');
+        device.addEventListener('gattserverdisconnected', onDisconnected);
+        server = await device.gatt.connect();
+        uartService = await server.getPrimaryService('6e400001-b5a3-f393-e0a9-e50e24dcca9e');
         txChar = await uartService.getCharacteristic('6e400002-b5a3-f393-e0a9-e50e24dcca9e');
         isBtConnected = true;
-        BT_STATUS.textContent = '¡micro:bit conectado!';
-        CONNECT_BTN.disabled = true;
-        DISCONNECT_BTN.disabled = false;
+        statusBadge.textContent = '¡Conectado!';
     } catch (e) {
-        BT_STATUS.textContent = 'No se pudo conectar.';
+        statusBadge.textContent = 'Error de conexión';
     }
-};
-
-DISCONNECT_BTN.onclick = async () => {
-    if (btDevice && btDevice.gatt.connected) {
-        await btDevice.gatt.disconnect();
-    }
-    isBtConnected = false;
-    BT_STATUS.textContent = 'Desconectado.';
-    CONNECT_BTN.disabled = false;
-    DISCONNECT_BTN.disabled = true;
-};
+});
 
 function onDisconnected() {
     isBtConnected = false;
-    BT_STATUS.textContent = 'Desconectado.';
-    CONNECT_BTN.disabled = false;
-    DISCONNECT_BTN.disabled = true;
+    statusBadge.textContent = 'Desconectado';
 }
 
 async function sendToMicrobit(text) {
-    if (!txChar) return;
+    if (!isBtConnected || !txChar) return;
     try {
         const encoder = new TextEncoder();
         await txChar.writeValue(encoder.encode(text + '\n'));
+        sendCount++;
+        sendCountEl.textContent = sendCount;
     } catch (e) {
-        BT_STATUS.textContent = 'Error enviando a micro:bit.';
+        // Silencioso para no molestar la UI
     }
 }
+
+// Arranque
+initCamera();

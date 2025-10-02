@@ -486,9 +486,9 @@
       });
     }
 
-    // PWA Installation
-    let deferredPrompt;
-    let installSection;
+  // PWA Installation
+  let deferredPrompt;
+  let installSection;
 
     function isPortraitMobile() {
       const ua = navigator.userAgent;
@@ -525,6 +525,9 @@
       e.preventDefault();
       deferredPrompt = e;
       showInstallPrompt();
+      // Asegurar que el botón esté visible en plataformas soportadas
+      const btn = document.getElementById('installBtn');
+      if (btn) btn.style.display = 'inline-block';
     });
     
     // Mostrar también en dispositivos donde no se dispara beforeinstallprompt
@@ -549,56 +552,34 @@
       });
     });
     
-    function handleInstallApp() {
+    // Único manejador del botón de instalación
+    function wireInstallButton() {
       const installBtn = document.getElementById('installBtn');
-      if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-          if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            
-            if (outcome === 'accepted') {
-              console.log('App instalada');
-              document.getElementById('installSection').style.display = 'none';
-            }
-            
-            deferredPrompt = null;
-          } else {
-            // Fallback para navegadores sin soporte
-            alert('💡 Para instalar: Usa el menú de tu navegador y selecciona "Añadir a pantalla de inicio" o "Instalar app"');
+      if (!installBtn) return;
+      installBtn.onclick = async () => {
+        // Si ya está instalada, solo informar
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+          const p = document.querySelector('#installSection p');
+          if (p) p.textContent = '✔ App ya instalada';
+          installBtn.style.display = 'none';
+          return;
+        }
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            document.getElementById('installSection').style.display = 'none';
           }
-        });
-      }
-    }
-
-    // Función para botón de instalación principal
-    function handleMainInstall() {
-      const mainInstallBtn = document.getElementById('installBtn');
-      if (mainInstallBtn) {
-        mainInstallBtn.addEventListener('click', async () => {
-          // Intentar usar el prompt diferido si está disponible
-          if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-              console.log('App instalada');
-              mainInstallBtn.closest('.card-glass').style.display = 'none';
-            }
-            deferredPrompt = null;
-          } else {
-            // Para iOS Safari, mostrar instrucciones específicas
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
-            
-            if (isIOS && isSafari) {
-              alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
-            } else {
-              // Buscar si hay prompt disponible después de un tiempo
-              alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
-            }
+          deferredPrompt = null;
+        } else {
+          // iOS Safari: mostrar guía; otros navegadores sin prompt: no forzar alertas
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+          if (isIOS && isSafari) {
+            alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
           }
-        });
-      }
+        }
+      };
     }
 
     // Inicializar funcionalidades al cargar
@@ -606,8 +587,19 @@
       loadUserProgress();
       handleContactForm();
       handleContactFormMobile();
-      handleInstallApp();
-      handleMainInstall();
+      // Mostrar estado si ya está instalada
+      installSection = document.getElementById('installSection');
+      const installBtn = document.getElementById('installBtn');
+      const installed = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+      if (installed && installSection) {
+        installSection.style.display = 'block';
+        const p = installSection.querySelector('p');
+        if (p) p.textContent = '✔ App ya instalada';
+        if (installBtn) installBtn.style.display = 'none';
+      } else {
+        showInstallPrompt();
+      }
+      wireInstallButton();
     });
 
     // Búsqueda en tiempo real
