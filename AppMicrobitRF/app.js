@@ -382,14 +382,22 @@ function logFeedback(msg) {
 }
 
 connectBtn.addEventListener('click', async () => {
+    if (isBtConnected && device && device.gatt) {
+        // Desconectar bajo demanda
+        try { device.gatt.disconnect(); } catch(_){}
+        onDisconnected();
+        return;
+    }
     if (!supportsWebBluetooth()) {
         alert('Tu navegador no soporta Web Bluetooth o esta página no está en HTTPS. Usá Chrome/Edge en HTTPS (o Bluefy en iOS).');
         logFeedback('❌ Web Bluetooth no disponible. Verificá HTTPS y navegador.');
         return;
     }
-    // Si ya está conectado, desconectar primero
-    try { if (device && device.gatt && device.gatt.connected) device.gatt.disconnect(); } catch(_){}
+    // Forzar desconexión previa si hay algo colgado
+    try { if (device && device.gatt && device.gatt.connected) device.gatt.disconnect(); } catch(_){ }
     statusBadge.textContent = 'Buscando micro:bit...';
+    connectBtn.textContent = '⏳ Conectando...';
+    connectBtn.disabled = true;
     logFeedback('🔎 Buscando dispositivos...');
     const UART_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
     const TX_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
@@ -399,7 +407,7 @@ connectBtn.addEventListener('click', async () => {
             const avail = await navigator.bluetooth.getAvailability();
             logFeedback('📶 Bluetooth disponible: ' + (avail ? 'sí' : 'no'));
         }
-    } catch(_){}
+    } catch(_){ }
     try {
         try {
             device = await navigator.bluetooth.requestDevice({
@@ -432,13 +440,17 @@ connectBtn.addEventListener('click', async () => {
                 const txt = dec.decode(event.target.value);
                 logFeedback('📥 ' + txt.trim());
             });
-        } catch (_) {}
+        } catch (_) { }
         isBtConnected = true;
         statusBadge.textContent = '¡Conectado!';
+        connectBtn.textContent = '🔌 Desconectar del Micro:bit';
         logFeedback('🔗 UART listo');
     } catch (e) {
         statusBadge.textContent = 'Error de conexión';
         logFeedback('⚠️ ' + (e && e.message ? e.message : 'Fallo al conectar'));
+    } finally {
+        connectBtn.disabled = false;
+        if (!isBtConnected) connectBtn.textContent = '🔗 Conectar al Micro:bit';
     }
 });
 
@@ -446,6 +458,7 @@ function onDisconnected() {
     isBtConnected = false;
     statusBadge.textContent = 'Desconectado';
     logFeedback('🔌 Desconectado');
+    if (connectBtn) connectBtn.textContent = '🔗 Conectar al Micro:bit';
 }
 
 async function sendToMicrobit(text) {
@@ -458,7 +471,12 @@ async function sendToMicrobit(text) {
         const encoder = new TextEncoder();
         // Asegurar longitud por debajo del MTU habitual (20 bytes). Nuestros paquetes son 20 con delimitador.
         const sel = document.getElementById('delimiterSelect');
-        const delim = sel && sel.value === 'crlf' ? '\r\n' : '\n';
+        let delim = '\n';
+        if (sel) {
+            if (sel.value === 'crlf') delim = '\r\n';
+            else if (sel.value === 'cr') delim = '\r';
+            else delim = '\n';
+        }
         const payload = text + delim;
         const bytes = encoder.encode(payload);
         // Trocear por si acaso, aunque hoy cabe en 20
