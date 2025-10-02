@@ -9,6 +9,13 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" href="./icon.png">
     <link rel="stylesheet" href="../style.css">
+    <style>
+      @media (min-width: 769px) {
+        #installSection {
+          display: none !important;
+        }
+      }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@latest"></script>
 </head>
@@ -23,6 +30,17 @@
         </div>
       </div>
       <a href="../index.html" class="btn-neon" style="display: inline-block; font-size: 0.8rem;">← Volver al inicio</a>
+    </div>
+
+    <!-- PWA Install Section (mobile only) -->
+    <div id="installSection" style="display: none; text-align: center; margin: 1rem auto; max-width: 500px;">
+      <div class="card-glass" style="padding: 1.5rem;">
+        <h4 style="margin-bottom: 1rem; font-size: 1.1rem; color: #0077ff;">📱 ¡Instala Image Trainer!</h4>
+        <p style="font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Agrega esta app a tu pantalla de inicio para entrenar IA con fotos</p>
+        <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem;">
+          📲 Instalar App
+        </button>
+      </div>
     </div>
 
     <div class="container" style="max-width: 1400px;">
@@ -332,76 +350,7 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
 
     <script src="app.js"></script>
     
-    <!-- PWA Installation Script -->
-    <script>
-        let deferredPrompt;
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            const installSection = document.getElementById('installSection');
-            if (installSection) {
-                installSection.style.display = 'block';
-            }
-        });
-        
-        function handleInstallApp() {
-            const installBtn = document.getElementById('installBtn');
-            if (installBtn) {
-                installBtn.addEventListener('click', async () => {
-                    if (deferredPrompt) {
-                        deferredPrompt.prompt();
-                        const { outcome } = await deferredPrompt.userChoice;
-                        
-                        if (outcome === 'accepted') {
-                            console.log('App instalada');
-                            document.getElementById('installSection').style.display = 'none';
-                        }
-                        
-                        deferredPrompt = null;
-                    } else {
-                        // Fallback para cuando no hay deferredPrompt
-                        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-                        const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
-                        
-                        if (isIOS && isSafari) {
-                            alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
-                        } else {
-                            alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
-                        }
-                    }
-                });
-            }
-        }
-        
-        window.addEventListener('load', handleInstallApp);
-        
-        // Registrar Service Worker
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-              .then((registration) => {
-                console.log('SW registrado con éxito:', registration.scope);
-              })
-              .catch((error) => {
-                console.log('SW registration failed:', error);
-              });
-          });
-        }
-    </script>
-    
-    <!-- Sección de instalación PWA -->
-    <!-- Sección de instalación PWA (solo móvil) -->
-    <div id="installSection" style="display: none; text-align: center; margin: 2rem auto; max-width: 500px;">
-        <div class="card-glass" style="padding: 2rem;">
-            <h4 style="margin-bottom: 1rem; font-size: 1.2rem; color: #0077ff;">📱 ¡Instala Image Trainer!</h4>
-            <p style="font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">Agrega esta app a tu pantalla de inicio para entrenar IA sin navegador</p>
-            <button id="installBtn" class="btn-neon" style="font-size: 1rem; padding: 0.8rem 2rem; background: linear-gradient(45deg, #0077ff, #00d2ff); color: #fff; font-weight: bold;">
-                📲 Instalar App
-            </button>
-        </div>
-    </div>
+
     
     <style>
         @media (min-width: 769px) {
@@ -425,6 +374,84 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
             }
         }
     </style>
+    
+    <script>
+    // PWA Installation
+    let deferredPrompt;
+    let installSection = document.getElementById('installSection');
+    let installBtn = document.getElementById('installBtn');
+    
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
+    
+    function showInstallSection() {
+      if (isMobile()) {
+        installSection.style.display = 'block';
+      }
+    }
+    
+    function hideInstallSection() {
+      installSection.style.display = 'none';
+    }
+    
+    function handleInstallApp() {
+      if (!isMobile()) return;
+      
+      // Check if already installed
+      if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        hideInstallSection();
+        return;
+      }
+      
+      // Show section initially on mobile
+      showInstallSection();
+      
+      window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('beforeinstallprompt triggered');
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        installBtn.addEventListener('click', async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`Install outcome: ${outcome}`);
+            
+            if (outcome === 'accepted') {
+              hideInstallSection();
+            }
+            deferredPrompt = null;
+          } else {
+            // Fallback for browsers without beforeinstallprompt
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            
+            if (isIOS && isSafari) {
+              alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
+            } else {
+              alert('💡 Busca el ícono de instalación en la barra de direcciones del navegador');
+            }
+          }
+        });
+      });
+    }
+    
+    window.addEventListener('load', handleInstallApp);
+    
+    // Registrar Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((registration) => {
+            console.log('SW registrado con éxito:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('SW registration failed:', error);
+          });
+      });
+    }
+    </script>
     
 </body>
 </html>
