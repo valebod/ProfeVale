@@ -118,8 +118,6 @@
           <button id="startBtn" class="btn-neon" style="flex:1;min-width:180px;" disabled>▶️ Iniciar Detección</button>
           <button id="stopBtn" class="btn-neon" style="flex:1;min-width:180px;" disabled>⏹️ Detener</button>
           <button id="toggleCameraBtn" class="btn-neon" style="flex:1;min-width:180px;">🔄 Cambiar cámara</button>
-          <button id="advBtn" class="btn-neon" style="flex:1;min-width:180px;">Modo avanzado: OFF</button>
-          <button id="testSendBtn" class="btn-neon" style="flex:1;min-width:180px;">Enviar paquete de prueba (19)</button>
         </div>
       </div>
     </div>
@@ -129,20 +127,13 @@
           <span id="statusBadge" style="font-weight:bold;">Desconectado</span>
           <button id="connectBtn" class="btn-neon" style="min-width:140px;">🔗 Conectar al Micro:bit</button>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem;font-size:0.98rem;align-items:center;">
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem;font-size:0.98rem;">
           <div>Enviados: <span id="sendCount">0</span></div>
-          <button id="bleDiagBtn" class="btn-neon" style="margin-left:auto;min-width:140px;">🧪 Diagnóstico BLE</button>
-        </div>
-        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.5rem;">
-          <input id="manualText" type="text" placeholder="Texto de prueba (p.ej. TEST)" style="flex:1;min-width:180px;padding:0.4rem;border-radius:6px;border:1px solid rgba(0,210,255,0.35);background:rgba(0,0,0,0.3);color:#e6f3ff;">
-          <button id="manualSendBtn" class="btn-neon" style="min-width:140px;">📤 Enviar manual</button>
-          <button id="helloLFBtn" class="btn-neon" title="Enviar HELLO + salto de línea (LF)" style="min-width:160px;">🧪 HELLO + LF</button>
         </div>
         <div id="feedback" style="margin-bottom:0.5rem;display:flex;flex-direction:column;gap:0.3rem;max-height:140px;overflow-y:auto;"></div>
-        <div id="lastPacketRow" style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:0.5rem;">
           <span style="font-size:0.85rem;color:#a8e6ff;">Último paquete:</span>
           <code id="last-packet" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; background: rgba(0,0,0,0.35); color:#e6f3ff; padding:0.2rem 0.4rem; border-radius:6px; border:1px solid rgba(0,210,255,0.35); letter-spacing:1px;">—</code>
-          <button class="btn-neon" style="padding:0.2rem 0.5rem; font-size:0.75rem; line-height:1;" onclick="(function(){const el=document.getElementById('last-packet'); if(el && el.textContent && el.textContent.trim()!=='—'){ navigator.clipboard.writeText(el.textContent.trim()); }})()">Copiar</button>
         </div>
       </div>
       <div class="card-glass">
@@ -252,11 +243,11 @@
               <strong>ORDEN CRÍTICO:</strong> Tu programa debe tener "bluetooth.startUartService()" ANTES de cualquier otra función Bluetooth.
             </p>
             <div style="background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 3px solid #39ff14;">
-              <h5 style="color: #39ff14; margin: 0 0 0.5rem; font-size: 0.9rem;">✅ ORDEN CORRECTO:</h5>
+              <h5 style="color: #39ff14; margin: 0 0 0.5rem; font-size: 0.9rem;">🚀 VERSIÓN OPTIMIZADA (200ms):</h5>
               <code style="color: #e6f3ff; font-size: 0.8rem; line-height: 1.4;">
-                1. bluetooth.startUartService()<br>
-                2. basic.showIcon(IconNames.Square)<br>
-                3. Después: variables y eventos
+                ✅ SIN sonidos para evitar trabas<br>
+                ✅ Recepción rápida a 200ms<br>
+                ✅ Validación silenciosa de paquetes
               </code>
             </div>
             <div style="display: flex; gap: 0.5rem; justify-content: center; margin: 1rem 0; flex-wrap: wrap;">
@@ -285,12 +276,11 @@ bluetooth.onBluetoothConnected(function () {
 bluetooth.onBluetoothDisconnected(function () {
     basic.showIcon(IconNames.No)
 })
-// Cuando se reciben datos (paquete fijo de 19 caracteres + NewLine)
+// Cuando se reciben datos (OPTIMIZADO: sin sonidos para 200ms)
 bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
-    music.play(music.tonePlayable(988, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
     datos = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
+    // Validación silenciosa: si no son 19 caracteres, ignorar
     if (datos.length != 19) {
-        music.play(music.tonePlayable(262, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
         return
     }
     // Extraer parámetros

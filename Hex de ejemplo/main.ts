@@ -29,12 +29,12 @@ bluetooth.onBluetoothDisconnected(function () {
 })
 
 // 4. Recepción de datos (paquete fijo de 19 caracteres + NewLine)
+// OPTIMIZADO: Sin sonidos para evitar trabas con envío rápido a 200ms
 bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
-    music.play(music.tonePlayable(988, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
     datos = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
     
+    // Validación silenciosa: si no son 19 caracteres, ignorar
     if (datos.length != 19) {
-        music.play(music.tonePlayable(262, music.beat(BeatFraction.Sixteenth)), music.PlaybackMode.InBackground)
         return
     }
     

@@ -27,10 +27,7 @@ const connectBtn = document.getElementById('connectBtn');
 const statusBadge = document.getElementById('statusBadge');
 const sendCountEl = document.getElementById('sendCount');
 let sendCount = 0;
-const advBtn = document.getElementById('advBtn');
-const testSendBtn = document.getElementById('testSendBtn');
 const lastPacketEl = document.getElementById('last-packet');
-const bleDiagBtn = document.getElementById('bleDiagBtn');
 let pageHidden = false;
 let sendingNow = false;
 let lastErrorAt = 0;
@@ -39,12 +36,6 @@ let lastErrorAt = 0;
 // (Sin selector de terminador ni modo seguro)
 
 // Usar writeValue directamente como en Flechas (método que funciona)
-if (advBtn) {
-    advBtn.addEventListener('click', () => {
-        advancedMode = !advancedMode;
-        advBtn.textContent = advancedMode ? 'Modo avanzado: ON' : 'Modo avanzado: OFF';
-    });
-}
 
 // Inicialización cámara
 async function initCamera() {
@@ -413,11 +404,7 @@ async function enumerateGatt() {
     }
 }
 
-if (bleDiagBtn) {
-    bleDiagBtn.addEventListener('click', () => {
-        enumerateGatt();
-    });
-}
+
 
 connectBtn.addEventListener('click', async () => {
     if (isBtConnected && device && device.gatt) {
@@ -566,41 +553,7 @@ async function sendPacketZeros() {
     await sendToMicrobit('0000000000000000000');
 }
 
-// Botón de prueba de envío UART
-if (testSendBtn) {
-    testSendBtn.addEventListener('click', async () => {
-        // X(50) Y(50) Z(50) Yaw(50) Pitch(50) Mouth(50) Left(50) Right(50) Roll(0) Smile(0) Visible(1)
-        const pkt = '5050505050505050001';
-        if (lastPacketEl) lastPacketEl.textContent = pkt;
-        await sendToMicrobit(pkt);
-    });
-}
 
-// Envío manual desde UI
-const manualSendBtn = document.getElementById('manualSendBtn');
-const manualTextInput = document.getElementById('manualText');
-if (manualSendBtn && manualTextInput) {
-    manualSendBtn.addEventListener('click', async () => {
-        let txt = manualTextInput.value || '';
-        // Si el texto tiene 19 dígitos exactos, se envía tal cual; si no, se envía como debug
-        await sendToMicrobit(txt);
-    });
-}
-
-// Botón HELLO + LF para diagnóstico de delimitador
-const helloLFBtn = document.getElementById('helloLFBtn');
-if (helloLFBtn) {
-    helloLFBtn.addEventListener('click', async () => {
-        if (!isBtConnected || !txChar) return;
-        try {
-            const enc = new TextEncoder();
-            await txChar.writeValue(enc.encode('HELLO\n'));
-            logFeedback('📤 HELLO + LF');
-        } catch (e) {
-            logFeedback('⚠️ Error enviando HELLO+LF');
-        }
-    });
-}
 
 // Arranque
 initCamera();
