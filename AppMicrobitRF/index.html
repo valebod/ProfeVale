@@ -192,6 +192,64 @@
           </div>
         </div>
       </div>
+
+      <!-- Sección MakeCode y Descarga -->
+      <div class="card-glass">
+        <h3 style="text-align:center;margin-bottom:1rem;color:#00d2ff;">📱 Programa tu micro:bit</h3>
+        
+        <div style="margin-bottom:1.5rem;text-align:center;">
+          <p style="margin-bottom:1rem;font-size:0.9rem;color:#e6f3ff;">
+            🎯 <strong>Para usar esta app</strong>, necesitas programar tu micro:bit con uno de estos códigos:
+          </p>
+          
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+            <!-- Versión Básica LEDs -->
+            <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:0.75rem;border:1px solid rgba(57,255,20,0.3);">
+              <div style="font-size:1.5rem;margin-bottom:0.5rem;">💡</div>
+              <h4 style="margin:0 0 0.5rem 0;font-size:0.85rem;color:#39ff14;">Versión LEDs</h4>
+              <p style="margin:0 0 0.75rem 0;font-size:0.75rem;color:#a8e6ff;">Control básico con LEDs</p>
+              <a href="../Hex de ejemplo/microbit-ValeProfe_ControlFacial_v2.hex" 
+                 download="microbit-ProfeVale-LEDs.hex"
+                 class="btn-neon" style="font-size:0.75rem;padding:0.4rem 0.8rem;background:linear-gradient(45deg,#39ff14,#00d2ff);">
+                ⬇️ Descargar .HEX
+              </a>
+            </div>
+            
+            <!-- Versión Cabeza Robótica -->
+            <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:0.75rem;border:1px solid rgba(255,46,99,0.4);">
+              <div style="font-size:1.5rem;margin-bottom:0.5rem;">🤖</div>
+              <h4 style="margin:0 0 0.5rem 0;font-size:0.85rem;color:#ff2e63;">Cabeza Robótica</h4>
+              <p style="margin:0 0 0.75rem 0;font-size:0.75rem;color:#a8e6ff;">5 servos + motor driver</p>
+              <a href="../Hex de ejemplo/microbit-ProfeVale_MotoresCabeza.hex" 
+                 download="microbit-ProfeVale-CabezaRobotica.hex"
+                 class="btn-neon" style="font-size:0.75rem;padding:0.4rem 0.8rem;background:linear-gradient(45deg,#ff2e63,#ff6b00);">
+                ⬇️ Descargar .HEX
+              </a>
+            </div>
+          </div>
+          
+          <div style="background:rgba(0,210,255,0.1);border-radius:8px;padding:0.75rem;margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.5rem 0;font-size:0.8rem;color:#00d2ff;">📝 Código fuente en MakeCode:</h4>
+            <a href="https://makecode.microbit.org/S47739-58068-55967-69537" 
+               target="_blank" 
+               class="btn-neon" style="font-size:0.8rem;background:linear-gradient(45deg,#0077ff,#00d2ff);">
+              🔗 Abrir en MakeCode
+            </a>
+          </div>
+          
+          <div style="font-size:0.75rem;color:#a8e6ff;text-align:left;line-height:1.4;">
+            <strong>⚠️ Importante - Versión Cabeza Robótica:</strong><br>
+            • Compatible con placas <strong>con motor driver integrado</strong><br>
+            • <strong>NO funciona con WUKONG</strong> (requiere adaptación)<br>
+            • Necesita 5 servomotores SG90 en puertos S1-S5<br>
+            • Usa fuente externa para servos (recomendado)
+          </div>
+        </div>
+        
+        <div style="text-align:center;font-size:0.8rem;color:#e6f3ff;">
+          💡 <strong>¿Cómo instalar?</strong> Conecta micro:bit por USB → Copia archivo .hex → ¡Listo!
+        </div>
+      </div>
     </div>
   </div>
 
