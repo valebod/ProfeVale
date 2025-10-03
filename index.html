@@ -103,15 +103,15 @@
         </div>
 
         <!-- Sección de Colaboración -->
-        <div class="card" style="text-align: center; max-width: 700px; margin: 3rem auto;">
-          <h3 style="margin-bottom: 1.5rem;">🤝 Colaborá con mi proyecto</h3>
+        <div class="card" style="text-align: center; max-width: 700px; margin: 3rem auto; background: linear-gradient(135deg, rgba(0,119,255,0.15) 0%, rgba(0,210,255,0.1) 100%); border: 1px solid rgba(0,210,255,0.3);">
+          <h3 style="margin-bottom: 1.5rem; color: #00d2ff;">☕ Invitame un cafecito para colaborar con mi proyecto</h3>
           
           <p style="font-size: 0.95rem; color: #e6f3ff; margin-bottom: 1.5rem; line-height: 1.5;">
             Si mis recursos te resultaron útiles, podés apoyar el proyecto para seguir creando contenido educativo gratuito:
           </p>
           
-          <!-- Enlaces de Donación -->
-          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+          <!-- Enlaces de Donación - Los 3 métodos -->
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem;">
             <button id="btnAliasAR" class="btn-neon" title="Alias Argentina" style="background: linear-gradient(45deg, #00a650, #00c853); color: #fff; border-color: #00a650;">
               🇦🇷 Alias (Argentina)
             </button>
@@ -308,17 +308,23 @@
       </div>
 
       <!-- Sección de Colaboración (Móvil) -->
-      <div class="card" style="text-align: center; max-width: 600px; margin: 3rem auto;">
-        <h3 style="margin-bottom: 1.5rem;">🤝 Colaborá con mi proyecto</h3>
+      <div class="card" style="text-align: center; max-width: 600px; margin: 3rem auto; background: linear-gradient(135deg, rgba(0,119,255,0.15) 0%, rgba(0,210,255,0.1) 100%); border: 1px solid rgba(0,210,255,0.3);">
+        <h3 style="margin-bottom: 1.5rem; color: #00d2ff;">☕ Invitame un cafecito para colaborar con mi proyecto</h3>
         
         <p style="font-size: 0.9rem; color: #e6f3ff; margin-bottom: 1.5rem; line-height: 1.4;">
           Si mis recursos te ayudaron, podés apoyar el proyecto:
         </p>
         
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem;">
+          <button id="btnAliasARMobile" class="btn-neon" title="Alias Argentina" style="background: linear-gradient(45deg, #00a650, #00c853); color: #fff; border-color: #00a650; font-size: 0.8rem; padding: 0.6rem 1rem;">
+            🇦🇷 Argentina
+          </button>
+          <button id="btnAliasUYMobile" class="btn-neon" title="Alias Uruguay" style="background: linear-gradient(45deg, #45aaf2, #00d2ff); color: #fff; border-color: #45aaf2; font-size: 0.8rem; padding: 0.6rem 1rem;">
+            🇺🇾 Uruguay
+          </button>
           <a href="https://ko-fi.com/profevale" target="_blank" class="btn-neon" 
-             style="background: linear-gradient(45deg, #ff6b00, #ff8500); color: white; border-color: #ff6b00;">
-            ☕ Invitame un cafecito
+             style="background: linear-gradient(45deg, #ff6b00, #ff8500); color: white; border-color: #ff6b00; font-size: 0.8rem; padding: 0.6rem 1rem;">
+            🌍 Ko-fi
           </a>
         </div>
       </div>
@@ -619,7 +625,7 @@
       loadUserProgress();
       handleContactForm();
       handleContactFormMobile();
-      // Alias de pago locales
+      // Alias de pago locales - Desktop
       const btnAR = document.getElementById('btnAliasAR');
       const btnUY = document.getElementById('btnAliasUY');
       if (btnAR) btnAR.onclick = async () => {
@@ -631,6 +637,20 @@
         try { await navigator.clipboard.writeText('vale.uy.brou'); } catch(_){ }
         btnUY.textContent = '🇺🇾 Copiado: vale.uy.brou';
         setTimeout(()=> btnUY.textContent = '🇺🇾 Alias (Uruguay)', 2000);
+      };
+      
+      // Alias de pago locales - Móvil
+      const btnARMobile = document.getElementById('btnAliasARMobile');
+      const btnUYMobile = document.getElementById('btnAliasUYMobile');
+      if (btnARMobile) btnARMobile.onclick = async () => {
+        try { await navigator.clipboard.writeText('profe.vale.ia'); } catch(_){ }
+        btnARMobile.textContent = '🇦🇷 Copiado!';
+        setTimeout(()=> btnARMobile.textContent = '🇦🇷 Argentina', 2000);
+      };
+      if (btnUYMobile) btnUYMobile.onclick = async () => {
+        try { await navigator.clipboard.writeText('vale.uy.brou'); } catch(_){ }
+        btnUYMobile.textContent = '🇺🇾 Copiado!';
+        setTimeout(()=> btnUYMobile.textContent = '🇺🇾 Uruguay', 2000);
       };
       // Mostrar estado si ya está instalada
       installSection = document.getElementById('installSection');
