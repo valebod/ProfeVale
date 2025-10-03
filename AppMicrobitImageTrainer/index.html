@@ -1,3 +1,28 @@
+        <!-- Secciones al final -->
+        <div style="margin-top: 3rem;"></div>
+        <div class="card" style="background: linear-gradient(135deg, #232946 0%, #3f2c6e 100%); color: #fff; margin-bottom: 2rem;">
+            <h3 style="color: #39ff14; margin-bottom: 1rem;">💾 Guardar, cargar y compartir tu modelo</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                <button id="exportModel" class="btn-neon">⬇️ Descargar modelo</button>
+                <input type="file" id="modelFileInput" accept=".json,.bin,.h5" style="display:none">
+                <button id="importModelBtn" class="btn-neon">⬆️ Subir modelo</button>
+                <button id="copyModelLink" class="btn-neon">🔗 Copiar link compatible</button>
+            </div>
+            <div id="modelLinkInfo" style="font-size: 0.9rem; color: #00d2ff; margin-bottom: 0.5rem; display:none;"></div>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #3f2c6e 0%, #232946 100%); color: #fff; margin-bottom: 2rem;">
+            <h3 style="color: #00d2ff; margin-bottom: 1rem;">❓ Preguntas Frecuentes</h3>
+            <div style="font-size: 1rem;">
+                <strong>¿Dónde se guardan las imágenes que uso para entrenar?</strong><br>
+                Las imágenes que capturas o subes para entrenar el modelo <b>no se almacenan ni se envían fuera de tu dispositivo</b>. Todo el procesamiento ocurre localmente en tu navegador, garantizando privacidad y seguridad.
+                <br><br>
+                <strong>¿Puedo descargar y volver a subir mi modelo?</strong><br>
+                Sí, puedes descargar el modelo entrenado y volver a subirlo más tarde para continuar tu trabajo o compartirlo con otros.
+                <br><br>
+                <strong>¿Puedo usar mi modelo en la app de Teachable Machine?</strong><br>
+                Sí, puedes copiar el link compatible y usarlo directamente en la app de Teachable Machine de este sitio.
+            </div>
+        </div>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -43,6 +68,32 @@
                 <div>2️⃣ <strong>Capturar fotos:</strong> Toma al menos 10 fotos por cada clase</div>
                 <div>3️⃣ <strong>Entrenar:</strong> El modelo aprenderá a distinguir entre las clases</div>
                 <div>4️⃣ <strong>Conectar micro:bit:</strong> Envía predicciones en tiempo real</div>
+            </div>
+        </div>
+
+        <!-- Gestión de modelos: Descargar, Subir, Copiar Link -->
+        <div class="card" style="background: linear-gradient(135deg, #232946 0%, #3f2c6e 100%); color: #fff; margin-bottom: 2rem;">
+            <h3 style="color: #39ff14; margin-bottom: 1rem;">💾 Guardar, cargar y compartir tu modelo</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                <button id="exportModel" class="btn-neon">⬇️ Descargar modelo</button>
+                <input type="file" id="modelFileInput" accept=".json,.bin,.h5" style="display:none">
+                <button id="importModelBtn" class="btn-neon">⬆️ Subir modelo</button>
+                <button id="copyModelLink" class="btn-neon">🔗 Copiar link compatible</button>
+            </div>
+            <div id="modelLinkInfo" style="font-size: 0.9rem; color: #00d2ff; margin-bottom: 0.5rem; display:none;"></div>
+        </div>
+        <!-- Preguntas Frecuentes / Privacidad -->
+        <div class="card" style="background: linear-gradient(135deg, #3f2c6e 0%, #232946 100%); color: #fff; margin-bottom: 2rem;">
+            <h3 style="color: #00d2ff; margin-bottom: 1rem;">❓ Preguntas Frecuentes</h3>
+            <div style="font-size: 1rem;">
+                <strong>¿Dónde se guardan las imágenes que uso para entrenar?</strong><br>
+                Las imágenes que capturas o subes para entrenar el modelo <b>no se almacenan ni se envían fuera de tu dispositivo</b>. Todo el procesamiento ocurre localmente en tu navegador, garantizando privacidad y seguridad.
+                <br><br>
+                <strong>¿Puedo descargar y volver a subir mi modelo?</strong><br>
+                Sí, puedes descargar el modelo entrenado y volver a subirlo más tarde para continuar tu trabajo o compartirlo con otros.
+                <br><br>
+                <strong>¿Puedo usar mi modelo en la app de Teachable Machine?</strong><br>
+                Sí, puedes copiar el link compatible y usarlo directamente en la app de Teachable Machine de este sitio.
             </div>
         </div>
 
