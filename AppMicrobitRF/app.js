@@ -293,7 +293,8 @@ async function loopDetection() {
                     setText('pitch-value', pitchDeg.toFixed(0));
                     setText('roll-value', rollDeg.toFixed(0));
                     setText('mouth-value', mouthOpen.toFixed(2));
-                    setText('eyes-value', eyesOpen.toFixed(2));
+                    setText('left-eye-value', leftOpen.toFixed(2));
+                    setText('right-eye-value', rightOpen.toFixed(2));
                     setText('smile-value', smile.toFixed(2));
                     setText('visible-value', '✔');
                     setText('confidence-value', (confidence*100).toFixed(0));
@@ -443,6 +444,14 @@ connectBtn.addEventListener('click', async () => {
         device.addEventListener('gattserverdisconnected', onDisconnected);
         server = await device.gatt.connect();
         logFeedback('✅ Conectado al GATT');
+        
+        // Detectar desconexión activa cada 5 segundos
+        setInterval(() => {
+            if (device && !device.gatt.connected && isBtConnected) {
+                logFeedback('⚠️ Desconexión detectada');
+                onDisconnected();
+            }
+        }, 5000);
         uartService = await server.getPrimaryService(UART_UUID);
         txChar = await uartService.getCharacteristic(TX_UUID);
         // Suscribirse a RX si está disponible (para debug)

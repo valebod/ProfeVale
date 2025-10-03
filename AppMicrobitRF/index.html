@@ -139,43 +139,47 @@
       <div class="card-glass">
         <div class="param-grid">
           <div class="param-item">
-            <div class="param-label">X</div>
+            <div class="param-label">Posición X</div>
             <div class="param-value" id="x-value">0</div>
           </div>
           <div class="param-item">
-            <div class="param-label">Y</div>
+            <div class="param-label">Posición Y</div>
             <div class="param-value" id="y-value">0</div>
           </div>
           <div class="param-item">
-            <div class="param-label">Z</div>
+            <div class="param-label">Distancia</div>
             <div class="param-value" id="z-value">0</div>
           </div>
           <div class="param-item">
-            <div class="param-label">YAW</div>
+            <div class="param-label">Guiñada</div>
             <div class="param-value" id="yaw-value">0</div>
           </div>
           <div class="param-item">
-            <div class="param-label">PITCH</div>
+            <div class="param-label">Inclinación</div>
             <div class="param-value" id="pitch-value">0</div>
           </div>
           <div class="param-item">
-            <div class="param-label">ROLL</div>
+            <div class="param-label">Rotación</div>
             <div class="param-value" id="roll-value">0</div>
           </div>
           <div class="param-item">
-            <div class="param-label">BOCA</div>
+            <div class="param-label">Boca</div>
             <div class="param-value" id="mouth-value">0</div>
           </div>
           <div class="param-item">
-            <div class="param-label">OJOS</div>
-            <div class="param-value" id="eyes-value">0</div>
+            <div class="param-label">Ojo Izquierdo</div>
+            <div class="param-value" id="left-eye-value">0</div>
           </div>
           <div class="param-item">
-            <div class="param-label">SONRISA</div>
+            <div class="param-label">Ojo Derecho</div>
+            <div class="param-value" id="right-eye-value">0</div>
+          </div>
+          <div class="param-item">
+            <div class="param-label">Sonrisa</div>
             <div class="param-value" id="smile-value">0</div>
           </div>
           <div class="param-item">
-            <div class="param-label">VISIBLE</div>
+            <div class="param-label">Rostro Visible</div>
             <div class="param-value" id="visible-value">❌</div>
           </div>
           <div class="param-item">
@@ -266,25 +270,42 @@
             </ul>
 
             <div style="margin-top: 1rem;">
-        <p style="margin: 0 0 0.5rem; color: #e6f3ff;">Pegá este JavaScript en MakeCode (Editor JavaScript) — versión CON NewLine delimitador:</p>
+        <p style="margin: 0 0 0.5rem; color: #e6f3ff;">🔗 Código actualizado - <strong><a href="https://makecode.microbit.org/S47739-58068-55967-69537" target="_blank" style="color: #00d2ff;">Abrir en MakeCode</a></strong>:</p>
               <pre id="mkcode" style="white-space: pre-wrap; background:#0b1020; color:#e6f3ff; padding:0.75rem; border-radius:8px; border:1px solid rgba(0,210,255,0.4); max-height:280px; overflow:auto; font-size:12px;">
-// Cuando se conecta por Bluetooth
+/**
+ * Variables globales
+ */
+let rostroVisible = 0
+let sonrisa = 0
+let giro = 0
+let ojoDerecho = 0
+let ojoIzquierdo = 0
+let boca = 0
+let inclinacion = 0
+let guinada = 0
+let distancia = 0
+let posY = 0
+let posX = 0
+let datos = ""
+
+// ORDEN CRÍTICO: bluetooth.startUartService() PRIMERO
+bluetooth.startUartService()
+basic.showIcon(IconNames.Square)
+
+// Eventos de conexión
 bluetooth.onBluetoothConnected(function () {
     basic.showIcon(IconNames.Yes)
 })
-// Cuando se desconecta
 bluetooth.onBluetoothDisconnected(function () {
     basic.showIcon(IconNames.No)
 })
-// Cuando se reciben datos (OPTIMIZADO: sin sonidos para 200ms)
+
+// Recepción de datos (19 caracteres + NewLine)
 bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
     datos = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
-    // Validación silenciosa: si no son 19 caracteres, ignorar
     if (datos.length != 19) {
         return
     }
-    // Extraer parámetros
-      let datos = buf.substr(0, 19)
     posX = parseFloat(datos.substr(0, 2))
     posY = parseFloat(datos.substr(2, 2))
     distancia = parseFloat(datos.substr(4, 2))
@@ -296,21 +317,32 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     giro = parseFloat(datos.substr(16, 1))
     sonrisa = parseFloat(datos.substr(17, 1))
     rostroVisible = parseFloat(datos.substr(18, 1))
-    // Demo: gráfico de barras con guiñada (0..99)
     led.plotBarGraph(guinada, 99)
-    // Ejemplo de reacciones
+    
     if (rostroVisible == 0) {
-        basic.clearScreen()
+        basic.showLeds(\`
+            . . . . .
+            . . . . .
+            . . # . .
+            . . . . .
+            . . . . .
+            \`)
+        basic.pause(100)
     } else if (posX < 35) {
         basic.showArrow(ArrowNames.West)
+        basic.pause(100)
     } else if (posX > 65) {
         basic.showArrow(ArrowNames.East)
+        basic.pause(100)
     } else if (posY < 35) {
         basic.showArrow(ArrowNames.North)
+        basic.pause(100)
     } else if (posY > 65) {
         basic.showArrow(ArrowNames.South)
+        basic.pause(100)
     } else if (boca > 50) {
         basic.showIcon(IconNames.Surprised)
+        basic.pause(100)
     } else if (ojoIzquierdo < 30) {
         basic.showLeds(\`
             . . . . .

@@ -1,11 +1,6 @@
-// Programa micro:bit para Control Facial - Profe Vale
-// IMPORTANTE: Este código DEBE ejecutarse exactamente en este orden
-
-// 1. PRIMERO: Inicializar servicio UART Bluetooth
-bluetooth.startUartService()
-basic.showIcon(IconNames.Square)
-
-// 2. Variables globales
+/**
+ * Variables globales
+ */
 let rostroVisible = 0
 let sonrisa = 0
 let giro = 0
@@ -19,26 +14,24 @@ let posY = 0
 let posX = 0
 let datos = ""
 
-// 3. Eventos de conexión/desconexión
+// ORDEN CRÍTICO: bluetooth.startUartService() PRIMERO
+bluetooth.startUartService()
+basic.showIcon(IconNames.Square)
+
+// Eventos de conexión
 bluetooth.onBluetoothConnected(function () {
     basic.showIcon(IconNames.Yes)
 })
-
 bluetooth.onBluetoothDisconnected(function () {
     basic.showIcon(IconNames.No)
 })
 
-// 4. Recepción de datos (paquete fijo de 19 caracteres + NewLine)
-// OPTIMIZADO: Sin sonidos para evitar trabas con envío rápido a 200ms
+// Recepción de datos (19 caracteres + NewLine)
 bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
     datos = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
-    
-    // Validación silenciosa: si no son 19 caracteres, ignorar
     if (datos.length != 19) {
         return
     }
-    
-    // Extraer parámetros del paquete de 19 caracteres
     posX = parseFloat(datos.substr(0, 2))
     posY = parseFloat(datos.substr(2, 2))
     distancia = parseFloat(datos.substr(4, 2))
@@ -50,23 +43,34 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
     giro = parseFloat(datos.substr(16, 1))
     sonrisa = parseFloat(datos.substr(17, 1))
     rostroVisible = parseFloat(datos.substr(18, 1))
-    
-    // Demo: gráfico de barras con guiñada (0..99)
-    led.plotBarGraph(guinada, 99)
-    
-    // Ejemplo de reacciones basadas en datos faciales
+    led.plotBarGraph(
+    guinada,
+    99
+    )
     if (rostroVisible == 0) {
-        basic.clearScreen()
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . # . .
+            . . . . .
+            . . . . .
+            `)
+        basic.pause(100)
     } else if (posX < 35) {
         basic.showArrow(ArrowNames.West)
+        basic.pause(100)
     } else if (posX > 65) {
         basic.showArrow(ArrowNames.East)
+        basic.pause(100)
     } else if (posY < 35) {
         basic.showArrow(ArrowNames.North)
+        basic.pause(100)
     } else if (posY > 65) {
         basic.showArrow(ArrowNames.South)
+        basic.pause(100)
     } else if (boca > 50) {
         basic.showIcon(IconNames.Surprised)
+        basic.pause(100)
     } else if (ojoIzquierdo < 30) {
         basic.showLeds(`
             . . . . .
@@ -75,8 +79,10 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
             . # # # .
             . . . . .
             `)
+        basic.pause(100)
     } else if (distancia > 60) {
         basic.showIcon(IconNames.Happy)
+        basic.pause(100)
     } else if (ojoDerecho < 30) {
         basic.showLeds(`
             . . . . .
@@ -85,7 +91,9 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
             . # # # .
             . . . . .
             `)
+        basic.pause(100)
     } else {
         basic.showIcon(IconNames.Chessboard)
+        basic.pause(100)
     }
 })
