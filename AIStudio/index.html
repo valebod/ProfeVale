@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playground Google AI Studio (Gemini) - Profe Vale</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../LogoProfeVale.png">
+  <meta name="theme-color" content="#1C69A8">
+  <meta name="description" content="Prueba rápida de Google AI Studio (Gemini) para texto. No se guardan datos.">
+</head>
+<body>
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+        <img src="../LogoProfeVale.png" alt="Profe Vale Logo" style="width: 120px; height: 120px; filter: drop-shadow(0 0 32px #fff);">
+        <div>
+          <h1 class="header-glow" style="margin:0;font-size:4rem;text-shadow:0 0 18px #fff,0 0 10px rgba(28,105,168,.8),0 0 20px rgba(28,105,168,.4),0 0 30px rgba(28,105,168,.2);">Google AI Studio</h1>
+          <p style="margin:0;font-size:1.2rem;color:#fff;text-shadow:0 0 8px #fff;">Playground Gemini (texto)</p>
+        </div>
+      </div>
+      <a href="../recursos/index.html" class="btn-neon" style="display:inline-block;font-size:.8rem;">← Volver a Recursos</a>
+    </div>
+
+    <div class="card-glass" style="max-width: 1000px; margin: 0 auto 1.5rem;">
+      <h3 style="color:#00d2ff;margin-bottom:.8rem;">ℹ️ Cómo funciona</h3>
+      <ul style="font-size:.95rem;line-height:1.5;color:#e0e0e0;margin-left:1rem;">
+        <li>No guardamos tus prompts ni respuestas. Todo se procesa en tu navegador.</li>
+        <li>Recomendado: usar un <b>proxy seguro</b> (sin exponer tu API key). Si no tenés proxy, podés introducir tu API key solo para pruebas rápidas: no se guarda.</li>
+        <li>Modelos sugeridos: <code>gemini-1.5-flash</code> (rápido, plan gratis).</li>
+      </ul>
+    </div>
+
+    <div class="card" style="max-width:1000px;margin:0 auto 1.5rem;">
+      <h3 style="color:#0077ff;margin-bottom:1rem;">⚙️ Configuración</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div>
+          <label for="proxyUrl" style="display:block;font-weight:bold;margin-bottom:.4rem;">URL de Proxy (opcional, recomendado)</label>
+          <input id="proxyUrl" type="url" placeholder="https://tu-dominio.com/api/gemini" style="width:100%;padding:.6rem;border-radius:8px;border:2px solid #0077ff;background:#fff;color:#1C69A8;">
+          <small style="color:#b0b0b0;display:block;margin-top:.3rem;">Si está presente, se usará el proxy y no tu API key.</small>
+        </div>
+        <div>
+          <label for="apiKey" style="display:block;font-weight:bold;margin-bottom:.4rem;">API Key (solo prueba, no se guarda)</label>
+          <input id="apiKey" type="password" placeholder="AIza..." style="width:100%;padding:.6rem;border-radius:8px;border:2px solid #0077ff;background:#fff;color:#1C69A8;">
+          <small style="color:#ffcc00;display:block;margin-top:.3rem;">Usar solo si no tenés proxy. Protegé tu clave.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="max-width:1000px;margin:0 auto 1.5rem;">
+      <h3 style="color:#0077ff;margin-bottom:1rem;">🧪 Prueba</h3>
+      <div style="display:grid;grid-template-columns:1fr;gap:1rem;">
+        <div style="display:grid;grid-template-columns:1fr 200px;gap:1rem;align-items:end;">
+          <div>
+            <label for="model" style="display:block;font-weight:bold;margin-bottom:.4rem;">Modelo</label>
+            <select id="model" style="width:100%;padding:.6rem;border-radius:8px;border:2px solid #0077ff;background:#fff;color:#1C69A8;">
+              <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+              <option value="gemini-1.5-flash-8b">gemini-1.5-flash-8b</option>
+            </select>
+          </div>
+          <div>
+            <label for="temperature" style="display:block;font-weight:bold;margin-bottom:.4rem;">Temperatura</label>
+            <input id="temperature" type="range" min="0" max="1" step="0.1" value="0.7" style="width:100%">
+          </div>
+        </div>
+        <div>
+          <label for="prompt" style="display:block;font-weight:bold;margin-bottom:.4rem;">Prompt</label>
+          <textarea id="prompt" rows="6" placeholder="Escribí tu pregunta o tarea..." style="width:100%;padding:.8rem;border-radius:8px;border:2px solid #0077ff;background:#fff;color:#1C69A8;"></textarea>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">
+          <button id="runBtn" class="btn-neon">▶️ Generar</button>
+          <button id="clearBtn" class="btn-neon" style="background:#dc3545;">🧹 Limpiar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-glass" style="max-width:1000px;margin:0 auto;">
+      <h3 style="color:#00d2ff;margin-bottom:1rem;">📤 Respuesta</h3>
+      <pre id="output" style="white-space:pre-wrap;color:#e0e0e0;min-height:120px;"></pre>
+      <div style="text-align:right;margin-top:.8rem;">
+        <button id="copyBtn" class="btn-neon" style="font-size:.8rem;">📋 Copiar respuesta</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./playground.js"></script>
+</body>
+</html>
