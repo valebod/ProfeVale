@@ -48,8 +48,10 @@ window.addEventListener('load', () => {
   const proxyInput = document.getElementById('proxyUrl');
 
   // Load default proxy from localStorage if available
+  const cfgProxy = (window.PROFE_VALE_CONFIG && window.PROFE_VALE_CONFIG.GEMINI_PROXY_URL) || '';
   const savedProxy = localStorage.getItem('ai_proxy_url');
-  if (savedProxy && proxyInput && !proxyInput.value) proxyInput.value = savedProxy;
+  if (cfgProxy && proxyInput && !proxyInput.value) proxyInput.value = cfgProxy;
+  else if (savedProxy && proxyInput && !proxyInput.value) proxyInput.value = savedProxy;
 
   runBtn.addEventListener('click', async () => {
     const proxyUrl = document.getElementById('proxyUrl').value.trim();

@@ -14,8 +14,16 @@
   }
 
   async function askValeBot(question) {
+    const cfgAsk = (window.PROFE_VALE_CONFIG && window.PROFE_VALE_CONFIG.RAG_ASK_URL) || '';
+    if (cfgAsk) {
+      const res = await fetch(cfgAsk, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question }) });
+      if (!res.ok) throw new Error('Error al llamar a Vale Bot');
+      return await res.json();
+    }
+
     const proxyKey = 'ai_proxy_url';
-    const proxy = (localStorage.getItem(proxyKey) || '').trim();
+    const cfgGemini = (window.PROFE_VALE_CONFIG && window.PROFE_VALE_CONFIG.GEMINI_PROXY_URL) || '';
+    const proxy = (cfgGemini || localStorage.getItem(proxyKey) || '').trim();
     let endpoint = '';
     if (proxy) {
       try {
@@ -69,7 +77,7 @@
     sendMessage();
   };
 
-  const hasProxy = !!(localStorage.getItem('ai_proxy_url') || '').trim();
+  const hasProxy = !!(((window.PROFE_VALE_CONFIG && (window.PROFE_VALE_CONFIG.RAG_ASK_URL || window.PROFE_VALE_CONFIG.GEMINI_PROXY_URL)) || localStorage.getItem('ai_proxy_url')) || '').trim();
   const notice = document.getElementById('proxyNotice');
   if (notice) notice.style.display = hasProxy ? 'none' : 'block';
 

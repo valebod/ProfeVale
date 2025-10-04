@@ -87,6 +87,7 @@
     </div>
   </div>
 
+  <script src="../site-config.js"></script>
   <script>
     // Cargar/guardar el proxy en localStorage y ocultar API key si hay proxy
     window.addEventListener('load', () => {
@@ -94,8 +95,14 @@
       const input = document.getElementById('proxyUrl');
       const apiKeyBlock = document.getElementById('apiKeyBlock');
       const proxyStatus = document.getElementById('proxyStatus');
+      const fromConfig = (window.PROFE_VALE_CONFIG && window.PROFE_VALE_CONFIG.GEMINI_PROXY_URL) || '';
       const saved = localStorage.getItem(key);
-      if (saved) input.value = saved;
+      if (fromConfig) {
+        input.value = fromConfig;
+        localStorage.setItem(key, fromConfig);
+      } else if (saved) {
+        input.value = saved;
+      }
       function updateUI() {
         const hasProxy = !!input.value.trim();
         apiKeyBlock.style.display = hasProxy ? 'none' : 'block';
