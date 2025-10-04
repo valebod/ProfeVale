@@ -16,9 +16,17 @@
   async function askValeBot(question) {
     const cfgAsk = (window.PROFE_VALE_CONFIG && window.PROFE_VALE_CONFIG.RAG_ASK_URL) || '';
     if (cfgAsk) {
-      const res = await fetch(cfgAsk, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question }) });
-      if (!res.ok) throw new Error('Error al llamar a Vale Bot');
-      return await res.json();
+      try {
+        const res = await fetch(cfgAsk, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question }) });
+        if (!res.ok) throw new Error('Error al llamar a Vale Bot');
+        return await res.json();
+      } catch (err) {
+        let msg = err.message;
+        if (msg.includes('Failed to fetch')) {
+          msg = 'No se pudo conectar con el chat. Verificá la URL en site-config.js o consultá a tu docente.';
+        }
+        return { answer: 'Error: ' + msg, sources: [] };
+      }
     }
 
     const proxyKey = 'ai_proxy_url';
@@ -39,13 +47,21 @@
     }
     if (!endpoint) return { answer: 'Falta configurar el proxy. Andá a Recursos → Playground y pegá tu URL /api/gemini. Luego volvé aquí.', sources: [] };
 
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question })
-    });
-    if (!res.ok) throw new Error('Error al llamar a Vale Bot');
-    return await res.json();
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+      if (!res.ok) throw new Error('Error al llamar a Vale Bot');
+      return await res.json();
+    } catch (err) {
+      let msg = err.message;
+      if (msg.includes('Failed to fetch')) {
+        msg = 'No se pudo conectar con el chat. Verificá la URL en site-config.js o consultá a tu docente.';
+      }
+      return { answer: 'Error: ' + msg, sources: [] };
+    }
   }
 
   async function sendMessage() {

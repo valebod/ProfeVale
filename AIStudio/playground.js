@@ -71,7 +71,11 @@ window.addEventListener('load', () => {
       const text = result.text || result.output || JSON.stringify(result, null, 2);
       setOutput(text);
     } catch (err) {
-      setOutput('Error: ' + err.message);
+      let msg = err.message;
+      if (msg.includes('Failed to fetch')) {
+        msg = 'No se pudo conectar con el proxy. Verificá la URL en site-config.js o consultá a tu docente.';
+      }
+      setOutput('Error: ' + msg);
       console.error(err);
     }
   });
