@@ -34,11 +34,12 @@
     <div class="card" style="max-width:1000px;margin:0 auto 1.5rem;">
       <h3 style="color:#0077ff;margin-bottom:1rem;">⚙️ Configuración</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;">
+        <div style="display:none;">
+          <!-- Proxy oculto, solo para admins. Los alumnos no ven ni editan esto. -->
+          <input id="proxyUrl" type="hidden">
+        </div>
         <div>
-          <label for="proxyUrl" style="display:block;font-weight:bold;margin-bottom:.4rem;">URL de Proxy (opcional, recomendado)</label>
-          <input id="proxyUrl" type="url" placeholder="https://tu-worker.workers.dev/api/gemini" style="width:100%;padding:.6rem;border-radius:8px;border:2px solid #0077ff;background:#fff;color:#1C69A8;">
-          <small id="proxyTip" style="color:#b0b0b0;display:block;margin-top:.3rem;">Pegá acá tu proxy. Se guarda localmente para tu próxima visita.</small>
-          <div id="proxyStatus" style="margin-top:.5rem;font-size:.9rem;display:none;">
+          <div id="proxyStatus" style="margin-top:.5rem;font-size:.9rem;display:block;">
             <span style="background:#28a745;color:#fff;padding:.2rem .5rem;border-radius:6px;">Proxy activo</span>
             <small style="color:#b0ffb0;margin-left:.5rem;">Tu API key NO es necesaria.</small>
           </div>
