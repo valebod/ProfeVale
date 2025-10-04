@@ -37,7 +37,7 @@
         <div>
           <label for="proxyUrl" style="display:block;font-weight:bold;margin-bottom:.4rem;">URL de Proxy (opcional, recomendado)</label>
           <input id="proxyUrl" type="url" placeholder="https://tu-dominio.com/api/gemini" style="width:100%;padding:.6rem;border-radius:8px;border:2px solid #0077ff;background:#fff;color:#1C69A8;">
-          <small style="color:#b0b0b0;display:block;margin-top:.3rem;">Si está presente, se usará el proxy y no tu API key.</small>
+          <small style="color:#b0b0b0;display:block;margin-top:.3rem;">Si está presente, se usará el proxy y no tu API key. Se guarda localmente para tu próxima visita.</small>
         </div>
         <div>
           <label for="apiKey" style="display:block;font-weight:bold;margin-bottom:.4rem;">API Key (solo prueba, no se guarda)</label>
@@ -83,6 +83,16 @@
     </div>
   </div>
 
+  <script>
+    // Cargar/guardar el proxy en localStorage
+    window.addEventListener('load', () => {
+      const key = 'ai_proxy_url';
+      const input = document.getElementById('proxyUrl');
+      const saved = localStorage.getItem(key);
+      if (saved) input.value = saved;
+      input.addEventListener('change', () => localStorage.setItem(key, input.value.trim()));
+    });
+  </script>
   <script src="./playground.js"></script>
 </body>
 </html>

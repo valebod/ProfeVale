@@ -45,6 +45,11 @@ window.addEventListener('load', () => {
   const runBtn = document.getElementById('runBtn');
   const clearBtn = document.getElementById('clearBtn');
   const copyBtn = document.getElementById('copyBtn');
+  const proxyInput = document.getElementById('proxyUrl');
+
+  // Load default proxy from localStorage if available
+  const savedProxy = localStorage.getItem('ai_proxy_url');
+  if (savedProxy && proxyInput && !proxyInput.value) proxyInput.value = savedProxy;
 
   runBtn.addEventListener('click', async () => {
     const proxyUrl = document.getElementById('proxyUrl').value.trim();
@@ -59,6 +64,7 @@ window.addEventListener('load', () => {
     }
     setOutput('Generando respuesta...');
     try {
+      if (proxyUrl) localStorage.setItem('ai_proxy_url', proxyUrl);
       const result = await callGemini({ proxyUrl, apiKey, model, prompt, temperature });
       const text = result.text || result.output || JSON.stringify(result, null, 2);
       setOutput(text);

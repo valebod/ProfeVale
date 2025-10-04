@@ -1,0 +1,10 @@
+name = "vale-bot-worker"
+main = "src/index.js"
+compatibility_date = "2024-10-01"
+
+[vars]
+# Comma-separated list of allowed origins for CORS. Example: "https://tusitio.com,https://valebod.github.io"
+ALLOWED_ORIGINS = "*"
+
+[observability]
+enabled = true
