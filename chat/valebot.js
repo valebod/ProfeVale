@@ -15,9 +15,21 @@
 
   async function askValeBot(question) {
     const proxyKey = 'ai_proxy_url';
-    const proxy = localStorage.getItem(proxyKey) || '';
-    const endpoint = proxy ? proxy.replace(/\/api\/gemini$/, '/api/ask') : '';
-    if (!endpoint) return { answer: 'Configurá el proxy en AIStudio (URL /api/ask) o en localStorage ai_proxy_url', sources: [] };
+    const proxy = (localStorage.getItem(proxyKey) || '').trim();
+    let endpoint = '';
+    if (proxy) {
+      try {
+        const u = new URL(proxy);
+        // si termina en /api/gemini -> reemplazar; si no, asegurar /api/ask
+        if (u.pathname.endsWith('/api/gemini')) {
+          u.pathname = u.pathname.replace(/\/api\/gemini$/, '/api/ask');
+        } else if (!u.pathname.endsWith('/api/ask')) {
+          u.pathname = (u.pathname.replace(/\/$/, '')) + '/api/ask';
+        }
+        endpoint = u.toString();
+      } catch {}
+    }
+    if (!endpoint) return { answer: 'Falta configurar el proxy. Andá a Recursos → Playground y pegá tu URL /api/gemini. Luego volvé aquí.', sources: [] };
 
     const res = await fetch(endpoint, {
       method: 'POST',
@@ -56,6 +68,10 @@
     document.getElementById('chatInput').value = q;
     sendMessage();
   };
+
+  const hasProxy = !!(localStorage.getItem('ai_proxy_url') || '').trim();
+  const notice = document.getElementById('proxyNotice');
+  if (notice) notice.style.display = hasProxy ? 'none' : 'block';
 
   document.getElementById('sendBtn').addEventListener('click', sendMessage);
   document.getElementById('chatInput').addEventListener('keypress', (e) => {

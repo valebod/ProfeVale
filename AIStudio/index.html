@@ -33,13 +33,17 @@
 
     <div class="card" style="max-width:1000px;margin:0 auto 1.5rem;">
       <h3 style="color:#0077ff;margin-bottom:1rem;">⚙️ Configuración</h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;">
         <div>
           <label for="proxyUrl" style="display:block;font-weight:bold;margin-bottom:.4rem;">URL de Proxy (opcional, recomendado)</label>
-          <input id="proxyUrl" type="url" placeholder="https://tu-dominio.com/api/gemini" style="width:100%;padding:.6rem;border-radius:8px;border:2px solid #0077ff;background:#fff;color:#1C69A8;">
-          <small style="color:#b0b0b0;display:block;margin-top:.3rem;">Si está presente, se usará el proxy y no tu API key. Se guarda localmente para tu próxima visita.</small>
+          <input id="proxyUrl" type="url" placeholder="https://tu-worker.workers.dev/api/gemini" style="width:100%;padding:.6rem;border-radius:8px;border:2px solid #0077ff;background:#fff;color:#1C69A8;">
+          <small id="proxyTip" style="color:#b0b0b0;display:block;margin-top:.3rem;">Pegá acá tu proxy. Se guarda localmente para tu próxima visita.</small>
+          <div id="proxyStatus" style="margin-top:.5rem;font-size:.9rem;display:none;">
+            <span style="background:#28a745;color:#fff;padding:.2rem .5rem;border-radius:6px;">Proxy activo</span>
+            <small style="color:#b0ffb0;margin-left:.5rem;">Tu API key NO es necesaria.</small>
+          </div>
         </div>
-        <div>
+        <div id="apiKeyBlock">
           <label for="apiKey" style="display:block;font-weight:bold;margin-bottom:.4rem;">API Key (solo prueba, no se guarda)</label>
           <input id="apiKey" type="password" placeholder="AIza..." style="width:100%;padding:.6rem;border-radius:8px;border:2px solid #0077ff;background:#fff;color:#1C69A8;">
           <small style="color:#ffcc00;display:block;margin-top:.3rem;">Usar solo si no tenés proxy. Protegé tu clave.</small>
@@ -84,13 +88,26 @@
   </div>
 
   <script>
-    // Cargar/guardar el proxy en localStorage
+    // Cargar/guardar el proxy en localStorage y ocultar API key si hay proxy
     window.addEventListener('load', () => {
       const key = 'ai_proxy_url';
       const input = document.getElementById('proxyUrl');
+      const apiKeyBlock = document.getElementById('apiKeyBlock');
+      const proxyStatus = document.getElementById('proxyStatus');
       const saved = localStorage.getItem(key);
       if (saved) input.value = saved;
-      input.addEventListener('change', () => localStorage.setItem(key, input.value.trim()));
+      function updateUI() {
+        const hasProxy = !!input.value.trim();
+        apiKeyBlock.style.display = hasProxy ? 'none' : 'block';
+        proxyStatus.style.display = hasProxy ? 'block' : 'none';
+      }
+      updateUI();
+      input.addEventListener('input', () => {
+        const v = input.value.trim();
+        if (v) localStorage.setItem(key, v);
+        else localStorage.removeItem(key);
+        updateUI();
+      });
     });
   </script>
   <script src="./playground.js"></script>
