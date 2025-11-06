@@ -11,6 +11,7 @@ const urlsToCache = [
   '/AppMicrobitTeachable/index.html',
   '/AppMicrobitFlechas/index.html'
 ];
+const FALLBACK_PAGE = '/';
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -23,11 +24,11 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
+        return response || fetch(event.request).catch(() => {
+          if (event.request.mode === 'navigate') {
+            return caches.match(FALLBACK_PAGE);
+          }
+        });
+      })
   );
 });
