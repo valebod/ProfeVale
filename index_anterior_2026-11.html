@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profe Vale - IA y Robótica Educativa</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="LogoProfeVale.png">
+  <meta name="theme-color" content="#1C69A8">
+  <meta name="description" content="Aprende inteligencia artificial y robótica educativa con micro:bit. Tutoriales, evaluaciones, recursos y más en español.">
+</head>
+<body>
+  <div class="container">
+    <!-- Layout de 3 columnas para desktop -->
+    <div class="desktop-layout">
+      <!-- Header compartido que abarca las 3 columnas -->
+      <div class="shared-header">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+          <img src="LogoProfeVale.png" alt="Profe Vale Logo" style="width: 160px; height: 160px; filter: drop-shadow(0 0 32px #fff);">
+          <div>
+            <h1 class="header-glow" style="margin: 0; font-size: 6rem; text-shadow: 0 0 18px #fff, 0 0 10px rgba(28, 105, 168, 0.8), 0 0 20px rgba(28, 105, 168, 0.4), 0 0 30px rgba(28, 105, 168, 0.2);">Profe Vale</h1>
+            <p style="margin: 0; font-size: 1.7rem; color: #fff; text-shadow: 0 0 8px #fff;">IA y robótica con Micro:bit</p>
+          </div>
+        </div>
+        <!-- Sección de presentación -->
+        <div class="card-glass" style="max-width: 900px; margin: 0 auto 1.5rem;">
+          <div style="text-align: center;">
+            <p style="font-size: 1.1rem; line-height: 1.6; color: #fff; margin-bottom: 0; text-align: center;">
+              Bienvenidos a un espacio pensado para aprender y crear: aquí encontrarás materiales en español de <strong style="color: #fff;">inteligencia artificial y robótica educativa</strong> con <strong style="color: #fff;">micro:bit</strong>. Soy docente y creo que la tecnología puede ayudar a la humanidad a transformar el mundo para mejor, si nos ayuda a subrayar nuestra humanidad.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sidebar Izquierda -->
+      <div class="sidebar-left">
+        <!-- Navegación Principal -->
+        <div class="card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+          <h3 style="margin-bottom: 1rem; text-align: center;">🧭 Navegación</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <a href="tutoriales/index.html" class="btn-neon" style="font-size: 0.8rem; text-align: center;">📚 Tutoriales</a>
+            <a href="evaluaciones/index.html" class="btn-neon" style="font-size: 0.8rem; text-align: center;">🎯 Evaluaciones</a>
+            <a href="rutas/index.html" class="btn-neon" style="font-size: 0.8rem; text-align: center;">🗺️ Rutas de Aprendizaje</a>
+            <a href="galeria/index.html" class="btn-neon" style="font-size: 0.8rem; text-align: center;">🖼️ Galería</a>
+            <a href="recursos/index.html" class="btn-neon" style="font-size: 0.8rem; text-align: center;">📚 Recursos</a>
+            <a href="formacion/index.html" class="btn-neon" style="font-size: 0.8rem; text-align: center;">👩‍🏫 Formación</a>
+            <a href="chat/index.html" class="btn-neon" style="font-size: 0.8rem; text-align: center;">💬 Vale Bot</a>
+          </div>
+        </div>
+        
+        <!-- Búsqueda -->
+        <div class="card" style="padding: 1.5rem;">
+          <h3 style="margin-bottom: 1rem; text-align: center;">🔍 Búsqueda</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <input type="text" id="searchInput" placeholder="Buscar recursos..." 
+                   style="padding: 0.75rem; border: 2px solid #fff; border-radius: 8px; font-size: 0.8rem; background: #fff; color: #1C69A8;">
+            <button onclick="performSearch()" class="btn-neon" style="padding: 0.5rem; font-size: 0.8rem;">🔍 Buscar</button>
+          </div>
+          <div id="searchResults" style="margin-top: 1rem; display: none;"></div>
+        </div>
+      </div>
+
+      <!-- Contenido Central -->
+      <div class="main-content">
+        <!-- Apps disponibles -->
+        <div class="card-glass" style="margin: 2rem 0;">
+          <h2 style="text-align: center; margin-bottom: 3rem;">🚀 Aplicaciones Propias</h2>
+          
+          <div class="app-grid">
+            <!-- App 1: Teachable Machine -->
+            <div class="app-card">
+              <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🧠</div>
+              <h3>Teachable Machine + micro:bit</h3>
+              <p>Entrená tu propio modelo de IA con imágenes, sonidos o poses y controlá la micro:bit en tiempo real.</p>
+              <a href="AppMicrobitTeachable/index.html" class="btn-neon">Abrir App</a>
+            </div>
+
+            <!-- App 2: Reconocimiento Facial -->
+            <div class="app-card">
+              <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">👤</div>
+              <h3>Reconocimiento Facial</h3>
+              <p>Detecta rostros y características faciales usando TensorFlow.js. Envía datos en tiempo real a tu micro:bit.</p>
+              <a href="AppMicrobitRF/index.html" class="btn-neon">Abrir App</a>
+            </div>
+
+            <!-- App 3: Control Remoto -->
+            <div class="app-card">
+              <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">⬆️</div>
+              <h3>Control Remoto por Bluetooth</h3>
+              <p>Controla tu micro:bit con flechas direccionales. Comandos editables y personalizables via Bluetooth.</p>
+              <a href="AppMicrobitFlechas/index.html" class="btn-neon">Abrir App</a>
+            </div>
+
+            <!-- App 4: Image Trainer -->
+            <div class="app-card">
+              <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🖼️</div>
+              <h3>Entrenador de Imágenes</h3>
+              <p>Crea y entrena tu propio modelo de clasificación de imágenes con IA y envía resultados a micro:bit.</p>
+              <a href="AppMicrobitImageTrainer/index.html" class="btn-neon">Abrir App</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección de Colaboración -->
+        <div class="card" style="text-align: center; max-width: 700px; margin: 3rem auto; background: linear-gradient(135deg, rgba(0,119,255,0.15) 0%, rgba(0,210,255,0.1) 100%); border: 1px solid rgba(0,210,255,0.3);">
+          <h3 style="margin-bottom: 1.5rem; color: #00d2ff;">☕ Invitame un cafecito</h3>
+          
+          <p style="font-size: 0.95rem; color: #e6f3ff; margin-bottom: 1.5rem; line-height: 1.5;">
+            Si mis recursos te ayudaron, podés apoyar el proyecto:
+          </p>
+          
+          <!-- Enlaces de Donación - Los 3 métodos -->
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem;">
+            <button id="btnAliasAR" class="btn-neon" title="Alias Argentina" style="background: linear-gradient(45deg, #00a650, #00c853); color: #fff; border-color: #00a650;">
+              🇦🇷 Alias Argentina
+            </button>
+            <button id="btnAliasUY" class="btn-neon" title="Alias Uruguay" style="background: linear-gradient(45deg, #45aaf2, #00d2ff); color: #fff; border-color: #45aaf2;">
+              🇺🇾 Alias Uruguay
+            </button>
+            <a href="https://ko-fi.com/profevale" target="_blank" class="btn-neon" 
+               style="background: linear-gradient(45deg, #ff6b00, #ff8500); color: white; border-color: #ff6b00;">
+              🌍 Otros países (Ko‑fi)
+            </a>
+          </div>
+        </div>
+        
+        <!-- Sección de Contacto -->
+        <div class="card" style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+          <h3 style="margin-bottom: 1.5rem;">📌 Conectemos</h3>
+          
+          <!-- Redes Sociales -->
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+            <a href="https://www.instagram.com/profevaleia/" target="_blank" class="btn-neon">📷 Instagram</a>
+          </div>
+          
+          <!-- Formulario de Contacto -->
+          <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 1.5rem; margin-top: 1.5rem;">
+            <h4 style="margin-bottom: 1rem; color: #fff;">📧 Envíame un mensaje</h4>
+            <form id="contactForm" style="display: flex; flex-direction: column; gap: 1rem;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <input type="text" id="contactName" placeholder="Tu nombre" required 
+                       style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
+                <input type="email" id="contactEmail" placeholder="Tu email" required
+                       style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
+              </div>
+              <input type="text" id="contactSubject" placeholder="Asunto" required
+                     style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
+              <textarea id="contactMessage" placeholder="Tu mensaje..." rows="4" required
+                        style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
+              <button type="submit" class="btn-neon" style="align-self: center; margin-top: 0.5rem;">
+                🚀 Enviar Mensaje
+              </button>
+            </form>
+            <div id="contactStatus" style="margin-top: 1rem; display: none; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Derecha -->
+      <div class="sidebar-right">
+        <!-- Mi Progreso -->
+        <div class="card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+          <h3 style="margin-bottom: 1rem; text-align: center;">📊 Mi Progreso</h3>
+          <div style="text-align: center; margin-bottom: 1rem;">
+            <div style="width: 70px; height: 70px; border: 3px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; position: relative; background: rgba(255,255,255,0.1);">
+              <span id="overallProgress" style="font-weight: bold; font-size: 0.9rem; color: #fff;">0%</span>
+            </div>
+          </div>
+          <div style="margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.15); border-radius: 8px;">
+            <div style="font-size: 0.8rem; color: #e6f3ff; margin-bottom: 3px;">Evaluaciones</div>
+            <div style="font-weight: bold; color: #fff;"><span id="completedEvaluations">0</span> de 6</div>
+          </div>
+          <div style="margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.15); border-radius: 8px;">
+            <div style="font-size: 0.8rem; color: #e6f3ff; margin-bottom: 3px;">Promedio general</div>
+            <div style="font-weight: bold; color: #fff;"><span id="averageScore">0%</span></div>
+          </div>
+          <div style="padding: 8px; background: rgba(255,255,255,0.15); border-radius: 8px;">
+            <div style="font-size: 0.8rem; color: #e6f3ff; margin-bottom: 3px;">Nivel actual</div>
+            <div style="font-weight: bold; color: #fff;"><span id="currentLevel">Principiante</span></div>
+          </div>
+        </div>
+        
+        <!-- Actividad -->
+        <div class="card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+          <h3 style="margin-bottom: 1rem; text-align: center;">🚀 Actividad</h3>
+          <div style="max-height: 140px; overflow-y: auto;">
+            <div style="margin-bottom: 10px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 6px; font-size: 0.85rem;">
+              <div style="font-weight: bold; color: #fff; margin-bottom: 2px;">Última sesión</div>
+              <div style="color: #e6f3ff;"><span id="lastActivity">Nunca</span></div>
+            </div>
+            <div style="margin-bottom: 10px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 6px; font-size: 0.85rem;">
+              <div style="font-weight: bold; color: #fff; margin-bottom: 2px;">Hoy</div>
+              <div style="color: #e6f3ff;">1 sesión activa</div>
+            </div>
+            <div id="recentActivity" style="padding: 8px; background: rgba(255,255,255,0.1); border-radius: 6px; font-size: 0.85rem;">
+              <div style="font-weight: bold; color: #fff; margin-bottom: 4px;">Sugerencias</div>
+              <div style="color: #e6f3ff; line-height: 1.3;">
+                • Prueba las evaluaciones<br>
+                • Explora las apps<br>
+                • Inicia una ruta
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Estadísticas -->
+        <div class="card" style="padding: 1.5rem;">
+          <h3 style="margin-bottom: 1rem; text-align: center;">📈 Estadísticas</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+            <div style="text-align: center; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+              <div style="font-weight: bold; font-size: 1.1em; color: #fff;"><span id="completed-count">0</span></div>
+              <div style="font-size: 0.75rem; color: #e6f3ff;">Completadas</div>
+            </div>
+            <div style="text-align: center; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+              <div style="font-weight: bold; font-size: 1.1em; color: #fff;"><span id="average-score">0%</span></div>
+              <div style="font-size: 0.75rem; color: #e6f3ff;">Promedio</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div style="text-align: center; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+              <div style="font-weight: bold; font-size: 1.1em; color: #fff;"><span id="best-score">0%</span></div>
+              <div style="font-size: 0.75rem; color: #e6f3ff;">Mejor nota</div>
+            </div>
+            <div style="text-align: center; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+              <div style="font-weight: bold; font-size: 1.1em; color: #fff;">4</div>
+              <div style="font-size: 0.75rem; color: #e6f3ff;">Apps</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Versión Móvil: Navegación tradicional -->
+    <div class="mobile-layout">
+      <!-- Header Móvil -->
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+          <img src="LogoProfeVale.png" alt="Profe Vale Logo" style="width: 100px; height: 100px;">
+          <div>
+            <h1 class="header-glow" style="margin: 0; font-size: 5rem; text-shadow: 0 0 10px rgba(28, 105, 168, 0.8), 0 0 20px rgba(28, 105, 168, 0.4), 0 0 30px rgba(28, 105, 168, 0.2);">Profe Vale</h1>
+            <p style="margin: 0; font-size: 1.2rem; color: #e6f3ff;">IA y robótica con Micro:bit</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección de presentación (Móvil) -->
+      <div class="card-glass" style="max-width: 900px; margin: 0 auto 1.5rem;">
+        <div style="text-align: center;">
+          <p style="font-size: 1.1rem; line-height: 1.6; color: #fff; margin-bottom: 2rem; text-align: center;">
+            Bienvenidos a un espacio pensado para aprender y crear: aquí encontrarás materiales en español de <strong style="color: #fff;">inteligencia artificial y robótica educativa</strong> con <strong style="color: #fff;">micro:bit</strong>. Soy docente y creo que la tecnología puede ayudar a la humanidad a transformar el mundo para mejor, si nos ayuda a subrayar nuestra humanidad.
+          </p>
+        </div>
+      </div>
+
+      <!-- Navegación Principal (Móvil) -->
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 1rem 0;">
+          <a href="tutoriales/index.html" class="btn-neon" style="font-size: 0.8rem;">📚 Tutoriales</a>
+          <a href="evaluaciones/index.html" class="btn-neon" style="font-size: 0.8rem;">🎯 Evaluaciones</a>
+          <a href="rutas/index.html" class="btn-neon" style="font-size: 0.8rem;">🗺️ Rutas de Aprendizaje</a>
+          <a href="galeria/index.html" class="btn-neon" style="font-size: 0.8rem;">🖼️ Galería</a>
+          <a href="recursos/index.html" class="btn-neon" style="font-size: 0.8rem;">📖 Recursos</a>
+          <a href="formacion/index.html" class="btn-neon" style="font-size: 0.8rem;">👩‍🏫 Formación</a>
+          <a href="chat/index.html" class="btn-neon" style="font-size: 0.8rem;">💬 Vale Bot</a>
+        </div>
+      </div>
+
+      
+      
+      <!-- Apps disponibles (Móvil) -->
+      <div class="card-glass" style="max-width: 1000px; margin: 0 auto 3rem;">
+        <h2 style="text-align: center; margin-bottom: 3rem;">🚀 Aplicaciones Propias</h2>
+        
+        <div class="app-grid">
+          <!-- App 1: Teachable Machine -->
+          <div class="app-card">
+            <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🧠</div>
+            <h3>Teachable Machine + micro:bit</h3>
+            <p>Entrená tu propio modelo de IA con imágenes, sonidos o poses y controlá la micro:bit en tiempo real.</p>
+            <a href="AppMicrobitTeachable/index.html" class="btn-neon">Abrir App</a>
+          </div>
+
+          <!-- App 2: Reconocimiento Facial -->
+          <div class="app-card">
+            <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">👤</div>
+            <h3>Reconocimiento Facial</h3>
+            <p>Detecta rostros y características faciales usando TensorFlow.js. Envía datos en tiempo real a tu micro:bit.</p>
+            <a href="AppMicrobitRF/index.html" class="btn-neon">Abrir App</a>
+          </div>
+
+          <!-- App 3: Control Remoto -->
+          <div class="app-card">
+            <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">⬆️</div>
+            <h3>Control Remoto por Bluetooth</h3>
+            <p>Controla tu micro:bit con flechas direccionales. Comandos editables y personalizables via Bluetooth.</p>
+            <a href="AppMicrobitFlechas/index.html" class="btn-neon">Abrir App</a>
+          </div>
+
+          <!-- App 4: Image Trainer -->
+          <div class="app-card">
+            <div style="font-size: 3rem; text-align: center; margin-bottom: 1rem;">🖼️</div>
+            <h3>Entrenador de Imágenes</h3>
+            <p>Crea y entrena tu propio modelo de clasificación de imágenes con IA y envía resultados a micro:bit.</p>
+            <a href="AppMicrobitImageTrainer/index.html" class="btn-neon">Abrir App</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección de Colaboración (Móvil) -->
+      <div class="card" style="text-align: center; max-width: 600px; margin: 3rem auto; background: linear-gradient(135deg, rgba(0,119,255,0.15) 0%, rgba(0,210,255,0.1) 100%); border: 1px solid rgba(0,210,255,0.3);">
+        <h3 style="margin-bottom: 1.5rem; color: #00d2ff;">☕ Invitame un cafecito</h3>
+        
+        <p style="font-size: 0.9rem; color: #e6f3ff; margin-bottom: 1.5rem; line-height: 1.4;">
+          Si mis recursos te ayudaron, podés apoyar el proyecto:
+        </p>
+        
+        <!-- Enlaces de Donación - Los 3 métodos -->
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem;">
+          <button id="btnAliasARMobile" class="btn-neon" title="Alias Argentina" style="background: linear-gradient(45deg, #00a650, #00c853); color: #fff; border-color: #00a650; font-size: 0.8rem; padding: 0.6rem 1rem;">
+            🇦🇷 Alias Argentina
+          </button>
+          <button id="btnAliasUYMobile" class="btn-neon" title="Alias Uruguay" style="background: linear-gradient(45deg, #45aaf2, #00d2ff); color: #fff; border-color: #45aaf2; font-size: 0.8rem; padding: 0.6rem 1rem;">
+            🇺🇾 Alias Uruguay
+          </button>
+          <a href="https://ko-fi.com/profevale" target="_blank" class="btn-neon" 
+             style="background: linear-gradient(45deg, #ff6b00, #ff8500); color: white; border-color: #ff6b00; font-size: 0.8rem; padding: 0.6rem 1rem;">
+            🌍 Otros países (Ko‑fi)
+          </a>
+        </div>
+      </div>
+      
+      <!-- Sección de Contacto (Móvil) -->
+      <div class="card" style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
+        <h3 style="margin-bottom: 1.5rem;">📌 Conectemos</h3>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
+          <a href="https://www.instagram.com/profevaleia/" target="_blank" class="btn-neon">📷 Instagram</a>
+        </div>
+        
+        <!-- Formulario compacto móvil -->
+        <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 1rem;">
+          <h4 style="margin-bottom: 1rem; color: #fff;">📧 Contacto</h4>
+          <form id="contactFormMobile" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <input type="text" id="contactNameMobile" placeholder="Tu nombre" required 
+                   style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
+            <input type="email" id="contactEmailMobile" placeholder="Tu email" required
+                   style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
+            <input type="text" id="contactSubjectMobile" placeholder="Asunto" required
+                   style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem;">
+            <textarea id="contactMessageMobile" placeholder="Tu mensaje..." rows="3" required
+                      style="padding: 0.75rem; border: none; border-radius: 8px; font-size: 0.9rem; resize: vertical;"></textarea>
+            <button type="submit" class="btn-neon" style="margin-top: 0.5rem;">
+              🚀 Enviar
+            </button>
+          </form>
+          <div id="contactStatusMobile" style="margin-top: 1rem; display: none; padding: 0.5rem; border-radius: 8px; font-size: 0.8rem;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Función de búsqueda
+    function performSearch() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const resultsDiv = document.getElementById('searchResults');
+      
+      if (!query.trim()) {
+        resultsDiv.style.display = 'none';
+        return;
+      }
+
+      // Base de datos de búsqueda
+      const searchData = [
+        { title: 'Teachable Machine + micro:bit', url: 'AppMicrobitTeachable/index.html', description: 'Entrená tu propio modelo de IA', keywords: ['ia', 'inteligencia artificial', 'teachable', 'machine', 'modelo'] },
+        { title: 'Reconocimiento Facial', url: 'AppMicrobitRF/index.html', description: 'Detecta rostros con TensorFlow.js', keywords: ['facial', 'rostro', 'tensorflow', 'detección'] },
+        { title: 'Control Remoto por Bluetooth', url: 'AppMicrobitFlechas/index.html', description: 'Controla con comandos direccionales', keywords: ['remoto', 'control', 'direccional', 'bluetooth'] },
+        { title: 'Entrenador de Imágenes', url: 'AppMicrobitImageTrainer/index.html', description: 'Crea modelos de clasificación', keywords: ['imagen', 'clasificación', 'entrena', 'modelo'] },
+        { title: 'Evaluaciones', url: 'evaluaciones/', description: 'Evalúa tu progreso', keywords: ['quiz', 'evaluacion', 'examen', 'test'] },
+        { title: 'Tutoriales', url: 'tutoriales/', description: 'Aprende paso a paso', keywords: ['tutorial', 'aprender', 'guía'] },
+        { title: 'Recursos', url: 'recursos/', description: 'Materiales adicionales', keywords: ['recursos', 'materiales', 'enlaces'] }
+      ];
+
+      const results = searchData.filter(item => 
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.keywords.some(keyword => keyword.includes(query))
+      );
+
+      if (results.length > 0) {
+        resultsDiv.innerHTML = results.map(result => `
+          <div style="padding: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px; margin-bottom: 0.5rem;">
+            <a href="${result.url}" style="color: #fff; text-decoration: none; font-weight: bold;">${result.title}</a>
+            <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #e6f3ff;">${result.description}</p>
+          </div>
+        `).join('');
+        resultsDiv.style.display = 'block';
+      } else {
+        resultsDiv.innerHTML = '<p style="color: #e6f3ff; font-size: 0.9rem;">No se encontraron resultados.</p>';
+        resultsDiv.style.display = 'block';
+      }
+    }
+
+    // Manejar formulario de contacto desktop
+    function handleContactForm() {
+      const form = document.getElementById('contactForm');
+      const status = document.getElementById('contactStatus');
+      
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const name = document.getElementById('contactName').value;
+          const email = document.getElementById('contactEmail').value;
+          const subject = document.getElementById('contactSubject').value;
+          const message = document.getElementById('contactMessage').value;
+          
+          // Crear link de mailto
+          const mailtoLink = `mailto:profevalebod@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`)}`;
+          
+          // Abrir cliente de correo
+          window.location.href = mailtoLink;
+          
+          // Mostrar mensaje de confirmación
+          status.style.display = 'block';
+          status.style.background = 'rgba(57, 255, 20, 0.2)';
+          status.style.color = '#39ff14';
+          status.textContent = '✓ Se abrió tu cliente de correo. Envía el mensaje desde allí.';
+          
+          // Limpiar formulario
+          form.reset();
+        });
+      }
+    }
+
+    // Manejar formulario de contacto móvil
+    function handleContactFormMobile() {
+      const form = document.getElementById('contactFormMobile');
+      const status = document.getElementById('contactStatusMobile');
+      
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const name = document.getElementById('contactNameMobile').value;
+          const email = document.getElementById('contactEmailMobile').value;
+          const subject = document.getElementById('contactSubjectMobile').value;
+          const message = document.getElementById('contactMessageMobile').value;
+          
+          // Crear link de mailto
+          const mailtoLink = `mailto:profevalebod@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`)}`;
+          
+          // Abrir cliente de correo
+          window.location.href = mailtoLink;
+          
+          // Mostrar mensaje de confirmación
+          status.style.display = 'block';
+          status.style.background = 'rgba(57, 255, 20, 0.2)';
+          status.style.color = '#39ff14';
+          status.textContent = '✓ Cliente de correo abierto';
+          
+          // Limpiar formulario
+          form.reset();
+        });
+      }
+    }
+
+    // Progreso de aprendizaje
+    function loadUserProgress() {
+      // Obtener datos reales de evaluaciones
+      const evaluationResults = JSON.parse(localStorage.getItem('evaluationResults') || '[]');
+      let completedCount = 0;
+      let totalScore = 0;
+      let bestScore = 0;
+      
+      if (evaluationResults.length > 0) {
+        completedCount = evaluationResults.length;
+        totalScore = evaluationResults.reduce((sum, result) => sum + result.score, 0);
+        bestScore = Math.max(...evaluationResults.map(result => result.score));
+      }
+      
+      const overallProgress = completedCount > 0 ? Math.round(totalScore / completedCount) : 0;
+      
+      // Determinar nivel
+      let currentLevel = 'Principiante';
+      if (completedCount > 0) {
+        if (overallProgress >= 80) currentLevel = 'Experto';
+        else if (overallProgress >= 60) currentLevel = 'Avanzado';  
+        else if (overallProgress >= 30) currentLevel = 'Intermedio';
+      }
+      
+      // Última actividad
+      const lastActivity = completedCount > 0 ? 
+        new Date(evaluationResults[evaluationResults.length - 1].date).toLocaleDateString() : 
+        'Nunca';
+
+      // Actualizar elementos de la sidebar derecha
+      const elements = {
+        'overallProgress': overallProgress + '%',
+        'completedEvaluations': completedCount,
+        'averageScore': overallProgress + '%',
+        'currentLevel': currentLevel,
+        'lastActivity': lastActivity,
+        'completed-count': completedCount,
+        'average-score': overallProgress + '%',
+        'best-score': bestScore + '%'
+      };
+
+      // Actualizar cada elemento si existe
+      Object.keys(elements).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.textContent = elements[id];
+        }
+      });
+    }
+
+    // Registro PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+  navigator.serviceWorker.register('./sw.js')
+          .then(registration => console.log('SW registered'))
+          .catch(error => console.log('SW registration failed'));
+      });
+    }
+
+  // PWA Installation
+  let deferredPrompt;
+  let installSection;
+
+    function isPortraitMobile() {
+      const ua = navigator.userAgent;
+      const isMobileUA = /Android|iPhone|iPad|iPod|Mobile|Samsung|SM-|Pixel|Xiaomi|Huawei/i.test(ua);
+      const isPortrait = window.matchMedia && window.matchMedia('(orientation: portrait)').matches;
+      const smallViewport = Math.min(window.innerWidth, window.innerHeight) <= 820; // soporta pantallas de alta densidad
+      return (isMobileUA && (isPortrait || smallViewport));
+    }
+    
+    // Mostrar sección de instalación solo en móvil vertical
+    function showInstallPrompt() {
+      installSection = document.getElementById('installSection');
+      if (installSection && isPortraitMobile() && !window.matchMedia('(display-mode: standalone)').matches) {
+        installSection.style.display = 'block';
+        
+        // Mostrar instrucciones específicas para iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+        
+        if (isIOS && isSafari) {
+          const instructionText = installSection.querySelector('p');
+          if (instructionText) {
+            instructionText.innerHTML = '📱 En Safari iOS: Toca el botón <strong>Compartir</strong> ↗️ y luego <strong>"Añadir a la pantalla de inicio"</strong>';
+          }
+          const installBtn = installSection.querySelector('#installBtn');
+          if (installBtn) {
+            installBtn.style.display = 'none';
+          }
+        }
+      }
+    }
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      showInstallPrompt();
+      // Asegurar que el botón esté visible en plataformas soportadas
+      const btn = document.getElementById('installBtn');
+      if (btn) btn.style.display = 'inline-block';
+    });
+    
+    // Mostrar también en dispositivos donde no se dispara beforeinstallprompt
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (isPortraitMobile() && !deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
+          showInstallPrompt();
+        }
+      }, 3000);
+    });
+
+    // Actualizar visibilidad al rotar o cambiar tamaño
+    ['orientationchange','resize'].forEach(evt => {
+      window.addEventListener(evt, () => {
+        if (!window.matchMedia('(display-mode: standalone)').matches) {
+          if (isPortraitMobile()) {
+            showInstallPrompt();
+          } else if (installSection) {
+            installSection.style.display = 'none';
+          }
+        }
+      });
+    });
+    
+    // Único manejador del botón de instalación
+    function wireInstallButton() {
+      const installBtn = document.getElementById('installBtn');
+      if (!installBtn) return;
+      installBtn.onclick = async () => {
+        // Si ya está instalada, solo informar
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+          const p = document.querySelector('#installSection p');
+          if (p) p.textContent = '✔ App ya instalada';
+          installBtn.style.display = 'none';
+          return;
+        }
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            document.getElementById('installSection').style.display = 'none';
+          }
+          deferredPrompt = null;
+        } else {
+          // iOS Safari: mostrar guía; otros navegadores sin prompt: no forzar alertas
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+          if (isIOS && isSafari) {
+            alert('📱 Safari iOS: Toca Compartir ↗️ → "Añadir a pantalla de inicio"');
+          }
+        }
+      };
+    }
+
+    // Inicializar funcionalidades al cargar
+    window.addEventListener('load', () => {
+      loadUserProgress();
+      handleContactForm();
+      handleContactFormMobile();
+      // Alias de pago locales - Desktop
+      const btnAR = document.getElementById('btnAliasAR');
+      const btnUY = document.getElementById('btnAliasUY');
+      if (btnAR) btnAR.onclick = async () => {
+        try { await navigator.clipboard.writeText('profe.vale.ia'); } catch(_){ }
+        btnAR.textContent = '🇦🇷 Copiado: profe.vale.ia';
+        setTimeout(()=> btnAR.textContent = '🇦🇷 Alias Argentina', 2000);
+      };
+      if (btnUY) btnUY.onclick = async () => {
+        try { await navigator.clipboard.writeText('vale.uy.brou'); } catch(_){ }
+        btnUY.textContent = '🇺🇾 Copiado: vale.uy.brou';
+        setTimeout(()=> btnUY.textContent = '🇺🇾 Alias Uruguay', 2000);
+      };
+      
+      // Alias de pago locales - Móvil
+      const btnARMobile = document.getElementById('btnAliasARMobile');
+      const btnUYMobile = document.getElementById('btnAliasUYMobile');
+      if (btnARMobile) btnARMobile.onclick = async () => {
+        try { await navigator.clipboard.writeText('profe.vale.ia'); } catch(_){ }
+        btnARMobile.textContent = '🇦🇷 Copiado!';
+        setTimeout(()=> btnARMobile.textContent = '🇦🇷 Alias Argentina', 2000);
+      };
+      if (btnUYMobile) btnUYMobile.onclick = async () => {
+        try { await navigator.clipboard.writeText('vale.uy.brou'); } catch(_){ }
+        btnUYMobile.textContent = '🇺🇾 Copiado!';
+        setTimeout(()=> btnUYMobile.textContent = '🇺🇾 Alias Uruguay', 2000);
+      };
+      // Mostrar estado si ya está instalada
+      installSection = document.getElementById('installSection');
+      const installBtn = document.getElementById('installBtn');
+      const installed = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+      if (installed && installSection) {
+        installSection.style.display = 'block';
+        const p = installSection.querySelector('p');
+        if (p) p.textContent = '✔ App ya instalada';
+        if (installBtn) installBtn.style.display = 'none';
+      } else {
+        showInstallPrompt();
+      }
+      wireInstallButton();
+    });
+
+    // Búsqueda en tiempo real
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            performSearch();
+          }
+        });
+      }
+    });
+  </script>
+  
+  <!-- Sección PWA única -->
+  <div id="installSection" class="card-glass" style="max-width: 500px; margin: 1rem auto 2rem; text-align: center; display: none;">
+    <img src="LogoProfeVale.png" alt="Icono Profe Vale" style="width: 64px; height: 64px; margin-bottom: 0.75rem; border-radius: 12px; box-shadow: 0 0 12px rgba(0, 210, 255, 0.35);">
+    <h3 style="color: #0077ff; margin-bottom: 1rem;">📱 ¡Instala Profe Vale!</h3>
+    <p style="margin-bottom: 1.2rem; line-height: 1.5;">Agrega esta plataforma a tu pantalla de inicio para acceso rápido</p>
+    <button id="installBtn" class="btn-neon" style="background: linear-gradient(45deg, #0077ff, #00d2ff); color: #fff; font-weight: bold; padding: 0.8rem 2rem;">
+      📦 Instalar App
+    </button>
+  </div>
+</body>
+</html>

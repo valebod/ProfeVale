@@ -1,33 +1,9 @@
-const CACHE_NAME = 'profe-vale-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/LogoProfeVale.png',
-  '/formacion/index.html',
-  '/recursos/index.html',
-  '/chat/index.html',
-  '/AppMicrobitRF/index.html',
-  '/AppMicrobitTeachable/index.html',
-  '/AppMicrobitFlechas/index.html'
-];
-
-self.addEventListener('install', event => {
+// Service worker de limpieza: borra la caché vieja para que todos vean la página nueva.
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
   );
 });
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
-  );
-});
+self.addEventListener('fetch', () => {});
