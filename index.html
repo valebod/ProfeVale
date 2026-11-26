@@ -443,6 +443,7 @@ section{position:relative}
 .card .meta{position:absolute;left:16px;right:16px;bottom:16px;color:#fff}
 .card .meta b{display:block;font-weight:800;font-size:clamp(14px,1.25vw,18px);line-height:1.15;text-transform:uppercase;letter-spacing:.01em}
 .card .meta span{font-family:Caveat,cursive;font-size:clamp(18px,1.6vw,23px);line-height:1}
+.card .meta .rol{display:block;margin-top:6px;font-family:Montserrat,sans-serif;font-weight:600;font-size:clamp(11px,.9vw,13px);line-height:1.3;opacity:.92}
 .play{position:absolute;top:14px;right:14px;width:46px;height:46px;border-radius:50%;background:var(--naranja);display:grid;place-items:center;transition:transform .3s var(--ease)}
 .card:hover .play{transform:scale(1.12)}
 .card:hover,.card:focus-visible{z-index:200!important;filter:brightness(1.06)}
@@ -896,16 +897,16 @@ const PLAY='<svg width="16" height="18" viewBox="0 0 16 18" aria-hidden="true"><
 
 /* ---------- data ---------- */
 const works=[
- {t:"Agua, fuente de vida",s:"Ruyigi, Burundi · AMU",yt:"8OH5FGQS3iY"},
- {t:"La joie d'aimer",s:"Gen 4 Burundi",yt:"cMppa0eJUUA"},
- {t:"Siempre hay esperanza",s:"Cátedra UNESCO · infancia",yt:"CxsRi3yGvak"},
- {t:"Children of Burundi",s:"AFN · videorreportaje",yt:"ElPUuO6TpJU"},
- {t:"No plastique!",s:"Ecología en Burundi",yt:"OlItlw_PiqA"},
- {t:"Genfest Burundi 2024",s:"Focolari Burundi",yt:"vA0S_TIn2WQ"},
- {t:"Del Genfest 2018 al 2024",s:"Genfest · documental",yt:"AqeYGRqRlt8"},
- {t:"Video en Facebook",s:"documental",fb:"764038155209566"},
- {t:"Video en Facebook",s:"documental",fb:"1536697527143670"},
- {t:"Reel de videografía",s:"mis trabajos 2024",yt:"5_8LbTOvJt4"}
+ {t:"Agua, fuente de vida",s:"Ruyigi, Burundi · AMU",r:"Realización integral",yt:"8OH5FGQS3iY"},
+ {t:"La joie d'aimer",s:"Gen 4 Burundi",r:"Realización integral, con jóvenes de mi taller audiovisual",yt:"cMppa0eJUUA"},
+ {t:"Siempre hay esperanza",s:"Cátedra UNESCO · infancia",r:"Realización integral",yt:"CxsRi3yGvak"},
+ {t:"Children of Burundi",s:"AFN · videorreportaje",r:"Asistente de realización: cámara y sonido adicionales, B-roll",yt:"ElPUuO6TpJU"},
+ {t:"No plastique!",s:"Ecología en Burundi",r:"Realización integral, con un storytelling pensado con chicos y jóvenes",yt:"OlItlw_PiqA"},
+ {t:"Genfest Burundi 2024",s:"Focolari Burundi",r:"Realización integral",yt:"vA0S_TIn2WQ"},
+ {t:"Del Genfest 2018 al 2024",s:"Genfest · documental",r:"Realicé la entrevista de Burundi",yt:"AqeYGRqRlt8"},
+ {t:"Video en Facebook",s:"documental",r:"Realización integral",fb:"764038155209566"},
+ {t:"Video en Facebook",s:"documental",r:"Realización integral",fb:"1536697527143670"},
+ {t:"Reel de videografía",s:"mis trabajos 2024",r:"Realización integral",yt:"5_8LbTOvJt4"}
 ];
 const reels=[
  {t:"Reel 1",s:"en @profevale.ia",ig:"DgGx4NfPKbP"},
@@ -936,7 +937,7 @@ works.forEach((w,i)=>{
   const b=document.createElement('button');b.className='card'+(w.fb?' fb':'');b.type='button';
   b.setAttribute('aria-label','Ver video: '+w.t);
   b.innerHTML=(w.yt?'<img src="https://img.youtube.com/vi/'+w.yt+'/hqdefault.jpg" alt="" loading="lazy">':'<span class="ph" aria-hidden="true"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="40" cy="44" r="30" fill="#23AEDD"/><circle cx="82" cy="74" r="22" fill="#75A90F"/></svg></span>')+
-   '<span class="shade"></span><span class="play">'+PLAY+'</span><span class="meta"><b>'+w.t+'</b><span>'+w.s+'</span></span>';
+   '<span class="shade"></span><span class="play">'+PLAY+'</span><span class="meta"><b>'+w.t+'</b><span>'+w.s+'</span>'+(w.r?'<small class="rol">'+w.r+'</small>':'')+'</span>';
   b.addEventListener('click',()=>openVideo(w));
   deck.appendChild(b);
   const li=document.createElement('li');li.innerHTML='<button type="button">'+(i+1)+'. '+w.t+'</button>';
@@ -971,7 +972,7 @@ function openVideo(w){
   else {vert=true;link='https://www.instagram.com/reel/'+w.ig+'/';src=link+'embed';}
   mBox.classList.toggle('v',vert);
   mRatio.innerHTML='<iframe src="'+src+'" title="'+w.t+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
-  document.getElementById('mTitle').textContent=w.t+' · '+w.s;
+  document.getElementById('mTitle').textContent=w.t+' · '+w.s+(w.r?' · '+w.r:'');
   document.getElementById('mLink').href=link;
   lastFocus=document.activeElement;modal.classList.add('open');
   if(window.lenis)lenis.stop();document.getElementById('mClose').focus();
