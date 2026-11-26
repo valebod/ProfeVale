@@ -1,0 +1,25 @@
+# ProfeVale.IA
+
+> ProfeVale.IA es el espacio de Profe Vale: talleres online de inteligencia artificial en español, con mirada humana, para personas, docentes, emprendedores, empresas y ONG. También hace videos con y sin IA, robótica educativa con micro:bit y canciones infantiles (CantaLuz Kids).
+
+Profe Vale es analista de sistemas y licenciada en Informática Educativa, y estudia una maestría en Comunicación Transmedia. Trabajó en docencia en Argentina, programación en Italia, producción audiovisual para la cooperación internacional en Burundi (ocho años) y robótica educativa en Uruguay. Su enfoque: usar la IA con criterio, sin jerga, con ejemplos de la vida real y sin que reemplace el pensamiento de nadie.
+
+## Talleres
+- Talleres online de introducción a la IA, a medida, para personas, grupos, docentes, empresas y ONG.
+- Talleres temáticos 2027 (preinscripción abierta, grupos chicos, online):
+  - Herramientas base y productividad: El arte de pedirle a la IA (método C.O.R.F.E. para prompts efectivos); Privacidad, seguridad y gestión de memoria en herramientas de IA; Estudiar, investigar y sintetizar información con NotebookLM.
+  - Creatividad, historias y audiovisual: Chau hoja en blanco (creatividad y guiones con IA); Storytelling audiovisual paso a paso; Fotos de producto y criterio visual sin aspecto artificial.
+  - Emprendimiento, trabajo y proyectos: IA para emprendedores (productividad y atención al cliente); IA para emprendedores (contenidos y redes sociales); IA para proyectos sociales y ONG (de la toma de notas a informes de impacto); IA para la búsqueda laboral, reconversión profesional y marca personal.
+  - Acompañamiento, docencia y familia: Niñez, pantallas y juego (hasta 12 años); Adolescentes y territorio digital (13 a 18 años).
+
+## Otros servicios
+- Producción audiovisual para organizaciones sociales y cooperación internacional.
+- Videos hechos con IA por encargo.
+- Robótica educativa con micro:bit: formaciones y apps gratuitas en español que funcionan en el navegador.
+- CantaLuz Kids: dibujos animados y canciones infantiles.
+
+## Contacto
+- Web: https://valebod.github.io/ProfeVale/
+- Instagram: https://www.instagram.com/profevale.ia/
+- YouTube (CantaLuz): https://www.youtube.com/channel/UC18zBuJiGGoRhRqn-49vBqg
+- Mail: profevalebod@gmail.com
