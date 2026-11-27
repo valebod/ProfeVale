@@ -13,6 +13,6 @@ window.PROFE_VALE_CONFIG = {
 window.PV_LEGAL_CONFIG = {
   // URL del Worker de consentimientos, termina en /api/aceptacion. Vacío = no se registra todavía.
   REGISTRO_URL: '',
-  // Correo al que llegan los pedidos de arrepentimiento (falta confirmar con Vale)
-  CORREO_CONTACTO: ''
+  // Correo al que llegan los pedidos de arrepentimiento 
+  CORREO_CONTACTO: 'info@profevale.com.ar'
 };
