@@ -607,6 +607,12 @@ footer .legal a{text-decoration:underline}
 .form-msg{font-size:14px;color:var(--tinta);min-height:1em}
 .form-note{font-size:13px;color:var(--suave)}
 .pre-form .btn{align-self:flex-start}
+.pre-acepta{display:flex;flex-direction:column;gap:10px}
+.pre-acepta label{display:flex;gap:12px;align-items:flex-start;font-size:15px;cursor:pointer}
+.pre-acepta input[type=checkbox]{width:20px;height:20px;accent-color:var(--azul);flex:none;margin-top:2px}
+.pre-acepta a{color:var(--azul)}
+footer .legal-links{flex-basis:100%;display:flex;flex-wrap:wrap;gap:6px 18px}
+footer .legal-links a{text-decoration:underline}
 .legend-like{font-weight:800;color:var(--azul);font-size:18px}
 .pre-list{list-style:none;display:flex;flex-direction:column;gap:10px}
 .pre-list li{position:relative;padding-left:22px;font-size:16px}
@@ -865,7 +871,11 @@ footer .legal a{text-decoration:underline}
         <li><b>Emprendimiento, trabajo y proyectos</b><span>Emprendedores, redes sociales, ONG e informes de impacto, búsqueda laboral.</span></li>
         <li><b>Acompañamiento, docencia y familia</b><span>Niñez y pantallas, adolescentes y ciudadanía digital.</span></li>
       </ul>
-      <a class="btn btn-naranja" href="https://forms.gle/5QuoFDLNdekgndUs9" target="_blank" rel="noopener">Completar el formulario</a>
+      <form class="pre-acepta" data-pv-acepta="preinscripcion" action="https://forms.gle/5QuoFDLNdekgndUs9" method="get" target="_blank" rel="noopener">
+        <label><input type="checkbox" data-pv="terminos" required> <span>Acepto los <a href="legal/terminos.html" target="_blank" rel="noopener">Términos y Condiciones</a></span></label>
+        <label><input type="checkbox" data-pv="privacidad" required> <span>Acepto la <a href="legal/privacidad.html" target="_blank" rel="noopener">Política de Privacidad</a></span></label>
+        <button class="btn btn-naranja" type="submit">Completar el formulario</button>
+      </form>
       <p class="form-note">En el formulario de Google están los doce talleres en detalle. Toma un par de minutos.</p>
     </div>
   </div>
@@ -892,6 +902,7 @@ footer .legal a{text-decoration:underline}
       <span>ProfeVale.IA · PotencIAte · <a href="https://www.youtube.com/channel/UC18zBuJiGGoRhRqn-49vBqg" target="_blank" rel="noopener">CantaLuz</a></span>
       <span><a href="https://ko-fi.com/profevale" target="_blank" rel="noopener">Invitame un cafecito</a> · <a href="#inicio">Volver al principio</a></span>
       <span class="legal">© 2026 ProfeVale.IA · Desarrollado y coordinado por Valeria Alejandra Bodnar (Vale Bodnar) · Esquel, Chubut, Argentina · <a href="https://www.instagram.com/profevale.ia/" target="_blank" rel="noopener">@profevale.ia</a> · <a href="https://www.instagram.com/vale.bodnar/" target="_blank" rel="noopener">@vale.bodnar</a></span>
+      <nav class="legal-links" aria-label="Información legal"><a href="legal/terminos.html">Términos y Condiciones</a><a href="legal/privacidad.html">Política de Privacidad</a><a href="legal/cookies.html">Política de Cookies</a><a href="legal/reembolso.html">Reembolso y Arrepentimiento</a><a href="legal/reembolso.html#boton">Botón de arrepentimiento</a><a href="#" onclick="PV_LEGAL.configurar();return false">Configurar cookies</a></nav>
     </footer>
   </div>
 </section>
@@ -984,6 +995,7 @@ function openVideo(w){
   if(w.yt){src='https://www.youtube-nocookie.com/embed/'+w.yt+'?autoplay=1&rel=0&playsinline=1';link='https://youtu.be/'+w.yt;}
   else if(w.fb){link='https://www.facebook.com/watch/?v='+w.fb;src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(link)+'&show_text=false&autoplay=true';}
   else {vert=true;link='https://www.instagram.com/reel/'+w.ig+'/';src=link+'embed';}
+  if(!(window.PV_LEGAL&&PV_LEGAL.embedsOk())){window.open(link,'_blank','noopener');return;}
   mBox.classList.toggle('v',vert);
   mRatio.innerHTML='<iframe src="'+src+'" title="'+w.t+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
   document.getElementById('mTitle').textContent=w.t+' · '+w.s+(w.r?' · '+w.r:'');
@@ -1089,5 +1101,7 @@ function deckStatic(){document.getElementById('trabajos').classList.add('static'
 window.addEventListener('load',()=>ScrollTrigger.refresh());
 })();
 </script>
+<script src="site-config.js"></script>
+<script src="legal/legal.js"></script>
 </body>
 </html>

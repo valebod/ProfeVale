@@ -96,7 +96,7 @@
         Te contactaré si organizo algo que pueda interesarte.
       </p>
 
-      <form action="https://formspree.io/f/xyznwavn" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
+      <form data-pv-acepta="formacion" action="https://formspree.io/f/xyznwavn" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
         <input type="hidden" name="_subject" value="Interés en Formación Online - Profe Vale">
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -112,16 +112,13 @@
           <option value="info-general">Solo recibir información</option>
         </select>
 
-        <select name="nivel" required>
-          <option value="">¿Cuál es tu nivel?</option>
-          <option value="principiante">Principiante (Nuevo en el tema)</option>
-          <option value="basico">Básico (Algo de experiencia)</option>
-          <option value="intermedio">Intermedio (Uso herramientas regularmente)</option>
-          <option value="avanzado">Avanzado (Experiencia técnica)</option>
-          <option value="docente">Soy docente (Busco aplicación educativa)</option>
-        </select>
-
         <textarea name="comentario" placeholder="Comentarios adicionales (opcional) - ¿Qué aspectos te interesan más? ¿Tienes experiencia previa?" rows="4"></textarea>
+
+        <input type="hidden" name="version_terminos" value="">
+        <input type="hidden" name="version_privacidad" value="">
+        <input type="hidden" name="fecha_aceptacion" value="">
+        <label style="display:flex;gap:10px;align-items:flex-start;color:#fff;font-size:0.95rem"><input type="checkbox" name="acepto_terminos" value="si" data-pv="terminos" required style="width:auto;margin-top:4px"> <span>Acepto los <a href="../legal/terminos.html" target="_blank" rel="noopener" style="color:#fff">Términos y Condiciones</a></span></label>
+        <label style="display:flex;gap:10px;align-items:flex-start;color:#fff;font-size:0.95rem"><input type="checkbox" name="acepto_privacidad" value="si" data-pv="privacidad" required style="width:auto;margin-top:4px"> <span>Acepto la <a href="../legal/privacidad.html" target="_blank" rel="noopener" style="color:#fff">Política de Privacidad</a></span></label>
 
         <button type="submit" class="btn-neon" style="align-self: center; font-size: 0.8rem;">
           📩 Enviar Solicitud
@@ -164,5 +161,7 @@
     </a>
   </div>
   
+<script src="../site-config.js"></script>
+<script src="../legal/legal.js"></script>
 </body>
 </html>

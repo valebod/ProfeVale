@@ -1,0 +1,13 @@
+name = "profevale-consentimientos"
+main = "src/index.js"
+compatibility_date = "2024-10-01"
+
+[vars]
+ALLOWED_ORIGINS = "https://profevale.com.ar,https://www.profevale.com.ar,https://valebod.github.io"
+
+# Crear la base con: wrangler d1 create profevale-consentimientos
+# y pegar acá el database_id que devuelve.
+[[d1_databases]]
+binding = "DB"
+database_name = "profevale-consentimientos"
+database_id = "COMPLETAR"

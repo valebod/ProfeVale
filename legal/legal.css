@@ -1,0 +1,30 @@
+/* Estilos de las páginas legales de profevale.com.ar */
+:root{--azul:#005388;--naranja:#EE6E0B;--celeste:#23AEDD;--papel:#FAF7F2;--blanco:#FFFFFF;--tinta:#13263A;--suave:#4F5F6E}
+*{box-sizing:border-box}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:Montserrat,system-ui,sans-serif;font-weight:500;line-height:1.65;font-size:17px}
+a{color:var(--azul)}
+.top{background:var(--azul);color:#fff;padding:14px 16px}
+.top .in{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.top a{color:#fff;text-decoration:none;font-weight:800;letter-spacing:.02em}
+.top a.volver{font-weight:600;font-size:14px;text-decoration:underline}
+main{max-width:860px;margin:0 auto;padding:32px 16px 60px}
+h1{color:var(--azul);font-weight:800;font-size:clamp(28px,5vw,40px);line-height:1.15;margin:8px 0 6px}
+h2{color:var(--azul);font-weight:800;font-size:21px;margin:36px 0 8px}
+h3{color:var(--tinta);font-weight:700;font-size:18px;margin:22px 0 6px}
+.version{color:var(--suave);font-size:14px;margin:0 0 20px}
+.borrador{border:2px dashed var(--naranja);background:#fff;padding:14px 16px;border-radius:10px;margin:18px 0 26px;font-size:15px}
+.borrador b{color:var(--azul)}
+.falta{overflow-wrap:anywhere;background:#FDE7D3;color:var(--tinta);padding:0 4px;border-radius:4px;font-weight:700}
+.nota-abogado{background:#E6F2FA;border-left:4px solid var(--celeste);padding:8px 12px;margin:10px 0;font-size:15px}
+table{display:block;overflow-x:auto;max-width:100%;border-collapse:collapse;font-size:15px;margin:10px 0;background:#fff}
+th,td{min-width:130px;border:1px solid #D7E6F1;padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#EEF5FA;color:var(--azul)}
+ul,ol{padding-left:22px}
+.btn{display:inline-block;background:var(--naranja);color:#fff;font-weight:800;text-decoration:none;padding:12px 20px;border-radius:999px;border:0;font-family:inherit;font-size:16px;cursor:pointer}
+.pie-legal{border-top:1px solid #D7E6F1;margin-top:50px;padding-top:18px;font-size:14px;color:var(--suave)}
+.pie-legal a{margin-right:14px;display:inline-block;margin-bottom:6px}
+form.arrep{background:#fff;border:1px solid #D7E6F1;border-radius:12px;padding:18px;display:grid;gap:12px;margin:16px 0}
+form.arrep label{font-weight:700;font-size:15px;display:grid;gap:4px}
+form.arrep input,form.arrep textarea{font:inherit;padding:10px;border:1px solid #B8CFE0;border-radius:8px;width:100%}
+.check{display:flex!important;gap:10px;align-items:flex-start;font-weight:500!important}
+.check input{width:auto!important;margin-top:5px}
